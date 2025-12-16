@@ -1,5 +1,5 @@
-# TutorialR_UHH2024
-Projektseminar R Tutorial - Sommersemester 2024 - Universität Hamburg
+# TutorialR_Hype_and_Horror
+Methodenseminar R Tutorial - Wintersemester 2025/26 - LMU München
 
 Tutorial page: https://mvreiss.github.io/TutorialR_UHH2024/
 
