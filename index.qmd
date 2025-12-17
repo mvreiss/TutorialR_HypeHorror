@@ -20,7 +20,7 @@ date: "December 11, 2025"
 
 Dieses Tutorial dient als Dokumentation und Erweiterung zu dem, was in den Sitzungen in Bezug auf R erläutert wurde. Es soll dazu dienen, dass ihr die Inhalte nochmal in eigener Geschwindigkeit nacharbeiten könnt, zum Beispiel wenn es euch in der Sitzung zu schnell ging.
 
-Am wichtigsten beim Programmieren-lernen und auch der Anwendung ist, dass ihr es einfach mal ausprobiert und ein wenig experimentiert - ihr könnt nichts kaputt machen\*. Bitte nutzt die hier angegeben Infos dann auch nur als Ausgangspunkt und informiert euch darüber hinaus gerne selbst. Eine riesige Stärke von R ist, dass es eine sehr grosse Community von Nutzerinnen und Nutzern gibt und ihr online zu allem und in allerlei Form Hilfe findet (Tutorials, Videos, etc.). Auch ChatGPT kann eine sehr grosse Hilfe sein. Entscheidet gerne selbst, welche Informationen euch persönlich am meisten helfen.
+Am wichtigsten beim Programmieren-lernen und auch in der alltäglichen Anwendung ist, dass ihr es einfach mal ausprobiert und ein wenig experimentiert - ihr könnt nichts kaputt machen\*. Bitte nutzt die hier angegeben Infos dann auch nur als Ausgangspunkt und informiert euch darüber hinaus gerne selbst. Eine riesige Stärke von R ist, dass es eine sehr grosse Community von Nutzerinnen und Nutzern gibt und ihr online zu allem und in allerlei Form Hilfe findet (Tutorials, Videos, etc.). Auch ChatGPT kann eine sehr grosse Hilfe sein. Entscheidet gerne selbst, welche Informationen euch persönlich am meisten helfen.
 
 \*eure Rohdaten solltet ihr trotzdem immer nochmal an einem zweiten Ort gespeichert haben.
 
@@ -53,14 +53,12 @@ R bezeichnet eine Programmiersprache, die im Hintergrund auf eurem Computer eing
 a\) Download von R
 
 -   [Download R für Windows](https://cran.r-project.org/bin/windows/base/)
-
 -   [Download R für Mac mit Silicon Prozessor (M1-M4)](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.3.3-arm64.pkg)
-
 -   [Download R für Mac mit Intel Prozessor](https://cran.r-project.org/bin/macosx/big-sur-x86_64/base/R-4.3.3-x86_64.pkg)
 
-    ::: {style="font-size: 14px;"}
-    [Welchen Prozessor hat mein Mac?]{title="Klickt auf das Apfel-Symbol in der linken oberen Ecke deines Bildschirms und wähle Über diesen Mac."}
-    :::
+::: {style="font-size: 14px;"}
+[Welchen Prozessor hat mein Mac?]{title="Klickt auf das Apfel-Symbol in der linken oberen Ecke deines Bildschirms und wähle Über diesen Mac."}
+:::
 
 b\) Installation von R auf eurem Gerät.
 
@@ -344,6 +342,7 @@ nchar(data$headline) # Anzahl Zeichen der jeweiligen Headlines mean(nchar(data$h
 Wenn wir die Anzahl der Wörter in einem Text erfassen wollen, müssen wir zunächst wieder ein Zusatzpaket installieren, da R von Haus aus hierfür keine Befehle kennt.
 
 ```{r}
+#| eval: false
 install.packages("stringr")  
 library(stringr)
 ```
@@ -419,6 +418,7 @@ Die Masszahlen und Darstellungsformen soweit waren sehr allgemein und auf alle A
 Hierfür ist es hilfreich, ein Paket (bzw. zwei) zu installieren, welches spezifisch für die Arbeit mit Textdaten geschaffen wurde:
 
 ```{r}
+#| warning: false
 install.packages(c("quanteda", "quanteda.textplots"))
 library(quanteda)
 library(quanteda.textplots)
@@ -513,7 +513,7 @@ Deutlicher wird es bei folgenden Beispielen: Wir wollen das Sentiment eines Text
 
 Wenn wir hingegen codieren, um was für einen Akteurstyp sich ein Akteur handelt, haben wir eine nominale Skala. Wenn eine Person einen Akteur als "NGO" klassifiziert, eine andere Person den selben Akteur hingegen als "Regierung", dann ist der Widerspruch im Regelfall genauso gravierend wie wenn eine dritte Person den betreffenden Akteur als "Opposition" bezeichnet. Wir haben in jedem Fall einen gleichwertigen Widerspruch, es gibt kein "weniger falsch" oder "fast richtig", wie das bei ordinalen (oder metrischen) Variablen der Fall sein kann.
 
-**Wichtig:** Die Reliabilität wird für jedes Konzept/Kategorie extra bestimmt. Sollte die Güte der Reliabilität nicht den gewohnten Gütekriterien entsprechen (im Regelfall mindestens 0.667, idealerweise mindestens 0.8), dann solltet ihr überlegen, was die Gründe hierfür sind und ggf. darauf reagieren.
+**Wichtig:** Die Reliabilität wird für jedes Konzept/Kategorie extra bestimmt und angegeben. Sollte die Güte der Reliabilität nicht den gewohnten Gütekriterien entsprechen (im Regelfall mindestens 0.667, idealerweise mindestens 0.8), dann solltet ihr überlegen, was die Gründe hierfür sind und ggf. darauf reagieren.
 
 ## Schließende Statistik
 
