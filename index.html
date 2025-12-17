@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael V. Reiss">
-<meta name="dcterms.date" content="2024-05-13">
+<meta name="dcterms.date" content="2025-12-11">
 
-<title>Einführung in R</title>
+<title>Begleitung in R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +35,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -65,10 +65,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <style>
 
       .quarto-title-block .quarto-title-banner h1,
@@ -96,8 +96,8 @@ background: #00008B;
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Einführung in R</h1>
-            <p class="subtitle lead">Seminar “Berichterstattung über die Primary Elections”<br> Universität Hamburg, Sommersemester 2024</p>
+      <h1 class="title">Begleitung in R</h1>
+            <p class="subtitle lead"><br> Methodenseminar “Zwischen Hype und Horror: Darstellungen und Berichterstattung zu generativer KI in den Medien”<br> <br> LMU München, Wintersemester 2025/2026</p>
                       </div>
   </div>
     
@@ -114,7 +114,7 @@ background: #00008B;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 13, 2024</p>
+        <p class="date">December 11, 2025</p>
       </div>
     </div>
     
@@ -128,20 +128,21 @@ background: #00008B;
     <h2 id="toc-title">Inhaltsverzeichnis</h2>
    
   <ul>
-  <li><a href="#sitzung-2-einführung-und-reliabilität" id="toc-sitzung-2-einführung-und-reliabilität" class="nav-link active" data-scroll-target="#sitzung-2-einführung-und-reliabilität">Sitzung 2: Einführung und Reliabilität</a>
+  <li><a href="#auffrischung-und-grundlagen-r" id="toc-auffrischung-und-grundlagen-r" class="nav-link active" data-scroll-target="#auffrischung-und-grundlagen-r">Auffrischung und Grundlagen R</a>
   <ul>
   <li><a href="#r-und-rstudio-installieren" id="toc-r-und-rstudio-installieren" class="nav-link" data-scroll-target="#r-und-rstudio-installieren"><strong>R und RStudio installieren</strong></a></li>
   <li><a href="#zentrale-elemente-der-benutzeroberfläche-von-rstudio-kennenlernen" id="toc-zentrale-elemente-der-benutzeroberfläche-von-rstudio-kennenlernen" class="nav-link" data-scroll-target="#zentrale-elemente-der-benutzeroberfläche-von-rstudio-kennenlernen"><strong>Zentrale Elemente der Benutzeroberfläche von RStudio kennenlernen</strong></a></li>
   <li><a href="#beispieldatensatz-einlesen" id="toc-beispieldatensatz-einlesen" class="nav-link" data-scroll-target="#beispieldatensatz-einlesen"><strong>Beispieldatensatz einlesen</strong></a></li>
-  <li><a href="#reliabilitätstest-auf-den-beispieldatensatz-anwenden" id="toc-reliabilitätstest-auf-den-beispieldatensatz-anwenden" class="nav-link" data-scroll-target="#reliabilitätstest-auf-den-beispieldatensatz-anwenden"><strong>Reliabilitätstest auf den Beispieldatensatz anwenden</strong></a></li>
   </ul></li>
-  <li><a href="#sitzung-3-deskriptive-statistik" id="toc-sitzung-3-deskriptive-statistik" class="nav-link" data-scroll-target="#sitzung-3-deskriptive-statistik">Sitzung 3: Deskriptive Statistik</a>
+  <li><a href="#deskriptive-statistik-und-grafische-darstellungen" id="toc-deskriptive-statistik-und-grafische-darstellungen" class="nav-link" data-scroll-target="#deskriptive-statistik-und-grafische-darstellungen">Deskriptive Statistik und grafische Darstellungen</a>
   <ul>
   <li><a href="#statistische-kennzahlen-ermitteln" id="toc-statistische-kennzahlen-ermitteln" class="nav-link" data-scroll-target="#statistische-kennzahlen-ermitteln">Statistische Kennzahlen ermitteln</a></li>
+  <li><a href="#arbeit-mit-textdaten" id="toc-arbeit-mit-textdaten" class="nav-link" data-scroll-target="#arbeit-mit-textdaten">Arbeit mit Textdaten</a></li>
   <li><a href="#grafische-darstellungen" id="toc-grafische-darstellungen" class="nav-link" data-scroll-target="#grafische-darstellungen">Grafische Darstellungen</a></li>
   <li><a href="#darstellungsformen-für-textdaten-wortwolken" id="toc-darstellungsformen-für-textdaten-wortwolken" class="nav-link" data-scroll-target="#darstellungsformen-für-textdaten-wortwolken">Darstellungsformen für Textdaten: Wortwolken</a></li>
   </ul></li>
-  <li><a href="#sitzung-6-schließende-statistik" id="toc-sitzung-6-schließende-statistik" class="nav-link" data-scroll-target="#sitzung-6-schließende-statistik">Sitzung 6: Schließende Statistik</a>
+  <li><a href="#reliabilität" id="toc-reliabilität" class="nav-link" data-scroll-target="#reliabilität"><strong>Reliabilität</strong></a></li>
+  <li><a href="#schließende-statistik" id="toc-schließende-statistik" class="nav-link" data-scroll-target="#schließende-statistik">Schließende Statistik</a>
   <ul>
   <li><a href="#mittelwertvergleich-t-test" id="toc-mittelwertvergleich-t-test" class="nav-link" data-scroll-target="#mittelwertvergleich-t-test">Mittelwertvergleich (t-test)</a></li>
   <li><a href="#korrelationstest" id="toc-korrelationstest" class="nav-link" data-scroll-target="#korrelationstest">Korrelationstest</a></li>
@@ -149,33 +150,32 @@ background: #00008B;
   </ul>
 </nav>
 </div>
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
+
 <p><br></p>
 <p>Dieses Tutorial dient als Dokumentation und Erweiterung zu dem, was in den Sitzungen in Bezug auf R erläutert wurde. Es soll dazu dienen, dass ihr die Inhalte nochmal in eigener Geschwindigkeit nacharbeiten könnt, zum Beispiel wenn es euch in der Sitzung zu schnell ging.</p>
-<p>Am wichtigsten beim Programmieren-lernen ist, dass ihr es einfach mal ausprobiert und ein wenig experimentiert - ihr könnt nichts kaputt machen*. Bitte nutzt die hier angegeben Infos dann auch nur als Ausgangspunkt und informiert euch darüber hinaus gerne selbst. Eine riesige Stärke von R ist, dass es eine sehr grosse Community von Nutzerinnen und Nutzern gibt und ihr online zu allem und in allerlei Form Hilfe findet (Tutorials, Videos, etc.). Auch ChatGPT kann eine sehr grosse Hilfe sein. Entscheidet gerne selbst, welche Informationen euch persönlich am meisten helfen.</p>
+<p>Am wichtigsten beim Programmieren-lernen und auch der Anwendung ist, dass ihr es einfach mal ausprobiert und ein wenig experimentiert - ihr könnt nichts kaputt machen*. Bitte nutzt die hier angegeben Infos dann auch nur als Ausgangspunkt und informiert euch darüber hinaus gerne selbst. Eine riesige Stärke von R ist, dass es eine sehr grosse Community von Nutzerinnen und Nutzern gibt und ihr online zu allem und in allerlei Form Hilfe findet (Tutorials, Videos, etc.). Auch ChatGPT kann eine sehr grosse Hilfe sein. Entscheidet gerne selbst, welche Informationen euch persönlich am meisten helfen.</p>
 <p>*eure Rohdaten solltet ihr trotzdem immer nochmal an einem zweiten Ort gespeichert haben.</p>
-<section id="sitzung-2-einführung-und-reliabilität" class="level2">
-<h2 class="anchored" data-anchor-id="sitzung-2-einführung-und-reliabilität">Sitzung 2: Einführung und Reliabilität</h2>
-<p><strong>15. April 2024</strong></p>
-<p>Diese Sitzung fokussiert auf die Arbeit mit R in RStudio und hat vier Ziele, die am Ende der Sitzung, spätestens bis zur nächsten Sitzung erfüllt sein sollten:</p>
+<section id="auffrischung-und-grundlagen-r" class="level2">
+<h2 class="anchored" data-anchor-id="auffrischung-und-grundlagen-r">Auffrischung und Grundlagen R</h2>
+<p><strong>19. November 2025</strong></p>
+<p>In dieser Sitzung werden in aller Kürze zunächst nochmal die Grundlagen von R erläutert. Das umfasst drei zentrale Elemente:</p>
 <p>1) Ihr habt R und RStudio heruntergeladen und installiert<br>
 2) Ihr habt zentrale Elemente der Benutzeroberfläche kennengelernt<br>
-3) Ihr habt den Beispieldatensatz eingelesen und<br>
-4) Ihr habt ein Mass für Reliabilität für eine Beispielcodierung ausgerechnet.</p>
-<p><a href="in_class_session_2.R">Hier</a> findet ihr auch nochmal das File, welches ich in der Sitzung am Montag genutzt habe, um euch die einzelnen Elemente in R direkt zu zeigen. Ich würde euch aber eher empfehlen die folgenden Ausführungen in diesem Tutorial durchzulesen, da ich dort alles nochmal ausführlich beschreibe. In dem File von Montag sind nur die einzelnen Code-Schnippsel selbst und weitere Erklärungen.</p>
+3) Ihr habt den Beispieldatensatz eingelesen und könnt einfach Befehle ausführen</p>
 <section id="r-und-rstudio-installieren" class="level6">
 <h6 class="anchored" data-anchor-id="r-und-rstudio-installieren"><strong>R und RStudio installieren</strong></h6>
 <p>R bezeichnet eine Programmiersprache, die im Hintergrund auf eurem Computer eingebunden wird. RStudio ist die Benutzeroberfläche, mit der ihr R bedient, also Daten einlest und bearbeitet, statistische Analysen durchführt, Grafiken erstellt und vieles mehr. Sowohl R als auch RStudio sind kostenlos. Für eine erfolgreiche Installation sind vier Schritte in der genannten Reihenfolge notwendig.</p>
 <p>a) Download von R</p>
 <ul>
 <li><p><a href="https://cran.r-project.org/bin/windows/base/">Download R für Windows</a></p></li>
-<li><p><a href="https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.3.3-arm64.pkg">Download R für Mac mit Silicon Prozessor (M1-M3)</a></p></li>
+<li><p><a href="https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.3.3-arm64.pkg">Download R für Mac mit Silicon Prozessor (M1-M4)</a></p></li>
 <li><p><a href="https://cran.r-project.org/bin/macosx/big-sur-x86_64/base/R-4.3.3-x86_64.pkg">Download R für Mac mit Intel Prozessor</a></p>
 <div style="font-size: 14px;">
 <p><span title="Klickt auf das Apfel-Symbol in der linken oberen Ecke deines Bildschirms und wähle Über diesen Mac.">Welchen Prozessor hat mein Mac?</span></p>
@@ -192,14 +192,14 @@ background: #00008B;
 </section>
 <section id="zentrale-elemente-der-benutzeroberfläche-von-rstudio-kennenlernen" class="level6">
 <h6 class="anchored" data-anchor-id="zentrale-elemente-der-benutzeroberfläche-von-rstudio-kennenlernen"><strong>Zentrale Elemente der Benutzeroberfläche von RStudio kennenlernen</strong></h6>
-<p>Wir demonstrieren euch die wichtigsten Elemente in der Sitzung. Zur Wiederholung ist dieses <a href="https://www.youtube.com/watch?v=tyvEHQszZJs">Video-Tutorial</a> hilfreich.</p>
+<p>Die wichtigsten Elemente habe ich kurz in der Sitzung vorgestellt; ihr kennt diese natürlich auch aus den anderen Vorlesungen und Seminaren. Zur Wiederholung ist dieses <a href="https://www.youtube.com/watch?v=tyvEHQszZJs">Video-Tutorial</a> hilfreich.</p>
 </section>
 <section id="beispieldatensatz-einlesen" class="level6">
 <h6 class="anchored" data-anchor-id="beispieldatensatz-einlesen"><strong>Beispieldatensatz einlesen</strong></h6>
-<p>Um eure Analysen gemäss eurer Forschungsfrage durchführen zu können, müsst ihr die von euch gesammelten Daten auswerten (in dem Fall Zeitungstexte oder Pressemitteilungen). Hierfür existieren Statistikprogramme wie R. Um das zu machen, müssen wir die Daten als erstes jedoch erst einmal in RStudio einlesen.</p>
+<p>Um eure Analysen gemäss eurer Forschungsfrage durchführen zu können, müsst ihr die von euch gesammelten Daten auswerten (in dem Fall meist Zeitungstexte, Pressemitteilungen oder Beiträge auf sozialen Medien). Hierfür existieren Statistikprogramme wie R. Um das zu machen, müssen wir die Daten als erstes jedoch erst einmal in RStudio einlesen.</p>
 <p>Für das Tutorial habe ich einen Beispieldatensatz erstellt, anhand dessen ihr die relevanten Schritte üben könnt. Ihr könnt aber auch direkt eure eigenen Daten bzw. eure eigenen Daten einlesen.</p>
 <p>Den Beispieldatensatz könnt ihr <a href="./data_example.xlsx">hier herunterladen</a>.</p>
-<p>Als nächstes öffnet ihr RStudio und erstellt ein neues Script in RStudio (File -&gt; New File -&gt; R Script). Das Script ist wie ein Do-File in Stata das Dokument wo euer Code geschrieben und gespeichert wird. Als erstes solltet ihr in dem neu geöffneten Script nun eine Überschrift einfügen, damit ihr wisst, um was es sich handelt. Es gibt zwei Arten, Eingaben in R zu machen. Normale Eingaben interpretiert R immer als Rechenoperationen oder Befehle, die ihr über Strg+Enter / Ctrl+Enter ausführen könnt (oder rechts oben im Editor-Fenster bei “Run”). Beispielsweise versteht R hier direkt, dass es sich um eine Rechnung handelt und wenn ihr die Teile markiert und STRG+Enter oder “Run” drückt, gibt RStudio in der Console unten links das entsprechende Ergebnis aus:</p>
+<p>Als nächstes öffnet ihr RStudio und erstellt ein neues Script in RStudio (File -&gt; New File -&gt; R Script). Als erstes solltet ihr in dem neu geöffneten Script nun eine Überschrift einfügen, damit ihr wisst, um was es sich handelt. Es gibt zwei Arten, Eingaben in R zu machen. Normale Eingaben interpretiert R immer als Rechenoperationen oder Befehle, die ihr über Strg+Enter / Ctrl+Enter ausführen könnt (oder rechts oben im Editor-Fenster bei “Run”). Beispielsweise versteht R hier direkt, dass es sich um eine Rechnung handelt und wenn ihr die Teile markiert und STRG+Enter oder “Run” drückt, gibt RStudio in der Console unten links das entsprechende Ergebnis aus:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">+</span><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -210,7 +210,7 @@ background: #00008B;
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Hallo R, wie geht es dir?</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error: &lt;text&gt;:1:7: unerwartetes Symbol
+<pre><code>Error in parse(text = input): &lt;text&gt;:1:7: unerwartetes Symbol
 1: Hallo R
           ^</code></pre>
 </div>
@@ -223,8 +223,8 @@ background: #00008B;
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Einlesen von Beispieldatensatz und Reliabilität der Coder bestimmen.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Speichert diese Datei nun am besten direkt und wählt dafür einen Speicherort und Namen für diese Datei aus (File -&gt; Save as…) - das ist ganz ähnlich wie bei Word oder Excel. Für einen guten Überblick macht es ausserdem Sinn, sich eine gute Datei Struktur/Organisation zu überlegen. RStudio speichert seine Scripte mit der Dateiendung “.R”. Hieran erkennt ihr im Explorer/Finder, dass es sich um ein Script für R-Code handelt und entsprechend mit RStudio ausgeführt werden kann (äquivalent zu einem .do-File bei Stata).</p>
-<p>Nun lest ihr den Beispieldatensatz in R ein. Das kann R aber nicht einfach so, sondern es benötigt ein Paket besonderer Befehle, damit R weiss, wie es Excel Dateien korrekt in R einzulesen hat. Das benötigte Paket installiert und aktiviert ihr mit folgendem Code, den ihr einfach ein, zwei Zeilen unter eurer Überschrift in das R-Script einfügt. Beachtet auch, wie in diesem Beispiel Kommentare genutzt werden. Ihr könnt Kommentare in eine neue Zeile, aber auch direkt hinter einen Befehl schreiben. Sobald ein <code>#</code> kommt, ignoriert R den dahinterstehenden Text.</p>
+<p>Speichert diese Datei nun am besten direkt und wählt dafür einen Speicherort und Namen für diese Datei aus (File -&gt; Save as…) - das ist ganz ähnlich wie bei Word oder Excel. Für einen guten Überblick macht es ausserdem Sinn, sich eine gute Datei Struktur/Organisation zu überlegen. RStudio speichert seine Scripte mit der Dateiendung “.R”. Hieran erkennt ihr im Explorer/Finder, dass es sich um ein Script für R-Code handelt und entsprechend mit RStudio ausgeführt werden kann (äquivalent zu einem .docx-File bei Word).</p>
+<p>Nun lest ihr den Beispieldatensatz in R ein. Das kann R aber nicht einfach so, sondern es benötigt ein Paket mit besonderen Befehlen, damit R weiss, wie es Excel Dateien korrekt in R einzulesen hat. Das benötigte Paket installiert und aktiviert ihr mit folgendem Code, den ihr einfach ein, zwei Zeilen unter eurer Überschrift in das R-Script einfügt. Beachtet auch, wie in diesem Beispiel Kommentare genutzt werden. Ihr könnt Kommentare in eine neue Zeile, aber auch direkt hinter einen Befehl schreiben. Sobald ein <code>#</code> kommt, ignoriert R den dahinterstehenden Text.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"readxl"</span>) <span class="co"># Paket zum Einlesen von Excel Dateien installieren</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co"># Paket aktivieren</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -233,7 +233,7 @@ background: #00008B;
 <p>Die Installation sollte in dem Fall nur wenige Sekunden dauern und ein paar Warnungen in der Console ausgeben (das Fenster links unten). Sofern es keine Errors sind, können die Warnungen an dieser Stelle ignoriert werden.</p>
 <p>Nun könnt ihr die Beispieldaten einlesen. Dafür müsst ihr die Exceldatei geschlossen haben und den Dateipfad zu der Exceldatei (also wo ihr <code>data_example.xlsx</code> gespeichert habt) kopieren. Ersetzt dann den untenstehenden fiktiven Dateipfad mit dem korrekten Dateipfad auf eurem Gerät. Bitte beachtet, dass ihr zum einlesen Slashes ( / ) benötigt. (Sollte es unter Windows nicht funktionieren, ersetzt den Slash mit zwei Backslashes ( \\ )).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:/Users/Name/Documents/Studium/SoSe24/Berichterstattung_Primaries/data/data_example.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:/Users/Name/Documents/Studium/WS25/HypeHorror/data/data_example.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ihr habt die Daten nun eingelesen und der Datentabelle den Namen <code>data</code> zugeordnet. Unter diesem Namen kann die Datentabelle wieder aufgerufen werden. Rechts oben in RStudio unter “Environment” seht ihr nun auch <code>data</code> aufgelistet. Per Doppelklick auf <code>data</code> im Environment könnt ihr die Tabelle ansehen - ähnlich wie bei Excel. Ihr könnt allerdings auf diese Art keine Änderungen an den Einträgen vornehmen.</p>
 <p><strong>Zwischenstand</strong></p>
@@ -244,10 +244,9 @@ background: #00008B;
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"readxl"</span>) <span class="co"># Paket zum Einlesen von Excel Dateien installieren</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co"># Paket aktivieren</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:/Users/Name/Documents/Studium/SoSe24/Berichterstattung_Primaries/data/data_example.xlsx"</span>) <span class="co"># Einlesen der Daten</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:/Users/Name/Documents/Studium//WS25/HypeHorror/data/data_example.xlsx"</span>) <span class="co"># Einlesen der Daten</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><em>Tipp:</em> Wenn man das erste Mal <code>install.packages("")</code> ausgeführt hat, kann man diesen Befehl auskommentieren (ein # an den Zeilenanfang), da dieses Paket nun auf dem Gerät installiert ist und man dies in Zukunft nicht mehr neu installieren muss und somit etwas Zeit spart. Es reicht dann, das benötigte Paket über den Befehl <code>library()</code> aufzurufen. (Es gibt noch eine elegantere Möglichkeit mit <code>require()</code>, wen das interessiert kann ja mal recherchieren).</p>
-<p><strong>Ausblick</strong></p>
+<p><em>Tipp:</em> Wenn man das erste Mal <code>install.packages("")</code> ausgeführt hat, kann man diesen Befehl auskommentieren (ein # an den Zeilenanfang), da dieses Paket nun auf dem Gerät installiert ist und man dies in Zukunft nicht mehr neu installieren muss und somit etwas Zeit spart. Es reicht dann, das benötigte Paket über den Befehl <code>library()</code> aufzurufen. (Es gibt noch eine elegantere Möglichkeit mit <code>require()</code>. Wen das interessiert, kann ja mal recherchieren).</p>
 <p>Ihr könnt nun auch bereits mit den Daten spielen. Zum Beispiel könnt ihr per <code>names(data)</code> die Namen der Spalten des Datensatzes ausgeben lassen. Oder per <code>table(data$outlet)</code> eine Häufigkeitstabelle zu den Outlets in <code>data</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -264,103 +263,45 @@ handel   spon  tages    zon
      3      5      3      4 </code></pre>
 </div>
 </div>
-<p>Genauso könnt ihr euch die Zeichenanzahl der Überschriften ausgeben lassen und einen Mittelwert berechnen.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(data<span class="sc">$</span>headline) <span class="co"># Anzahl Zeichen der jeweiligen Headlines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 46 66 42 62 30 70 41 49 27 41 60 48 18 30 21</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">nchar</span>(data<span class="sc">$</span>headline)) <span class="co"># Mittelwert davon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 43.4</code></pre>
-</div>
-</div>
-<p>Für die Anzahl der Wörter in einem Text müssen wir zunächst wieder ein Zusatzpaket installieren, da R von Haus aus hierfür keine Befehle kennt.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"stringr"</span>) </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>word_count <span class="ot">&lt;-</span> <span class="fu">str_count</span>(data<span class="sc">$</span>text, <span class="st">"</span><span class="sc">\\</span><span class="st">S+"</span>) </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Zählt die Anzahl der Wörter in der Spalte "text" und </span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># speichert das Ergebnis in einer neuen Spalte "word_count" ab.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Wenn ihr den Datensatz nun anschaut, seht ihr das Ergebnis in einer neuen Spalte am Ende des Datensatzes.</p>
-<p><strong>Wichtig:</strong> Es ist sehr wichtig, nach jedem Befehl die korrekte Ausführung zu überprüfen, in dem man sich das Resultat anschaut und auf Plausibilität prüft. Andernfalls können sich Fehler einschleichen und die Analyse am Ende falsch sein. Den Fehler dann zu finden (sofern man ihn überhaupt bemerkt) ist deutlich mühsamer als während der Ausführung aufmerksam zu sein.</p>
-<p>In diesem Fall erscheint das Ergebnis plausibel. Per Augenmass ist erkennbar, dass Text 5 länger ist als die anderen Texte und Text 1 und 4 am kürzesten sind. Manchmal reicht Augenmass allerdings nicht aus um ein Ergebnis zu prüfen. In dem Fall sollte geschaut werden, ob ihr mit anderen Methoden auf das identische Ergebnis kommt. Hier wollen wir die Wörter natürlich nicht manuell nachzählen, aber wir können einen der Texte in Word kopieren und schauen, ob Word die gleiche Anzahl für einen Text ausgibt.</p>
-</section>
-<section id="reliabilitätstest-auf-den-beispieldatensatz-anwenden" class="level6">
-<h6 class="anchored" data-anchor-id="reliabilitätstest-auf-den-beispieldatensatz-anwenden"><strong>Reliabilitätstest auf den Beispieldatensatz anwenden</strong></h6>
-<p>Bevor man mit latenten Konzepten wie Emotionalität, Humor, etc. weiter arbeitet, ist es wichtig, sich zu vergewissern, dass die gemessenen Konzepte valide und reliabel sind. Hohe Reliabilität bedeutet, dass verschiedene Leute bei der Einschätzung von gegebenen Texten in Bezug auf ein Kozept (z.B. Humor) zu ähnlichen oder gleichen Ergebnissen kommen. Dies macht eine Analyse intersubjektiv nachvollziehbar und die Chance ist hoch, dass auch andere Coder in der Zukunft zu dem gleichen Ergebnis kommen. Reliabilität stellt daher ein wichtiges wissenschaftliches Gütekriterium dar.</p>
-<p>Niedrige Reliabilität wiederum liegt vor, wenn sich verschiedene Leute bei gegebenen Texten nicht auf die Ausprägung eines Konzeptes einigen können. Wenn beispielsweise Coder A zu einem Text sagt, dass dieser humorvoll ist, Coder B hingegen sagt, dass der Text nicht humorvoll ist, dann können wir uns nicht sicher sein, welcher Fall nun zutrifft. Weder das eine, noch das andere scheint uneingeschränkt richtig zu sein. Es fehlt also eine reliable Einschätzung und es kann mit einer Analyse nicht fortgefahren werden.</p>
-<p>Es gibt etliche Gründe, warum die Reliabilität möglicherweise unzureichend ist. Verschiedene Leute könnten (z.B. aus kulturellen, alters oder geschlechtlichen) Gründen Konzepte unterschiedlich wahrnehmen. Manche Konzepte sind schwierig klar abzutrennen oder schwierig zu verstehen. Auch Texte können schwierig sein was eine klare Einordnung betrifft. Teils existieren auch schlicht Missverständnisse und ein ausführlicheres Training der Coder kann abhilfe schaffen.</p>
-<p>Während Validität primär über die Literatur und Theorie begründet wird, wird bei Inhaltsanalysen die Reliabilität häufig auch als Indikator für die Validität herangezogen. Obwohl hohe Reliabilität eine notwendige, aber keine hinreichende Bedingung für Validität ist, gibt es bei sozialwissenschaftichen (oft latenten) Konzepten oft keine “endgültige Wahrheit”. Daher wird, bei hoher Reliabilität im Urteil, die Meinung von Codern oft als endgültige Wahrheit definiert.</p>
-<p>Es existieren unterschiedliche Masszahlen um die Reliabilität zwischen Codern quantitativ zu bestimmen. Eine sehr populäre Masszahl ist Krippendorff’s Alpha, welche auch wir verwenden. Krippendorff’s Alpha ist sehr flexibel was die Anzahl der Coder betrifft und kommt mit unterschiedlich skalierten Bewertungen zurecht. Auf einer Skala von 0 bis 1 gibt diese Masszahl an, wie gut die Urteile verschiedener Coder zu gleichen Sachverhalten (bei uns Texten) übereinstimmen. Eine 1 zeigt eine perfekte Reliabilität an, eine 0 die vollständige Abwesenheit von Reliabilität.</p>
-<p>Für ein Mindestmass an wissenschaftlicher Güte und Reliabilität sollte Alpha mindestens Werte von 0,667 annehmen, besser wären Werte von 0,8 und höher.</p>
-<p>Sofern Bewertungen verschiedener Coder zu mehreren Texten vorhanden sind, lässt sich Krippendorff’s Alpha in R leicht ausrechnen.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein neues Paket wird für die Berechnung von Krippendorff's Alpha benötigt</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"irr"</span>) </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Die relevanten Spalten aus "data", also die Bewertungen der drei Coder </span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># werden in einer neuen Datentabelle abgespeichert. (Ihr seht dann rechts </span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># im Environment den neuen Datensatz mit dem namen "bewertungen")</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>bewertungen <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"tone_trump_c1"</span>,<span class="st">"tone_trump_c2"</span>, <span class="st">"tone_trump_c3"</span>)]</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Berechnung von Krippendorff's Alpha</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kripp.alpha</span>(<span class="fu">t</span>(bewertungen))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> Krippendorff's alpha
-
- Subjects = 15 
-   Raters = 3 
-    alpha = 0.707 </code></pre>
-</div>
-</div>
-<p>Mit dem Befehl <code>kripp.alpha()</code> wird Krippendorff’s Alpha berechnet. <code>t()</code> innerhalb von <code>kripp.alpha()</code>ist notwendig, um die Datentabelle <code>bewertungen</code> zu transponieren und sie in ein Format zu bringen, welches den Spezifikationen des Befehls <code>kripp.alpha()</code> entspricht.</p>
-<p>Im Output von <code>kripp.alpha()</code> sehen wir drei Angaben. “Subjects” gibt an, wie viele Texte codiert wurden. “Raters” gibt an, wie viele Coder involviert waren und alpha gibt uns schliesslich das gewünschte Krippendorff’s Alpha für die Reliabilität der drei Coder zu diesen 15 Texten. In diesem fiktiven Beispiel ist alpha 0.707. Das ist eine ausreichende, wenngleich nicht optimale Reliabilität. Wenn ihr in die Daten schaut, könnt ihr sehen, dass die Coder mit ihrem Urteil bei drei von 15 Texten nicht übereingestimmt haben.</p>
-<p><em>Tipp:</em> Es ist geübte Praxis, alle Pakete, die im Verlauf eines Scriptes benötigt werden, ganz oben im Script aufzurufen. Das heisst, anstelle dass ihr nun die drei bisherigen Pakete (readxl, stringr, irr) jeweils an den Stellen installiert und aktiviert, an denen der relevante Code folgt, könnt ihr alle Pakete oben zu Anfang eures Scripts aufrufen. Sollte ein weiteres Paket im Verlauf nötig sein, könnt ihr es oben einfügen und ausführen. In der Zukunft habt ihr dann direkt zu Anfang einen Überblick über die benötigten Pakete und sie stören den Ablauf im weiteren Script nicht mehr.</p>
 </section>
 </section>
-<section id="sitzung-3-deskriptive-statistik" class="level2">
-<h2 class="anchored" data-anchor-id="sitzung-3-deskriptive-statistik">Sitzung 3: Deskriptive Statistik</h2>
-<p><strong>22. April 2024</strong></p>
-<p>In dieser Sitzung wollen wir uns die Daten etwas genauer anschauen und Methoden kennen lernen, diese Daten quantitativ zu beschreiben. Das machen wir einerseits mit relevanten Masszahlen (z.B. Mittelwert) aber auch mit grafischen Darstellungen.</p>
-<p>Das Lernziel für diese Sitzung ist, grundlegende Methoden der deskriptiven (=beschreibende) Statistik in R und RStudio kennenzulernen und auf eure Daten anwenden zu können. Ausserdem machen wir einen kurzen Abstecher in die Darstellung von Textdaten. Wir nutzen erneut die bisherigen <a href="./data_example.xlsx">Beispieldaten</a>.</p>
+<section id="deskriptive-statistik-und-grafische-darstellungen" class="level2">
+<h2 class="anchored" data-anchor-id="deskriptive-statistik-und-grafische-darstellungen">Deskriptive Statistik und grafische Darstellungen</h2>
+<p><strong>19. November 2025</strong></p>
+<p>Nachdem wir im ersten Teil die Grundlagen aufgefrischt haben und uns vom Wissensstand alle auf dem gleichen Niveau befinden, können wir nun bereits ein wenig in die Anwendung eintauchen.</p>
+<p>Das Lernziel für diesen Teil der Sitzung ist, grundlegende Methoden der deskriptiven (=beschreibenden) Statistik in R und RStudio kennenzulernen und auf eure Daten anwenden zu können. Ausserdem machen wir einen kurzen Abstecher in die Darstellung von Textdaten.</p>
+<p>Wichtig hierbei: Wir arbeiten dafür weiter mit den bereits eingelesenen <a href="#0">Beispieldaten</a>, ihr könnt aber natürlich auch gerne eure eigenen Daten einlesen und schauen ob es auch damit klappt, das Prinzip ist dasselbe.</p>
 <section id="statistische-kennzahlen-ermitteln" class="level6">
 <h6 class="anchored" data-anchor-id="statistische-kennzahlen-ermitteln">Statistische Kennzahlen ermitteln</h6>
 <p>In einem ersten Schritt wollen wir grundlegende statistische Kennzahlen für unsere Daten ermitteln. Das ist in einem empirischen wissenschaftlichen Projekt fast immer der erste Schritt einer Analyse und dient dazu, eine grundlegendes Verständnis von den Daten zu bekommen: Was ist das Durchschnittsalter meiner Teilnehmenden, wie ist das Geschlechterverhältnis, wie sind die Bildungsabschlüsse verteilt, sind typische Fragen die bei einer Umfrage in einem ersten Schritt angeschaut werden. In eurem Kontext betreffen die grundlegenden, deskriptiven Fragen allerdings keine Teilnehmerinnen aus einer Umfrage, sondern eher eure Texte. Von Interesse sind hier z.B. Fragen wie: Wie lang sind meine Texte durchschnittlich, wie verteilen sich die Texte auf die verschiedenen Quellen, wie viele Texte enthalten ein bestimmtes Merkmal, etc.</p>
-<p>Ich gehe nun davon aus, dass euch aus letzter Sitzung vertraut ist, wie Daten eingelesen werden und dass ihr den Beispieldatensatz unter dem gleichen Namen (“data”) eingelesen habt (er sollte dann rechts oben in eurem Environment aufgelistet sein).</p>
-<p>Wenn ihr den Datensatz eingelesen habt, wendet bitte einmal folgenden Befehl an. Dieser stellt sicher, dass die Tabelle in einem normalen sogenannten data.frame Format gespeichert ist und wir alle Operationen ohne Probleme anwenden können:</p>
+<p>Wendet bitte als nächstes einmal folgenden Befehl an. Dieser stellt sicher, dass die Tabelle in einem normalen sogenannten data.frame Format gespeichert ist und wir alle folgenden Operationen ohne Probleme anwenden können:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Wie in den meisten Tabellen sind die einzelnen Beobachtungen in Zeilen und die Spalten bilden die verschiedenen Variablen. Wenn ihr euch den Datensatz <code>data</code> anschaut, seht ihr, dass es hier z.B. die Variablen “nr”, “link”, “outlet”, “date”, usw. gibt. Um in R den Mittelwert einer Variable (= Spalte in unserem Fall) auszurechnen gibt es den Befehl <code>mean()</code>. Diesem Befehl müssen wir nun ein Argument bzw. eine Bezugsmenge zuweisen, für die der Befehl (in dem Fall der Mittelwert) ausgerechnet werden soll. Wir wollen nun als erstes den Mittelwert für die Spalte “pics” ausrechnen. Versuchen wir es mit der zunächst intuitiven Lösung, nämlich dem Spaltennamen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error in eval(expr, envir, enclos): Objekt 'pics' nicht gefunden</code></pre>
+<pre><code>Error: Objekt 'pics' nicht gefunden</code></pre>
 </div>
 </div>
 <p>Das erzeugt einen Fehler, weil R das Objekt nicht kennt (beachte, es ist rechts oben im Environment selbst nicht aufgeführt). Da die Spalte “pics” Teil des grösseren Objekts <code>data</code> ist, müssen wir R auch mitteilen, dass “pics” in der Tabelle <code>data</code> zu finden ist. Das funktioniert mittel <code>$</code>, genauer mittels <code>data$pics</code>. Auf die Art wird R mitgeteilt, dass er im Objekt <code>data</code> schauen soll und dort die Spalte “pics” findet. Wir können das direkt testen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>pics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>pics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 2 1 4 1 1 0 1 0 1 7 1 1 1 1 1</code></pre>
 </div>
 </div>
 <p>Ihr seht als Output den Inhalt der Spalte “pics” (ab und zu zu prüfen, ob die Werte mit der Tabelle <code>data</code> übereinstimmen ist immer sinnvoll. Damit wird vermieden, dass sich hier und da Fehler einschleichen, die man bei grösseren Datensätzen schnell übersehen kann). Auf die Art können wir den Inhalt aller Spalten aufrufen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>date</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>date</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "2024-02-25 UTC" "2024-02-28 UTC" "2024-03-05 UTC" "2024-03-06 UTC"
  [5] "2024-03-06 UTC" "2024-03-13 UTC" "2024-03-06 UTC" "2024-02-28 UTC"
  [9] "2024-03-05 UTC" "2024-03-06 UTC" "2024-03-04 UTC" "2024-02-28 UTC"
 [13] "2024-03-12 UTC" "2024-03-06 UTC" "2024-02-27 UTC"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>article_type</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>article_type</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "agentur" "agentur" "normal"  "agentur" "normal"  "agentur" "normal" 
  [8] "agentur" "essay"   "normal"  "agentur" "agentur" "normal"  "normal" 
@@ -370,22 +311,22 @@ handel   spon  tages    zon
 <p><strong>Nice to know</strong></p>
 <p>Anstatt <code>data$pics</code> zu schreiben, könnt ihr auch <code>data[,"pics"]</code> schreiben. Das Ergebnis ist äquivalent. Der 2. Code ist etwas allgemeiner, da die eckigen Klammern (<code>[]</code>) der Code für eine Teilmenge sind. Hier wird entsprechend nach einer Teilmenge von <code>data</code> gefragt. In den Klammern wird dann auf Zeilen und Spalten verwiesen, von einem Komma getrennt. In unserem Beispiel bedeutet <code>data[,"pics"]</code> also, dass wir alle Zeilen auswählen (indem man nichts schreibt werden alle bestehenden Zeilen genommen), und dass wir die Spalte “pics” auswählen. Wenn ihr nur einzelne Zeilen auswählen wollt, könnt ihr das entsprechend vor dem Komma einfügen. Probiert es mal aus:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>data[,<span class="st">"pics"</span>] <span class="co"># hat das gleiche Ergebnis wie data$pics</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">1</span>,<span class="st">"pics"</span>] <span class="co"># hier wählen wir auch die Spalte "pics" aber nur die erste Zeile</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,] <span class="co"># Zeilen 1 bis 5 und alle Spalten</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>data[<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>),<span class="dv">1</span>] <span class="co"># Zeilen 3, 4 und 9 und nur Spalte 1 (anstatt dem Spaltennamen, kann man auch die Spaltennummer verwenden)</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>data[,<span class="fu">c</span>(<span class="st">"pics"</span>,<span class="st">"article_type"</span>)] <span class="co"># alle Zeilen aber 2 Spalten</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data[,<span class="st">"pics"</span>] <span class="co"># hat das gleiche Ergebnis wie data$pics</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">1</span>,<span class="st">"pics"</span>] <span class="co"># hier wählen wir auch die Spalte "pics" aber nur die erste Zeile</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,] <span class="co"># Zeilen 1 bis 5 und alle Spalten</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>data[<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>),<span class="dv">1</span>] <span class="co"># Zeilen 3, 4 und 9 und nur Spalte 1 (anstatt dem Spaltennamen, kann man auch die Spaltennummer verwenden)</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>data[,<span class="fu">c</span>(<span class="st">"pics"</span>,<span class="st">"article_type"</span>)] <span class="co"># alle Zeilen aber 2 Spalten</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ihr seht ausserdem, dass bei mehreren einzelnen Zeilen oder Spalten, diese Werte mit dem <code>c()</code>-Befehl kombiniert werden müssen. Damit wird eine Aufzählung markiert und R erkennt die Kommas richtig:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>, <span class="st">"pics"</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>, <span class="st">"pics"</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `[.data.frame`(data, 3, 4, 9, "pics"): unbenutztes Argument ("pics")</code></pre>
 </div>
 </div>
 <p>Dieser Code ergibt einen Fehler, da R nur ein Komma erwartet, hier aber nun 3 Kommas sind und R nicht versteht, dass sich die ersten drei Werte alle noch auf die Zeilen berufen (alle Kommas sind für R gleich). Entsprechend müsst ihr markieren, dass die ersten drei Werte - in diesem Fall - eine Aufzählung von Zeilen darstellen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>data[<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>), <span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">9</span>)] <span class="co"># Nur der Output von Zeilen 3, 4 und 9 und gleichzeitig nur Spalten 8 und 9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data[<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">9</span>), <span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">9</span>)] <span class="co"># Nur der Output von Zeilen 3, 4 und 9 und gleichzeitig nur Spalten 8 und 9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  article_type pics
 3       normal    4
@@ -396,30 +337,30 @@ handel   spon  tages    zon
 <p><strong>Zurück zum Mittelwert, Median, etc.</strong></p>
 <p>Der Mittelwert für die Variable (= Spalte) “pics” kann entsprechend wie folgt ausgerechnet werden:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.533333</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># oder</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[,<span class="st">"pics"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># oder</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data[,<span class="st">"pics"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.533333</code></pre>
 </div>
 </div>
 <p>Wir wissen nun, dass im Schnitt 1,53 Fotos pro Artikel enthalten sind. Nice. Genauso könnt ihr damit den Median oder beispielsweise die Standardabweichung einer Variable ausgeben lassen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.76743</code></pre>
 </div>
 </div>
 <p>Das funktioniert aber nicht für die Spalte “article_type”, in welcher der Typ des Artikels codiert ist. Das liegt daran, dass für nominale Werte eine Angabe des Mittelwerts wenig Sinn ergibt (was ist der Mittelwert von “essay”, agentur” und “normal”?). Entsprechend bekommt ihr eine Fehlermeldung. Der Median hingegen lässt sich korrekterweise auch hier ausgeben.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>article_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>article_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in mean.default(data$article_type): Argument ist weder numerisch noch
 boolesch: gebe NA zurück</code></pre>
@@ -427,14 +368,14 @@ boolesch: gebe NA zurück</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(data<span class="sc">$</span>article_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(data<span class="sc">$</span>article_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "essay"</code></pre>
 </div>
 </div>
 <p>Eine weiterer hilfreicher Befehl ist, die Häufigkeit der unterschiedlichen Ausprägungen einer Variable anzeigen zu lassen. Hierfür ist der Befehl <code>table()</code> gedacht. Ihr seht schnell wie er funktioniert und was er als Resultat ausgibt:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data<span class="sc">$</span>article_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data<span class="sc">$</span>article_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 agentur   essay  normal 
@@ -443,7 +384,7 @@ agentur   essay  normal
 </div>
 <p>Die relativen Häufigkeiten bekommt hier mit folgender Erweiterung:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(data<span class="sc">$</span>article_type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(data<span class="sc">$</span>article_type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    agentur      essay     normal 
@@ -452,7 +393,7 @@ agentur   essay  normal
 </div>
 <p>Hier fällt auf, dass die ausführliche Angabe der Nachkommastellen etwas unnötig ist. Das kann man vermeiden, indem man Ergebnisse in R auf die gewünschte Nachkommastelle rundet. Das funktioniert mit dem Befehl <code>round(code,x)</code>, wobei code der Code oder Befehl ist, dessen Ergebnis ihr runden wollt und x die Anzahl an Ziffern ist, auf die ihr nach dem Komma runden wollt. Zum Beispiel:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(data<span class="sc">$</span>article_type)),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(data<span class="sc">$</span>article_type)),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 agentur   essay  normal 
@@ -460,52 +401,52 @@ agentur   essay  normal
 </div>
 </div>
 <p><strong>Mittelwerte für Teilmengen einer Variable</strong></p>
-<p>Oft ist es aber so, dass ihr nicht am Gesamtmittelwert interessiert seid, sondern zwischen Texttypen oder Quellen unterscheiden wollt. Wenn wir z.B. den Mittelwert an Bildern pro Artikel, getrennt nach Medienhaus bekommen wollen, müssen wir die Daten erst entsprechend aufsplitten.</p>
+<p>Oft ist es aber so, dass ihr nicht am Gesamtmittelwert interessiert seid, sondern zwischen Texttypen oder Quellen unterscheiden wollt. Wenn wir z.B. den Mittelwert an Bildern pro Artikel (oder ein sonstiges Merkmal, das ihr identifiziert habt, z.B. Häufigkeit bestimmter Frames), getrennt nach Medienhaus bekommen wollen, müssen wir die Daten erst entsprechend aufsplitten.</p>
 <p>Das geht auf zwei Arten. Ein Weg ist, den Datensatz in die Teile aufzusplitten, für die ihr jeweils den Mittelwert berechnen wollt. Anschliessend könnt ihr für jede Teilmenge den Mittelwert wie gewohnt berechnen. Dieser Weg hat ein zwei verschiedene Schritte, ist aber sehr intuitiv.</p>
 <p>Für einen Überblick lasse ich ich mir zunächst aber nochmal die Namen der Medienhäuser geben:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>outlet <span class="co">#listet alle auf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>outlet <span class="co">#listet alle auf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "spon"   "spon"   "spon"   "spon"   "spon"   "zon"    "zon"    "zon"   
  [9] "zon"    "handel" "handel" "handel" "tages"  "tages"  "tages" </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(data<span class="sc">$</span>outlet) <span class="co"># listet jeden Namen nur einmal auf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(data<span class="sc">$</span>outlet) <span class="co"># listet jeden Namen nur einmal auf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "spon"   "zon"    "handel" "tages" </code></pre>
 </div>
 </div>
 <p>Nun erstelle ich eine erstelle eine Teilmenge der Haupttabelle <code>data</code>, getrennt nach den jeweiligen Medienhäusern. Das muss ich allerdings für jedes Medienhaus einzeln tun. Und zwar mit folgender Logik. Von meinem Datensatz <code>data</code>, nimm aus der Spalte “outlet” (also <code>data$outlet</code>) nur die Werte, die genau (<code>==)</code> “spon” entsprechen und weise sie einem neuen Objekt zu (in dem Fall <code>spon_data</code>). Entsprechend für die anderen Outlets.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>spon_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"spon"</span>)</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>zon_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"zon"</span>)</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"handel"</span>)</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>tages_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"tages"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>spon_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"spon"</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>zon_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"zon"</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"handel"</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>tages_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet <span class="sc">==</span> <span class="st">"tages"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ihr seht ausserdem, dass wir hier ein <code>==</code> anstatt einem einfachen “=” nutzen. Das hängt damit zusammen, dass “=” bereits vergeben ist und wie “&lt;-” eine Zuweisung von Werten bedeutet. Unser herkömmliches Verständnis von “=” wird in R am ehesten durch <code>==</code> umgesetzt.</p>
 <p>Wenn wir das gemacht haben, erscheinen rechts oben vier neue Objekte mit den eben vergebenen Namen. Diese können wir uns wie gewohnt anschauen und wir erkennen, dass es sich bei den neuen Tabellen um die gewünschten Teilmengen des Hauptdatensatzes handelt. Für jede dieser Teiltabellen können wir wie gewohnt den Mittelwert berechnen - unter Angabe des neuen Namens des jeweiligen Datensatzes:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(spon_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(spon_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.8</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(zon_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(zon_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(tages_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(tages_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
 </div>
 <p>Deutlich schneller, aber von den Schritten auf den ersten Blick nicht ganz so intuitiv ist folgender Code. Dieser wirft mit nur einer Zeile Code die Mittelwerte für alle vier Outlets aus:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dplyr") #Hastag am Anfang entfernen, falls ihr "dplyr" das erste Mal installiert</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dplyr") #Hastag am Anfang entfernen, falls ihr "dplyr" das erste Mal installiert</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -522,8 +463,8 @@ Zunächst nehmt ihr ganz normal <code>data</code> und verweist den Datensatz per
 <p>Zusammengefasst erledigt der Code hier in einer Zeile, wofür wir davor 8 Zeilen benötigt haben. Ausserdem müsst ihr vor die einzelnen Zeilen (hier: “outlets” und “pics”) nicht jedes Mal erneut den Datensatz schreiben (also z.B.: data$outlets), weil R durch den allerersten Befehl der Zeile (<code>data %&gt;%</code>) versteht, dass ihr euch nur auf diesen Datensatz bezieht. Das macht den Code etwas übersichtlicher und kürzer.</p>
 <p>Wie immer, könnt ihr das Ergebnis auch einem neuen Objekt zuweisen, um es später wieder leicht aufrufen zu können:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -537,75 +478,137 @@ Zunächst nehmt ihr ganz normal <code>data</code> und verweist den Datensatz per
 <p>Hier werden die Mittelwerte der vier Outlets nun in der neuen Tabelle <code>outlet_means</code> gespeichert. Ihr seht, das dieses Objekt nun rechts oben aufgelistet ist.</p>
 <p>Auf die gleiche Weise können wir nun auch die Anzahl an Bildern je Artikeltyp (= article_type) ausrechnen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>type_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(article_type) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">type_mean =</span> <span class="fu">mean</span>(pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>type_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(article_type) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">type_mean =</span> <span class="fu">mean</span>(pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Diese Ergebnisse erlauben nun schon erste interpretative Erkentnisse. Zum Beispiel benutzt das Handelsblatt in unserem kleinen Beispiel offenbar am häufigsten Bilder und Zeit Online am wenigsten. Genauso finden wir in Agenturmeldungen weniger Bilder als in normalen Nachrichtenbeiträgen.</p>
 </section>
+<section id="arbeit-mit-textdaten" class="level6">
+<h6 class="anchored" data-anchor-id="arbeit-mit-textdaten">Arbeit mit Textdaten</h6>
+<p>Die bisherigen Ausführungen werden für alle von euch relevant sein, haben aber ansich nur indirekt etwas mit Texten zu tun, nämlich insoweit, dass die Daten Texte beschreiben; selbst aber keine wirklichen Textdaten sind. Man kann in R aber auch mit Texten selbst arbeiten und diese analysieren. Beispielsweise kann man vergleichen, welche Länge verschiedene Überschriften haben und den Mittelwert davon berechnen. Das geht wie folgt:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(data<span class="sc">$</span>headline) <span class="co"># Anzahl Zeichen der jeweiligen Headlines mean(nchar(data$headline)) # Mittelwert davon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 46 66 42 62 30 70 41 49 27 41 60 48 18 30 21</code></pre>
+</div>
+</div>
+<p>Wenn wir die Anzahl der Wörter in einem Text erfassen wollen, müssen wir zunächst wieder ein Zusatzpaket installieren, da R von Haus aus hierfür keine Befehle kennt.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"stringr"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'stringr' wird gerade benutzt und deshab nicht installiert</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>word_count <span class="ot">&lt;-</span> <span class="fu">str_count</span>(data<span class="sc">$</span>text, <span class="st">"</span><span class="sc">\\</span><span class="st">S+"</span>)  </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Zählt die Anzahl der Wörter in der Spalte "text" und </span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co"># speichert das Ergebnis in einer neuen Spalte "word_count" ab.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Wenn ihr den Datensatz nun anschaut, seht ihr das Ergebnis, also die Anzahl der Wörter der jeweiligen Texte, in einer neuen Spalte am Ende des Datensatzes. Das waren jetzt nur sehr einfache Textoperationen. Mit dem Paket “stringr” könnt ihr allerlei nützliche und auch komplexere Operationen durchführen.</p>
+<p><strong>Wichtig:</strong> Es ist sehr wichtig, nach jedem Befehl die korrekte Ausführung zu überprüfen, indem man sich das Resultat anschaut und auf Plausibilität prüft. Andernfalls können sich Fehler einschleichen und die Analyse am Ende falsch sein. Den Fehler dann zu finden (sofern man ihn überhaupt bemerkt), ist deutlich mühsamer, als während der Ausführung aufmerksam zu sein.</p>
+<p>In diesem Fall erscheint das Ergebnis plausibel. Per Augenmass ist erkennbar, dass Text 5 länger ist als die anderen Texte und Text 1 und 4 am kürzesten sind. Manchmal reicht Augenmass allerdings nicht aus um ein Ergebnis zu prüfen. In dem Fall sollte geschaut werden, ob ihr mit anderen Methoden auf das identische Ergebnis kommt. Hier wollen wir die Wörter natürlich nicht manuell nachzählen, aber wir können beispielsweise einen der Texte in Word kopieren und schauen, ob Word die gleiche Anzahl für einen Text ausgibt. Damit testen wir in gewisserweise die Validität des Befehls in R, eine Thematik, die uns in einer späteren Sitzung noch begegnet.</p>
+</section>
 <section id="grafische-darstellungen" class="level6">
 <h6 class="anchored" data-anchor-id="grafische-darstellungen">Grafische Darstellungen</h6>
-<p>Neben schlichten Kennzahlen bieten für bestimmte Daten aber auch grafische Darstellungen an. Wir lernen hier nur die absoluten Basics. R ist sehr vielseitig und mächtig und lässt auch abenteuerlichste und massgeschneiderte Darstellungen zu. Schaut zum Beispiel <a href="https://r-graph-gallery.com/best-r-chart-examples">hier</a> für einige wunderschöne Beispiele. In vielen Fällen erfordert das allerdings fortgeschrittene Kentnisse und geht damit über die Kurztutorials dieses Kurses hinaus. Wer sich aber dafür interessiert findet unter dem Stichwort <strong><code>ggplot2</code></strong> (was ein eigenes Paket für R ist) eine ganzes Universum an Möglichkeiten, allerlei Daten auf alle erdenklichen Arten grafisch aufzubereiten.</p>
+<p>Neben schlichten Kennzahlen bieten sich für bestimmte Daten aber auch grafische Darstellungen an. Wir lernen hier nur die absoluten Basics. R ist sehr vielseitig und mächtig und lässt auch abenteuerlichste und massgeschneiderte Darstellungen zu. Schaut zum Beispiel <a href="https://r-graph-gallery.com/best-r-chart-examples">hier</a> für einige wunderschöne Beispiele. In vielen Fällen erfordert das allerdings fortgeschrittene Kentnisse und geht damit über die Kurztutorials dieses Kurses hinaus. Wer sich aber dafür interessiert findet unter dem Stichwort <strong><code>ggplot2</code></strong> (was ein eigenes Paket für R ist) eine ganzes Universum an Möglichkeiten, allerlei Daten auf alle erdenklichen Arten grafisch aufzubereiten.</p>
 <p>Wir bleiben hier allerdings bei den Basics, die bereits recht hilfreich sein können:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(data<span class="sc">$</span>pics) <span class="co"># Tortendiagramm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(data<span class="sc">$</span>pics) <span class="co"># Tortendiagramm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(data<span class="sc">$</span>pics) <span class="co"># Balkendiagramm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(data<span class="sc">$</span>pics) <span class="co"># Balkendiagramm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-35-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-33-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Beide Darstellungen sind nicht sonderlich hilfreich. Häufig ist eine der zentralen Aufgaben der visuellen Darstellung, sich zu überlegen, ob die Daten schon im richtigen Format für eine <em>sinnvolle</em> Darstellungen sind. Das kann mühsam sein, insbesondere da R in Fällen wie oben keinen Fehler ausgibt. Die Darstellungen bzw. Befehle sind nämlich formal nicht falsch (z.B. seitens der Syntax), sie sind allerdings inhaltlich nicht sinnvoll bzw. haben schlicht keinen Mehrwert.</p>
 <p>Welche der folgenden Darstellungen ist sinnvoll?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(<span class="fu">table</span>(data<span class="sc">$</span>pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(<span class="fu">table</span>(data<span class="sc">$</span>pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in dotchart(table(data$pics)): 'x' ist weder Vektor noch Matrix: nutze
 as.numeric(x)</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(data<span class="sc">$</span>pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-36-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(data<span class="sc">$</span>pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(data<span class="sc">$</span>pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-36-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(data<span class="sc">$</span>pics))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-34-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Sehr oft ist eine Darstellung der Rohdaten alleine nicht sinnvoll oder nicht gewünscht, sondern gewisse Bearbeitungsschritte sind notwendig, um die Daten in eine Form zu bringen, die finale Analyse durchführen zu können. <strong>Tatsächlich machen solche Datenbearbeitungsschritte meist den Grossteil der Analysearbeit in empirischen Projekten aus.</strong> Auch wir haben das rudimentär schon gemacht, nämlich als wir den Mittelwert nach Gruppen getrennt aufgeschlüsselt haben. Auch hier profitieren wir davon und können unsere Ergebnisse grafisch darstellen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Diese Darstellung ist allerdings noch arg trostlos und auch unvollständig. Mit weiteren Argumenten können der Darstellung aber noch sinnvolle und notwendige Elemente hinzugefügt werden:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value, <span class="at">names.arg =</span> outlet_means<span class="sc">$</span>outlet, <span class="at">xlab =</span> <span class="st">"Medienhäuser"</span>, <span class="at">ylab =</span> <span class="st">"Durchschnittle Anzahl Bilder"</span>, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value, <span class="at">names.arg =</span> outlet_means<span class="sc">$</span>outlet, <span class="at">xlab =</span> <span class="st">"Medienhäuser"</span>, <span class="at">ylab =</span> <span class="st">"Durchschnittle Anzahl Bilder"</span>, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Erinnerung</strong> Mit dem Befehl <code>?</code> hier z.B.: <code>?barplot()</code> könnt ihr die Hilfe für den jeweiligen Befehl aufrufen. Hier seht ihr, welche Argumente grundsätzlich für den jeweiligen Befehl möglich sind und in welcher Art und Wiese diese in dem Befehl aufgeschrieben werden müssen.</p>
 <p>Schaut mal in die Hilfe und versucht eigenständig, einen Gesamttitel für das Balkendiagramm einzufügen.</p>
 <p>Die Farben können übrigens auch von euch frei gewählt werden, z.B. in dem ihr das aktuelle Argument für Farben durch folgende Codes ersetzt (siehe <a href="https://www.w3schools.com/colors/colors_picker.asp">HTML-Farbcode</a> für feinstufige Farbauswahl):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value, <span class="at">names.arg =</span> outlet_means<span class="sc">$</span>outlet, <span class="at">xlab =</span> <span class="st">"Medienhäuser"</span>, <span class="at">ylab =</span> <span class="st">"Durchschnittle Anzahl Bilder"</span>, <span class="at">col =</span> colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#FF0000"</span>, <span class="st">"#0000FF"</span>, <span class="st">"#008000"</span>,<span class="st">"#FFA500"</span>)</span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value, <span class="at">names.arg =</span> outlet_means<span class="sc">$</span>outlet, <span class="at">xlab =</span> <span class="st">"Medienhäuser"</span>, <span class="at">ylab =</span> <span class="st">"Durchschnittle Anzahl Bilder"</span>, <span class="at">col =</span> colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#FF0000"</span>, <span class="st">"#0000FF"</span>, <span class="st">"#008000"</span>,<span class="st">"#FFA500"</span>)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Genauso können für eine bessere Verständlichkeit auch die Namen der Medienhäuser in der entsprechenden Spalte noch ausgeschrieben werden. Dann werden sie in der Darstellung auch entsprechend angezeigt:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>outlet_means<span class="sc">$</span>outlet <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Handelsblatt"</span>,<span class="st">"Spiegel Online"</span>,<span class="st">"Tagesschau"</span>,<span class="st">"Zeit Online"</span>) <span class="co">#Achtung, auf richtige Reihenfolge achten! </span></span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value, <span class="at">names.arg =</span> outlet_means<span class="sc">$</span>outlet, <span class="at">xlab =</span> <span class="st">"Medienhäuser"</span>, <span class="at">ylab =</span> <span class="st">"Durchschnittle Anzahl Bilder"</span>, <span class="at">col =</span> colors <span class="ot">&lt;-</span> <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>outlet_means<span class="sc">$</span>outlet <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Handelsblatt"</span>,<span class="st">"Spiegel Online"</span>,<span class="st">"Tagesschau"</span>,<span class="st">"Zeit Online"</span>) <span class="co">#Achtung, auf richtige Reihenfolge achten! </span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(outlet_means<span class="sc">$</span>mean_value, <span class="at">names.arg =</span> outlet_means<span class="sc">$</span>outlet, <span class="at">xlab =</span> <span class="st">"Medienhäuser"</span>, <span class="at">ylab =</span> <span class="st">"Durchschnittle Anzahl Bilder"</span>, <span class="at">col =</span> colors <span class="ot">&lt;-</span> <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -614,24 +617,39 @@ as.numeric(x)</code></pre>
 <p>Die Masszahlen und Darstellungsformen soweit waren sehr allgemein und auf alle Arten von Daten anwendbar. Zuletzt wollen wir noch eine Darstellungsform kennen lernen, die spezifisch für Textdaten anwendbar ist: Wortwolken</p>
 <p>Hierfür ist es hilfreich, ein Paket (bzw. zwei) zu installieren, welches spezifisch für die Arbeit mit Textdaten geschaffen wurde:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"quanteda"</span>, <span class="st">"quanteda.textplots"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"quanteda"</span>, <span class="st">"quanteda.textplots"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Installiere Pakete nach 'C:/Users/Michael/AppData/Local/R/win-library/4.3'
+<pre><code>Installiere Pakete nach 'C:/Users/Michael/AppData/Local/R/win-library/4.5'
 (da 'lib' nicht spezifiziert)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Paket 'quanteda' erfolgreich ausgepackt und MD5 Summen abgeglichen
-Paket 'quanteda.textplots' erfolgreich ausgepackt und MD5 Summen abgeglichen
+<pre><code>Paket 'quanteda' erfolgreich ausgepackt und MD5 Summen abgeglichen</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: kann alte Installation von Paket 'quanteda' nicht entfernen</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in file.copy(savedcopy, lib, recursive = TRUE): Problem
+C:\Users\Michael\AppData\Local\R\win-library\4.5\00LOCK\quanteda\libs\x64\quanteda.dll
+nach
+C:\Users\Michael\AppData\Local\R\win-library\4.5\quanteda\libs\x64\quanteda.dll
+zu kopieren: Permission denied</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: 'quanteda' wiederhergestellt</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Paket 'quanteda.textplots' erfolgreich ausgepackt und MD5 Summen abgeglichen
 
 Die heruntergeladenen Binärpakete sind in 
-    C:\Users\Michael\AppData\Local\Temp\RtmpyicrfM\downloaded_packages</code></pre>
+    C:\Users\Michael\AppData\Local\Temp\RtmpawtoJL\downloaded_packages</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'quanteda' wurde unter R Version 4.3.3 erstellt</code></pre>
+<pre><code>Warning: Paket 'quanteda' wurde unter R Version 4.5.2 erstellt</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Package version: 4.0.2
+<pre><code>Package version: 4.3.1
 Unicode version: 15.1
 ICU version: 74.1</code></pre>
 </div>
@@ -641,30 +659,38 @@ ICU version: 74.1</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>See https://quanteda.io for tutorials and examples.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'quanteda.textplots' wurde unter R Version 4.3.3 erstellt</code></pre>
+<pre><code>Warning: Paket 'quanteda.textplots' wurde unter R Version 4.5.2 erstellt</code></pre>
 </div>
 </div>
 <p>Die Autoren dieses Pakets haben uns viel Arbeit erspart und machen es uns einfach: Um nun eine Wortwolke zu erzeugen sind nur drei einfache Schritte notwendig. Ihre Bedeutung habe ich in den Kommentaren im Code erläutert:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text) <span class="co">#die Texte der Artikel werden in einzelne Wörter aufgetrennt </span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) <span class="co">#die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix DFM)</span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix) <span class="co"># aus dieser DFM wird eine Wortwolke kreiert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text) <span class="co">#die Texte der Artikel werden in einzelne Wörter aufgetrennt </span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) <span class="co">#die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix DFM)</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix) <span class="co"># aus dieser DFM wird eine Wortwolke kreiert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Das ist schon ganz cool, aber auch ein wenig unübersichtlich. Wir wollen die Wolke nun auf die 50 häufigsten Wörter (hier: tokens) limitieren Das ist durch quanteda einfach möglich, da es im Befehl für die Wordcloud ein Argument gibt, die Grösse zu beschränken (siehe <code>?textplot_wordcloud()</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>Nun ist diese Darstellung allerdings nicht sehr hilfreich, da wir lauter inhaltslose Füllwörter wie “der”, “die”, “und”, etc. haben. Solche inhaltslose Füllwörter werden als “Stopwords” bezeichnet. Für verschiedene Sprachen sind hier in dem Paket <code>quanteda</code> bereits Listen hinterlegt, die festlegen welche Wörter als solche stopwords zählen (wir können solche Listen auch selbst definieren). Diese existierende Liste können wir uns auch anzeigen lassen:</p>
+</div>
+<p>Nun ist diese Darstellung allerdings übersichtlich, aber noch nicht sehr hilfreich, da wir lauter inhaltslose Füllwörter wie “der”, “die”, “und”, etc. haben. Solche inhaltslose Füllwörter werden als “Stopwords” bezeichnet. Für verschiedene Sprachen sind hier in dem Paket <code>quanteda</code> bereits Listen hinterlegt, die festlegen welche Wörter als solche stopwords zählen (wir können solche Listen auch selbst definieren). Diese existierende Liste können wir uns auch anzeigen lassen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"german"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"german"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "aber"      "alle"      "allem"     "allen"     "aller"     "alles"    
   [7] "als"       "also"      "am"        "an"        "ander"     "andere"   
@@ -709,12 +735,16 @@ ICU version: 74.1</code></pre>
 </div>
 <p>Diese Wöter wollen wir nun aus unseren Texten entfernen. Das geht wie folgt. Wir fangen dabei wieder bei unseren Ausgangsdaten an und der Code ist fast identisch zu davor. Mit einem kleinen Zusatz. Schau gerne ob du ihn entdeckst und erraten kannst, was dort passiert und auch, was ich sonst noch geändert habe und warum:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(text_tokens, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"german"</span>))</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) </span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(text_tokens, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"german"</span>))</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) </span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Spannend wäre auch, als nächstes zu schauen, ob sich die häufigsten Wörter in den Texten je nach Medienhaus unterscheiden. Hat jemand eine Idee wie man das mit den Methoden, die wir bisher kennen gelernt haben grafisch analysieren könnte?</p>
@@ -722,7 +752,7 @@ ICU version: 74.1</code></pre>
 <p><strong>Nice to know:</strong></p>
 <p>Die Art und Weise wie in der Textverarbeitung Texte oft gespeichert werden - auch bei uns oben - ist ziemlich raffiniert. Schaut euch dazu die Document-Frequency-Matrix einmal an. Fällt euch was auf?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 2,638 features (88.24% sparse) and 0 docvars.
        features
@@ -744,11 +774,53 @@ docs    republikaner bundesstaat south carolina
 [ reached max_ndoc ... 9 more documents, reached max_nfeat ... 2,628 more features ]</code></pre>
 </div>
 </div>
+<p><em>Tipp:</em> Es ist geübte Praxis, alle Pakete, die im Verlauf eines Scriptes benötigt werden, ganz oben im Script aufzurufen. Das heisst, anstelle dass ihr nun die bisherigen Pakete (readxl, stringr, quanteda, etc.) jeweils an den Stellen installiert und aktiviert, an denen der relevante Code folgt, könnt ihr alle Pakete oben zu Anfang eures Scripts aufrufen. Sollte ein weiteres Paket im Verlauf nötig sein, könnt ihr es oben einfügen und ausführen. In der Zukunft habt ihr dann direkt zu Anfang einen Überblick über die benötigten Pakete und sie stören den Ablauf im weiteren Script nicht mehr.</p>
 </section>
 </section>
-<section id="sitzung-6-schließende-statistik" class="level2">
-<h2 class="anchored" data-anchor-id="sitzung-6-schließende-statistik">Sitzung 6: Schließende Statistik</h2>
-<p><strong>13. Mai 2024</strong></p>
+<section id="reliabilität" class="level2">
+<h2 class="anchored" data-anchor-id="reliabilität"><strong>Reliabilität</strong></h2>
+<p><strong>17. Dezember 2025</strong></p>
+<p>Bevor man mit latenten Konzepten wie Emotionalität, Humor, etc. weiter arbeitet, ist es wichtig, sich zu vergewissern, dass die gemessenen Konzepte valide und reliabel sind. Hohe Reliabilität bedeutet, dass verschiedene Leute bei der Einschätzung von gegebenen Texten in Bezug auf ein Kozept (z.B. Humor) zu ähnlichen oder gleichen Ergebnissen kommen. Dies macht eine Analyse intersubjektiv nachvollziehbar und die Chance ist hoch, dass auch andere Coder in der Zukunft zu dem gleichen Ergebnis kommen. Reliabilität stellt daher ein wichtiges wissenschaftliches Gütekriterium dar.</p>
+<p>Niedrige Reliabilität wiederum liegt vor, wenn sich verschiedene Leute bei gegebenen Texten nicht auf die Ausprägung eines Konzeptes einigen können. Wenn beispielsweise Coder A zu einem Text sagt, dass dieser humorvoll ist, Coder B hingegen sagt, dass der Text nicht humorvoll ist, dann können wir uns nicht sicher sein, welcher Fall nun zutrifft. Weder das eine, noch das andere scheint uneingeschränkt richtig zu sein. Es fehlt also eine reliable Einschätzung und es kann mit einer Analyse nicht fortgefahren werden.</p>
+<p>Es gibt etliche Gründe, warum die Reliabilität möglicherweise unzureichend ist. Verschiedene Leute könnten (z.B. aus kulturellen, alters oder geschlechtlichen) Gründen Konzepte unterschiedlich wahrnehmen. Manche Konzepte sind schwierig klar abzutrennen oder schwierig zu verstehen. Auch Texte können schwierig sein was eine klare Einordnung betrifft. Teils existieren auch schlicht Missverständnisse und ein ausführlicheres Training der Coder kann Abhilfe schaffen.</p>
+<p>Während Validität primär über die Literatur und Theorie begründet wird, wird bei Inhaltsanalysen die Reliabilität häufig auch als Indikator für die Validität herangezogen. Obwohl hohe Reliabilität eine notwendige, aber keine hinreichende Bedingung für Validität ist, gibt es bei sozialwissenschaftichen (oft latenten) Konzepten oft keine “endgültige Wahrheit”. Daher wird, bei hoher Reliabilität im Urteil, die Meinung von Codern oft als endgültige Wahrheit definiert.</p>
+<p>Es existieren unterschiedliche Masszahlen um die Reliabilität zwischen Codern quantitativ zu bestimmen. Eine sehr populäre Masszahl ist Krippendorff’s Alpha, welche auch wir verwenden. Krippendorff’s Alpha ist sehr flexibel was die Anzahl der Coder betrifft und kommt mit unterschiedlich skalierten Bewertungen zurecht. Auf einer Skala von 0 bis 1 gibt diese Masszahl an, wie gut die Urteile verschiedener Coder zu gleichen Sachverhalten (bei uns Texten) übereinstimmen. Eine 1 zeigt eine perfekte Reliabilität an, eine 0 die vollständige Abwesenheit von Reliabilität.</p>
+<p>Für ein Mindestmass an wissenschaftlicher Güte und Reliabilität sollte Alpha mindestens Werte von 0,667 annehmen, besser wären Werte von 0,8 und höher.</p>
+<p>Sofern Bewertungen verschiedener Coder zu mehreren Texten vorhanden sind, lässt sich Krippendorff’s Alpha in R leicht ausrechnen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein neues Paket wird für die Berechnung von Krippendorff's Alpha benötigt </span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"irr"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'irr' wird gerade benutzt und deshab nicht installiert</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Die relevanten Spalten aus "data", also die Bewertungen der drei Coder  </span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="co"># werden in einer neuen Datentabelle abgespeichert. (Ihr seht dann rechts  </span></span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="co"># im Environment den neuen Datensatz mit dem namen "bewertungen") </span></span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>bewertungen <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"tone_trump_c1"</span>,<span class="st">"tone_trump_c2"</span>, <span class="st">"tone_trump_c3"</span>)]  </span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Berechnung von Krippendorff's Alpha </span></span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kripp.alpha</span>(<span class="fu">t</span>(bewertungen), <span class="at">method =</span> <span class="st">"ordinal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Krippendorff's alpha
+
+ Subjects = 15 
+   Raters = 3 
+    alpha = 0.777 </code></pre>
+</div>
+</div>
+<p>Mit dem Befehl <code>kripp.alpha()</code> wird Krippendorff’s Alpha berechnet. <code>t()</code> innerhalb von <code>kripp.alpha()</code>ist notwendig, um die Datentabelle <code>bewertungen</code> zu transponieren und sie in ein Format zu bringen, welches den Spezifikationen des Befehls <code>kripp.alpha()</code> entspricht.</p>
+<p>Achtet darauf, hier korrekt vorzugehen, andernfalls kann es zu falschen Ergebnissen führen oder dazu, dass es nicht funktioniert und ihr frustriert seid!</p>
+<p>Im Output von <code>kripp.alpha()</code> sehen wir drei Angaben. “Subjects” gibt an, wie viele Texte codiert wurden. “Raters” gibt an, wie viele Coder involviert waren und alpha gibt uns schliesslich das gewünschte Krippendorff’s Alpha für die Reliabilität der drei Codierer zu diesen 15 Texten. In diesem fiktiven Beispiel ist alpha 0.777. Das ist eine ausreichende, wenngleich nicht optimale Reliabilität. Wenn ihr in die Daten schaut, könnt ihr sehen, dass die Codierer mit ihrem Urteil bei drei von 15 Texten nicht übereingestimmt haben.</p>
+<p>Wichtig ist, dass ihr das korrekte Skalenniveau beachtet. Bei Tonalität (wie in unserem Fall) kann meist argumentiert werden, dass ein ordinales Skalenniveau vorliegt, da die Abstände zwar unklar sind, aber eine klare Reihung oder Ordnung existiert. Das wird bei der Berechnung der Reliabilität berücksichtigt. So ist es beispielsweise weniger gravierend, wenn ein tatsächlich positiver Artikel als neutral eingestuft wird, als wenn er als negativ eingestuft wird. Letztere fehlende Übereinstimmung ist somit „schwerwiegender“ als erstere, da die Distanz zwischen den Kategorien größer ist. Bei einer nominalen Skala wäre diese Distanz irrelevant, und beide Fehlklassifikationen würden gleich gewichtet.</p>
+<p>Deutlicher wird es bei folgenden Beispielen: Wir wollen das Sentiment eines Textes auf einer feingliedrigen 7-er Skala bestimmen. Von “sehr negativ” über “negativ”, “etwas negativ”, “neutral”, bis hin zu “sehr positiv”. Wenn nun eine Person einen Text als “sehr negativ” und eine andere Person den selben Text als “negativ” einstuft, dann ist das zwar ein Widerspruch, aber inhaltlich liegen sie schon sehr nahe bei einander. Der Widerspruch wäre viel dramatischer, wenn eine dritte Person der Meinung ist, dass der selbe Text “positiv” sei. Letzteres würde gravierendere Abzüge hinsichtlich der Reliabilität geben, was intuitiv sinnvoll ist.</p>
+<p>Wenn wir hingegen codieren, um was für einen Akteurstyp sich ein Akteur handelt, haben wir eine nominale Skala. Wenn eine Person einen Akteur als “NGO” klassifiziert, eine andere Person den selben Akteur hingegen als “Regierung”, dann ist der Widerspruch im Regelfall genauso gravierend wie wenn eine dritte Person den betreffenden Akteur als “Opposition” bezeichnet. Wir haben in jedem Fall einen gleichwertigen Widerspruch, es gibt kein “weniger falsch” oder “fast richtig”, wie das bei ordinalen (oder metrischen) Variablen der Fall sein kann.</p>
+<p><strong>Wichtig:</strong> Die Reliabilität wird für jedes Konzept/Kategorie extra bestimmt. Sollte die Güte der Reliabilität nicht den gewohnten Gütekriterien entsprechen (im Regelfall mindestens 0.667, idealerweise mindestens 0.8), dann solltet ihr überlegen, was die Gründe hierfür sind und ggf. darauf reagieren.</p>
+</section>
+<section id="schließende-statistik" class="level2">
+<h2 class="anchored" data-anchor-id="schließende-statistik">Schließende Statistik</h2>
+<p><strong>17. Dezember 2025</strong></p>
 <p>In der heutigen Sitzung schauen wir uns an, wie statistische Tests in R durchgeführt werden können. Dabei wird nicht oder kaum darauf eingegangen, wie diese Tests mathematisch funktionieren oder in welchen Situationen und unter welchen Bedingungen sie geeignet sind. Schaut dafür bitte in die Aufzeichnungen oder Unterlagen eurer Methoden/Statistik-Kurse.</p>
 <p>Den Code für die Beispiele in der Sitzung am Montag findet ihr <a href="in_class_session_6.R">hier</a>. Euch fehlt hier allerdings der 2. Datensatz, den ich in der Sitzung verwendet habe, sodass ihr nicht alle Befehle daheim ausführen könnt. Außerdem ist der Code nicht gut kommentiert, was es schwierig macht, zu verstehen was passiert. Will sagen: Der Code aus der Sitzung ist vermutlich nicht sehr hilfreich. Mit folgendem Tutorial erhaltet ihr allerdings alle notwendigen Erklärungen, um die besprochenen Tests auch auf eure Daten anzuwenden (sofern sinnvoll!).</p>
 <p>Generell gilt (grob gesagt) bei einem empirischen Projekt bzw. der statistischen Auswertung folgende Prozessreihenfolge:<br>
@@ -764,15 +836,15 @@ docs    republikaner bundesstaat south carolina
 <p>Für unsere Frage interessieren uns als Variable die Anzahl der Fotos. Und die Gruppen, zu denen wir die Anzahl an Fotos vergleichen wollen, sind vier unterschiedliche Outlets (hier: Spiegel Online, Zeit Online, Handelsblatt und Tagesschau). Zu Beginn ist es immer hilfreich, sich einen Überblick zu verschaffen. Dazu gehört zunächst, sich die Mittelwerte der Anzahl der Fotos pro Artikel anzuschauen.</p>
 <p>Die durchschnittliche Anzahl an Fotos insgesamt lässt sich leicht ausrechnen, das haben wir bereits oben gelernt:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.533333</code></pre>
 </div>
 </div>
 <p>Jetzt wollen wir uns anschauen, was die Durchschnittswerte für die vier Outlets sind. Es gibt unterschiedliche Wege, den Mittelwert für mehrere Gruppen zu berechnen. Eine der elegantesten Lösungen ist (dafür braucht ihr das Package dplyr):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -787,14 +859,14 @@ docs    republikaner bundesstaat south carolina
 <p>Dazu wenden wir nun schon den t-Test an. Dieser wird mit dem Befehl <code>t.test()</code> in R aufgerufen. Damit R weiss, welche Mittelwerte es vergleichen soll, müssen wir diese R mitteilen. Die Logik ist dabei <code>t.test(Werte der Variable von Gruppe A, Werte der Variable von Gruppe B)</code>. Die Variable ist die Anzahl der Fotos und die Gruppen sind unsere Outlets.</p>
 <p>Dazu teilen wir unsere Daten in die beiden Gruppen, die uns interessieren. Einmal alle Artikel vom Handelsblatt und das andere Mal der Rest. Das geht mit dem <code>subset()</code>-Befehl:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>)</span>
-<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit diesem Befehl werden alle Daten, die in der Spalte "outlet" den Wert "handel" haben in eine neue Tabelle namens "handel_data" geschrieben</span></span>
-<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>no_handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>)</span>
-<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Das "!=" bedeutet "nicht". Hier werden also alle Daten, die in der Spalte "outlet" NICHT den Wert "handel" haben in eine neue Tabelle namens "no_handel_data" geschrieben. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit diesem Befehl werden alle Daten, die in der Spalte "outlet" den Wert "handel" haben in eine neue Tabelle namens "handel_data" geschrieben</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>no_handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>)</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Das "!=" bedeutet "nicht". Hier werden also alle Daten, die in der Spalte "outlet" NICHT den Wert "handel" haben in eine neue Tabelle namens "no_handel_data" geschrieben. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Nun können wir schon den t-Test auf die Daten beider Gruppen anwenden:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(handel_data<span class="sc">$</span>pics, no_handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(handel_data<span class="sc">$</span>pics, no_handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -811,7 +883,7 @@ mean of x mean of y
 </div>
 <p>Alternativ kann man sich die Befehle <code>subset()</code> sparen, und die Definition der Gruppen (=&gt; Teilmengen), also Artikel von Handelsblatt vs.&nbsp;Artikeln von allen anderen direkt im t-test-Befehl machen. Das geht so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>], data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>], data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -843,12 +915,12 @@ mean of x mean of y
 <p>Um diese Hypothese zu prüfen benötigen wir zwei Variablen: Die Längen der Überschriften und die Längen der Artikeltexte. Wir haben zwar die Überschriften und Texte, aber nicht die Länge dieser beiden Variablen. Das heißt, wir müssen diese Information erst aus den Überschriften und Texten generieren. Das ist ein gutes und praxisnahes Beispiel, welches zeigt, dass der Weg, Daten in das benötigte Format zu bekommen, beträchtlich länger und aufwendiger sein kann als der finale Test.</p>
 <p>Um die Länge der beiden Variablen <code>headline</code> und <code>text</code> zu bestimmen, benötigen wir den Befehl <code>nchar()</code>. Wie der Name insinuiert, bestimmt <code>nchar()</code> die Länge von Texten (Variablen vom Type character):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_head <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>headline)</span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_text <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_head <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>headline)</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_text <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Nachdem wir in zwei (zugegeben einfachen) Schritten die Textlänge der beiden Variablen bestimmt haben, können wir direkt den Korrelationstest mit nur einer Zeile Code darauf anwenden. Die Syntax ist quasi identisch zu der des t-Tests.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>length_head, data<span class="sc">$</span>length_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>length_head, data<span class="sc">$</span>length_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -905,18 +977,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -948,11 +1009,48 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -962,8 +1060,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -975,7 +1082,129 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1019,6 +1248,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1044,6 +1274,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1104,6 +1360,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
