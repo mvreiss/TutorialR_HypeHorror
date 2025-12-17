@@ -53,8 +53,8 @@ R bezeichnet eine Programmiersprache, die im Hintergrund auf eurem Computer eing
 a\) Download von R
 
 -   [Download R für Windows](https://cran.r-project.org/bin/windows/base/)
--   [Download R für Mac mit Silicon Prozessor (M1-M4)](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.3.3-arm64.pkg)
--   [Download R für Mac mit Intel Prozessor](https://cran.r-project.org/bin/macosx/big-sur-x86_64/base/R-4.3.3-x86_64.pkg)
+-   [Download R für Mac mit Silicon Prozessor (M1-M4)](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.5.2-arm64.pkg)
+-   [Download R für Mac mit Intel Prozessor](https://cran.r-project.org/bin/macosx/big-sur-x86_64/base/R-4.5.2-x86_64.pkg)
 
 ::: {style="font-size: 14px;"}
 [Welchen Prozessor hat mein Mac?]{title="Klickt auf das Apfel-Symbol in der linken oberen Ecke deines Bildschirms und wähle Über diesen Mac."}
@@ -64,8 +64,8 @@ b\) Installation von R auf eurem Gerät.
 
 c\) Download von RStudio
 
--   [Download RStudio für Windows](https://download1.rstudio.org/electron/windows/RStudio-2023.12.1-402.exe)
--   [Download RStudio für Mac](https://download1.rstudio.org/electron/macos/RStudio-2023.12.1-402.dmg)
+-   [Download RStudio für Windows](https://download1.rstudio.org/electron/windows/RStudio-2025.09.2-418.exe)
+-   [Download RStudio für Mac](https://download1.rstudio.org/electron/macos/RStudio-2025.09.2-418.dmg)
 
 d\) Installation von RStudio
 
