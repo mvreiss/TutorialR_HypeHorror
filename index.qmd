@@ -168,7 +168,7 @@ Das Lernziel für diesen Teil der Sitzung ist, grundlegende Methoden der deskrip
 
 Wichtig hierbei: Wir arbeiten dafür weiter mit den bereits eingelesenen [Beispieldaten](#0), ihr könnt aber natürlich auch gerne eure eigenen Daten einlesen und schauen ob es auch damit klappt, das Prinzip ist dasselbe.
 
-###### Statistische Kennzahlen ermitteln
+###### **Statistische Kennzahlen ermitteln**
 
 In einem ersten Schritt wollen wir grundlegende statistische Kennzahlen für unsere Daten ermitteln. Das ist in einem empirischen wissenschaftlichen Projekt fast immer der erste Schritt einer Analyse und dient dazu, eine grundlegendes Verständnis von den Daten zu bekommen: Was ist das Durchschnittsalter meiner Teilnehmenden, wie ist das Geschlechterverhältnis, wie sind die Bildungsabschlüsse verteilt, sind typische Fragen die bei einer Umfrage in einem ersten Schritt angeschaut werden. In eurem Kontext betreffen die grundlegenden, deskriptiven Fragen allerdings keine Teilnehmerinnen aus einer Umfrage, sondern eher eure Texte. Von Interesse sind hier z.B. Fragen wie: Wie lang sind meine Texte durchschnittlich, wie verteilen sich die Texte auf die verschiedenen Quellen, wie viele Texte enthalten ein bestimmtes Merkmal, etc.
 
@@ -309,7 +309,7 @@ data %>% group_by(outlet) %>% summarise(mean_value = mean(pics))
 
 Nachdem ihr das Paket `dplyr` installiert und aktiviert habt, seht ihr, dass dieser Code das gleiche Resultat wie die Schritte oben hat - allerdings in nur einer Zeile Code. **Ein wichtiges Take-Away hieraus: In R führen oft verschiedene Wege zum Ziel.**
 
-Eine kurze intuitive Erläuterung deiser Codezeile:\
+Eine kurze intuitive Erläuterung dieser Codezeile:\
 Zunächst nehmt ihr ganz normal `data` und verweist den Datensatz per `%>%` - dem sogenannten Pipe-Operator - an den nächsten Befehl. Das ist hier `group_by(outlet)` . Dieser Befehl erstellt für die zugewiesene Variable (hier "outlet") die entsprechenden in ihr enthaltenen Gruppen. Wir wissen, dass "outlet" vier Ausprägungen, also Gruppen hat. Dieses Ergebnis, also alle vier Gruppen, werden dann mit einem erneuten Pipe-Operator an den nächsten Befehl weitergereicht: `summarise(mean_value = mean(pics))`. Der `summarise()`-Befehl bedeutet, dass für alle an ihn übergebenen Daten, in dem Fall die vier Outlets, die Befehle in seiner `()` angewendet werden. Hier ist das entsprechend `mean_value = mean(pics)`. "mean_value" ist dabei ein von uns gewählter Name. Probiert es mal aus und ersetzt "mean_value" oben mit "hokuspokus". Ihr werdet sehen, dass lediglich der Name der Spalte im Ergebnis geändert ist. "mean_value" ist damit lediglich der Name, unter welchem die Ergebnisse des folgenden Befehls gespeichert werden: `mean(pics`. Hier handelt es sich um den bereits bekannten Befehl für Mittelwert und diesem wird hier die Spalte "pics" anvertraut. Da heisst, `mean()` rechnet für die ihm überstellten Daten (also unsere vier Outlets) den Mittelwert der Spalte "pics" aus und speichert das Ergebnis unter "mean_value" (oder "hokuspokus") ab.
 
 Zusammengefasst erledigt der Code hier in einer Zeile, wofür wir davor 8 Zeilen benötigt haben. Ausserdem müsst ihr vor die einzelnen Zeilen (hier: "outlets" und "pics") nicht jedes Mal erneut den Datensatz schreiben (also z.B.: data\$outlets), weil R durch den allerersten Befehl der Zeile (`data %>%`) versteht, dass ihr euch nur auf diesen Datensatz bezieht. Das macht den Code etwas übersichtlicher und kürzer.
@@ -331,7 +331,7 @@ type_means <- data %>% group_by(article_type) %>% summarise(type_mean = mean(pic
 
 Diese Ergebnisse erlauben nun schon erste interpretative Erkentnisse. Zum Beispiel benutzt das Handelsblatt in unserem kleinen Beispiel offenbar am häufigsten Bilder und Zeit Online am wenigsten. Genauso finden wir in Agenturmeldungen weniger Bilder als in normalen Nachrichtenbeiträgen.
 
-###### Arbeit mit Textdaten
+###### **Arbeit mit Textdaten**
 
 Die bisherigen Ausführungen werden für alle von euch relevant sein, haben aber ansich nur indirekt etwas mit Texten zu tun, nämlich insoweit, dass die Daten Texte beschreiben; selbst aber keine wirklichen Textdaten sind. Man kann in R aber auch mit Texten selbst arbeiten und diese analysieren. Beispielsweise kann man vergleichen, welche Länge verschiedene Überschriften haben und den Mittelwert davon berechnen. Das geht wie folgt:
 
@@ -359,7 +359,7 @@ Wenn ihr den Datensatz nun anschaut, seht ihr das Ergebnis, also die Anzahl der 
 
 In diesem Fall erscheint das Ergebnis plausibel. Per Augenmass ist erkennbar, dass Text 5 länger ist als die anderen Texte und Text 1 und 4 am kürzesten sind. Manchmal reicht Augenmass allerdings nicht aus um ein Ergebnis zu prüfen. In dem Fall sollte geschaut werden, ob ihr mit anderen Methoden auf das identische Ergebnis kommt. Hier wollen wir die Wörter natürlich nicht manuell nachzählen, aber wir können beispielsweise einen der Texte in Word kopieren und schauen, ob Word die gleiche Anzahl für einen Text ausgibt. Damit testen wir in gewisserweise die Validität des Befehls in R, eine Thematik, die uns in einer späteren Sitzung noch begegnet.
 
-###### Grafische Darstellungen
+###### **Grafische Darstellungen**
 
 Neben schlichten Kennzahlen bieten sich für bestimmte Daten aber auch grafische Darstellungen an. Wir lernen hier nur die absoluten Basics. R ist sehr vielseitig und mächtig und lässt auch abenteuerlichste und massgeschneiderte Darstellungen zu. Schaut zum Beispiel [hier](https://r-graph-gallery.com/best-r-chart-examples) für einige wunderschöne Beispiele. In vielen Fällen erfordert das allerdings fortgeschrittene Kentnisse und geht damit über die Kurztutorials dieses Kurses hinaus. Wer sich aber dafür interessiert findet unter dem Stichwort **`ggplot2`** (was ein eigenes Paket für R ist) eine ganzes Universum an Möglichkeiten, allerlei Daten auf alle erdenklichen Arten grafisch aufzubereiten.
 
@@ -411,7 +411,7 @@ outlet_means$outlet <- c("Handelsblatt","Spiegel Online","Tagesschau","Zeit Onli
 barplot(outlet_means$mean_value, names.arg = outlet_means$outlet, xlab = "Medienhäuser", ylab = "Durchschnittle Anzahl Bilder", col = colors <- "lightblue")
 ```
 
-###### Darstellungsformen für Textdaten: Wortwolken
+###### **Darstellungsformen für Textdaten: Wortwolken**
 
 Die Masszahlen und Darstellungsformen soweit waren sehr allgemein und auf alle Arten von Daten anwendbar. Zuletzt wollen wir noch eine Darstellungsform kennen lernen, die spezifisch für Textdaten anwendbar ist: Wortwolken
 
@@ -419,6 +419,7 @@ Hierfür ist es hilfreich, ein Paket (bzw. zwei) zu installieren, welches spezif
 
 ```{r}
 #| warning: false
+#| message: false
 install.packages(c("quanteda", "quanteda.textplots"))
 library(quanteda)
 library(quanteda.textplots)
@@ -507,7 +508,7 @@ Achtet darauf, hier korrekt vorzugehen, andernfalls kann es zu falschen Ergebnis
 
 Im Output von `kripp.alpha()` sehen wir drei Angaben. "Subjects" gibt an, wie viele Texte codiert wurden. "Raters" gibt an, wie viele Coder involviert waren und alpha gibt uns schliesslich das gewünschte Krippendorff's Alpha für die Reliabilität der drei Codierer zu diesen 15 Texten. In diesem fiktiven Beispiel ist alpha 0.777. Das ist eine ausreichende, wenngleich nicht optimale Reliabilität. Wenn ihr in die Daten schaut, könnt ihr sehen, dass die Codierer mit ihrem Urteil bei drei von 15 Texten nicht übereingestimmt haben.
 
-Wichtig ist, dass ihr das korrekte Skalenniveau beachtet. Bei Tonalität (wie in unserem Fall) kann meist argumentiert werden, dass ein ordinales Skalenniveau vorliegt, da die Abstände zwar unklar sind, aber eine klare Reihung oder Ordnung existiert. Das wird bei der Berechnung der Reliabilität berücksichtigt. So ist es beispielsweise weniger gravierend, wenn ein tatsächlich positiver Artikel als neutral eingestuft wird, als wenn er als negativ eingestuft wird. Letztere fehlende Übereinstimmung ist somit „schwerwiegender“ als erstere, da die Distanz zwischen den Kategorien größer ist. Bei einer nominalen Skala wäre diese Distanz irrelevant, und beide Fehlklassifikationen würden gleich gewichtet.
+Wichtig ist, dass ihr das korrekte Skalenniveau beachtet. Das wird über die Option `method = "ordinal"` oder `method = "nominal"` innerhalb des Befehls `kripp.alpha()` gelöst. Bei Tonalität (wie in unserem Fall) kann meist argumentiert werden, dass ein ordinales Skalenniveau vorliegt, da die Abstände zwar unklar sind, aber eine klare Reihung oder Ordnung existiert. Das wird bei der Berechnung der Reliabilität berücksichtigt. So ist es beispielsweise weniger gravierend, wenn ein tatsächlich positiver Artikel als neutral eingestuft wird, als wenn er als negativ eingestuft wird. Letztere fehlende Übereinstimmung ist somit „schwerwiegender“ als erstere, da die Distanz zwischen den Kategorien größer ist. Bei einer nominalen Skala wäre diese Distanz irrelevant, und beide Fehlklassifikationen würden gleich gewichtet.
 
 Deutlicher wird es bei folgenden Beispielen: Wir wollen das Sentiment eines Textes auf einer feingliedrigen 7-er Skala bestimmen. Von "sehr negativ" über "negativ", "etwas negativ", "neutral", bis hin zu "sehr positiv". Wenn nun eine Person einen Text als "sehr negativ" und eine andere Person den selben Text als "negativ" einstuft, dann ist das zwar ein Widerspruch, aber inhaltlich liegen sie schon sehr nahe bei einander. Der Widerspruch wäre viel dramatischer, wenn eine dritte Person der Meinung ist, dass der selbe Text "positiv" sei. Letzteres würde gravierendere Abzüge hinsichtlich der Reliabilität geben, was intuitiv sinnvoll ist.
 
@@ -519,9 +520,7 @@ Wenn wir hingegen codieren, um was für einen Akteurstyp sich ein Akteur handelt
 
 **17. Dezember 2025**
 
-In der heutigen Sitzung schauen wir uns an, wie statistische Tests in R durchgeführt werden können. Dabei wird nicht oder kaum darauf eingegangen, wie diese Tests mathematisch funktionieren oder in welchen Situationen und unter welchen Bedingungen sie geeignet sind. Schaut dafür bitte in die Aufzeichnungen oder Unterlagen eurer Methoden/Statistik-Kurse.
-
-Den Code für die Beispiele in der Sitzung am Montag findet ihr [hier](in_class_session_6.R). Euch fehlt hier allerdings der 2. Datensatz, den ich in der Sitzung verwendet habe, sodass ihr nicht alle Befehle daheim ausführen könnt. Außerdem ist der Code nicht gut kommentiert, was es schwierig macht, zu verstehen was passiert. Will sagen: Der Code aus der Sitzung ist vermutlich nicht sehr hilfreich. Mit folgendem Tutorial erhaltet ihr allerdings alle notwendigen Erklärungen, um die besprochenen Tests auch auf eure Daten anzuwenden (sofern sinnvoll!).
+Zusätzlich schauen wir uns heute an, wie statistische Tests in R durchgeführt werden können. Dabei wird nicht oder kaum darauf eingegangen, wie diese Tests mathematisch funktionieren oder in welchen Situationen und unter welchen Bedingungen sie geeignet sind. Schaut dafür bitte in die Aufzeichnungen oder Unterlagen eurer Methoden/Statistik-Kurse.
 
 Generell gilt (grob gesagt) bei einem empirischen Projekt bzw. der statistischen Auswertung folgende Prozessreihenfolge:\
 1) Was ist mein Forschungsinteresse, meine Forschungsfrage und/oder meine Hypothese(n)\
@@ -529,11 +528,13 @@ Generell gilt (grob gesagt) bei einem empirischen Projekt bzw. der statistischen
 3) Sind die Bedingungen für die Analyse/den Test gegeben.\
 4) Analyse/Test durchführen
 
-Punkt 1 ist für euch meist bereits geklärt bzw. das wurde letztes Semester behandelt. Zu Punkt 2 und 3 habt ihr etwas in euren Methoden/Statistikkursen gelernt, diese solltet ihr nötigenfalls nochmals konsultieren. Punkt 4 wird euch hier beigebracht. Als Forschungsfrage interessiert uns für dieses Tutorial, **ob sich die Anzahl an Fotos in den Artikeln eines Outlets (z.B. Handelsblatt) von der Anzahl an Fotos in Artikeln anderer Outlets unterscheidet**. In einem/eurem richtigen Projekt solltet ihr Punkte 2 und 3 durchführen. Für dieses Tutorial überspringen wir diese Punkte und legen uns auf den Mittelwertvergleich (t-Test) fest. Ob dieser Test für euch in Frage kommt, hängt von eurer Forschungsfrage ab und der Art der Daten die ihr habt. Das solltet ihr selbst einschätzen können.
+Punkt 1 ist für euch meist bereits geklärt bzw. das wurde bereits behandelt. Zu Punkt 2 und 3 habt ihr etwas in euren Methoden/Statistikkursen gelernt, diese solltet ihr nötigenfalls nochmals konsultieren. Punkt 4 wird euch hier beigebracht. Als Forschungsfrage interessiert uns für dieses Tutorial, **ob sich die Anzahl an Fotos in den Artikeln eines Outlets (z.B. Handelsblatt) von der Anzahl an Fotos in Artikeln anderer Outlets unterscheidet**. In eurem Projekt wird die Frage anders, aber vermutlich ähnlich aussehen, beispielsweise, ob sich die Tonalität oder das Framing der Berichterstattung zwischen zwei Ländern unterscheidet.
 
-Um die Durchführung in R zu lernen, arbeiten wir erneut mit unserem [Testdatensatz](./data_example.xlsx). Bitte lest diesen erneut in R ein. Wer sich nicht erinnert wie das geht, findet die Anleitung oben in den Ausführungen der letzten zwei Sitzungen.
+In einem/eurem richtigen Projekt solltet ihr Punkte 2 und 3 durchführen. Für dieses Tutorial überspringen wir diese Punkte und legen uns auf den Mittelwertvergleich (t-Test) fest. Ob dieser Test für euch in Frage kommt, hängt von eurer Forschungsfrage ab und der Art der Daten, die ihr habt. Das solltet ihr selbst einschätzen können.
 
-###### Mittelwertvergleich (t-test)
+Um die Durchführung in R zu lernen, arbeiten wir erneut mit unserem [Testdatensatz](./data_example.xlsx). Bitte lest diesen erneut in R ein. Wer sich nicht erinnert wie das geht, findet die Anleitung oben in den Ausführungen.
+
+###### **Mittelwertvergleich (t-test)**
 
 Der t-Test ist ein häufig angewandter statistischer Test um zu prüfen, ob sich ein Mittelwert einer Variable von einem anderen Wert (z.B. der Mittelwert einer anderen Variable oder von einem festen Wert) unterscheidet. Der t-Test ist beispielsweise gefragt, wenn man testen möchte, ob sich die mittlere Körpergröße einer Gruppe von Menschen von der Durchschnittskörpergröße einer anderen Gruppe unterscheidet. In unserem Kontext wäre ein Anwendungsgebiet, ob sich die mittlere Anzahl an Nennungen von "Trump" in Artikeln eines Zeitungshauses von der mittleren Anzahl an Nennungen von "Trump" in Artikeln eines anderen Zeitungshauses unterscheiden.
 
@@ -589,11 +590,11 @@ Zurück zum Beispiel. Im Ergebnis des `t.test()`-Befehls bekommt man nun ein meh
 
 Das Ergebnis mag verblüffen, da im Handelsbaltt im Mittel mehr als doppelt so viele Fotos sind als in allen anderen Outlets. Allerdings haben wir in dem Testdatensatz auch nur sehr wenige Daten. Damit ist es schwer eine robuste Aussage über die statistische Signifikanz des Unterschieds zu treffen. Bei kleinen Stichproben kann die Varianz stark schwanken, was die Zuverlässigkeit eines t-Tests beeinträchtigt. In solchen Fällen ist es sinnvoll, mit mehr Daten die Stichprobengrösse zu erhöhen, um eine genauere Einschätzung der Mittelwertunterschiede der beiden Gruppen zu erhalten. In unserem Fall konkret sind die Unterschiede in der durchschnittlichen Anzahl an Fotos zwischen den beiden Gruppen recht gross (der eine Wert ist mehr als doppelt so gross wie der andere). Es ist daher sehr wahrscheinlich, dass die Unterschiede bei grösserer Stichprobengrösse signifikant werden (d.h., dass der p-Wert dann kleiner als 0,05 ist). Das ist aber keinesfalls garantiert. Es kann durchaus sein, dass wir zufällig ein paar Artikel aus dem Handelsblatt ausgefwählt haben, die viele Fotos beinhalten. Möglicherweise haben viele andere keine oder nur sehr wenige Fotos. Daher sollte man mit Prognosen vorsichtig sein und sich nur auf tatsächliche Tests mit tatsächlichen Daten verlassen.
 
-###### Korrelationstest
+###### **Korrelationstest**
 
 Anstatt zu testen, ob ein Unterschied zwischen Variablen besteht, gibt es eine Reihe weiterer Testverfahren den Zusammenhang von Variablen zu prüfen. Eine solche Methode ist, die Korrelation zwischen zwei oder mehr Variablen zu testen. Es gibt drei Korrelationstypen: a) Positive Korrelation: Wenn die eine Variable steigt, steigt auch die andere, b) negative Korrelation: Wenn die eine Variable steigt, sinkt die andere, c) Keine Korrelation: Es gibt keinen erkennbaren Zusammenhang zwischen den Variablen. Man könnte beispielsweise untersuchen, ob zwischen der Körpergröße von Menschen und deren Gewicht ein Zusammenhang besteht. Da wir wissen, dass bei steigender Körpergröße das Gewicht in der Tendenz steigt, spricht man hier von einer positiven Korrelation.
 
-Wie den t-Test, kann man die Korrelation in R leicht und mit nur einem Befehlt testen. Der Befehl hierfür ist `cor.test()` und die Syntax ist identisch zu der des `t.test()`. Aber auch hier ist es nochmal wichtig zu sagen, dass ihr **den Korrelationstest nur anwenden solltet, wenn es eure Hypothese oder Forschungsfrage erforderlich macht**. Das heißt, ihr startet bei der Forschungsfrage und schaut, welcher Test notwendig ist. Diese Arbeit kann in einem Tutorial nicht geleistet werden, da eure Forschungsfragen individuell sehr unterschiedlich sind, was auch eure Anforderungen an die Methodik unterschiedlich macht.
+Wie den t-Test, kann man die Korrelation in R leicht und mit nur einem Befehl testen. Der Befehl hierfür ist `cor.test()` und die Syntax ist identisch zu der des `t.test()`. Aber auch hier ist es nochmal wichtig zu sagen, dass ihr **den Korrelationstest nur anwenden solltet, wenn es eure Hypothese oder Forschungsfrage erforderlich macht**. Das heißt, ihr startet bei der Forschungsfrage und schaut, welcher Test notwendig ist. Diese Arbeit kann in einem Tutorial nicht geleistet werden, da eure Forschungsfragen individuell sehr unterschiedlich sind, was auch eure Anforderungen an die Methodik unterschiedlich macht.
 
 Zur Illustration wählen wir hier hingegen eine hypothetische Forschungsfrage bzw. eine Hypothese, die sich mit unseren Beispieldaten prüfen lässt: Hängt die Länge der Überschrift, mit der Länge des Artikels zusammen? Unsere Hypothese wäre, dass hier kein Zusammenhang besteht, da Überschriften gewöhnlich sehr ähnlich und daher von ähnlicher Länge sind, ganz unabhängig, wie lang der Artikel ist.
 
@@ -615,4 +616,4 @@ cor.test(data$length_head, data$length_text)
 
 Auch die Interpretation ist ähnlich zum t-Test. In der untersten Zeile wird der Korrelationskoeffizient angezeigt. Dieser ist mit -0,39 negativ. Das heisst, wenn die Überschriften länger werden, werden die Artikeltexte in der Tendenz kürzer. Allerdings ist der p-Wert (Zeile 2) mit 0,16 größer als 0,05. Das heisst, dass kein signifikanter Zusammenhang zwischen den Längen der beiden Variablen besteht. Unsere Hypothese, dass es keinen Zusammenhang zwischen der Länge der Überschrift und der Länge des Artikeltextes gibt kann daher vorläufig bestätigt werden. Auch hier haben wir allerdings noch sehr wenig Daten. Idealerweise wären für einen aussagekräftigeren Test mehr Daten gefordert.
 
-Bitte informiert euch für die Auswertung eurer Daten, welcher Test bzw. welche Analyse für eure Forschungsfrage sinnvoll bzw. gefordert ist. Hier wurden mit dem t-Test und dem Korrelationstest zwei Verfahren gezeigt. Diese können für eure Fragen relevant sein, das muss aber nicht so sein. **Nicht ideal wäre, wenn ihr einen Test anwendet, der für eure Forschungsfrage keine Relevanz hat, bzw. unsinnig ist.** Konsultiert im Zweifel eure Aufzeichnungen der Methoden und Statistik-Veranstaltungen, fragt eure Kommilitoninnen oder uns.
+Bitte informiert euch für die Auswertung eurer Daten, welcher Test bzw. welche Analyse für eure Forschungsfrage sinnvoll bzw. gefordert ist. Hier wurden mit dem t-Test und dem Korrelationstest zwei Verfahren gezeigt. Diese können für eure Fragen relevant sein, das muss aber nicht so sein. **Nicht ideal wäre, wenn ihr einen Test anwendet, der für eure Forschungsfrage keine Relevanz hat, bzw. unsinnig ist.** Konsultiert im Zweifel eure Aufzeichnungen der Methoden und Statistik-Veranstaltungen, fragt eure Kommilitoninnen oder mich.
