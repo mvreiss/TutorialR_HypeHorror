@@ -641,11 +641,11 @@ data_dictionary_LSD2015
 
 Wir sehen, dass LSD tatsächlich sogar vier Listen enthält, mit jeweil mehreren tausend englischen Wörtern, die entweder negativ oder positiv sind, oder der jeweiligen Negation entsprechen. Es fällt auf, dass einige Wörter ein \* am Ende enthalten. Dies zeigt an, dass nur der Wortstamm in der Liste enthalten ist, aber alle weiteren Zeichen nach dem Stamm, dann auch diesem Wort entsprechen. Das ist wichtig, da sehr viele Wörter eine Flexion, also eine grammatikalische Veränderung der Grundform erhalten, uns diese Flexion aber in vielen Fällen nicht interessiert. Diese Nuancen sind in der Grammatik relevant und um die Nuancen von Sprache zu verstehen, für eine Inhaltsanalyse aber oft nicht bedeutend.
 
-Zum Beispiel würde *„abolish\*“* sowohl *„abolish“*, *„abolishing“* als auch *„abolishment“* erfassen. Dies ist sehr praktisch, da man dafür nicht jede Wortform einzeln in ein Lexikon aufnehmen muss. Technisch handelt es sich dabei um eine **stamm-basierte Wildcard**, bei der alle Wörter berücksichtigt werden, die mit demselben Wortanfang beginnen.
+Zum Beispiel würde *„abolish\*“* sowohl *„abolish“*, *„abolishing“* als auch *„abolishment“* erfassen. Dies ist sehr praktisch, da man dafür nicht jede Wortform einzeln in ein Lexikon aufnehmen muss. Technisch handelt es sich dabei um eine stamm-basierte Wildcard, bei der alle Wörter berücksichtigt werden, die mit demselben Wortanfang beginnen.
 
-Eine weitere Möglichkeit, unterschiedliche Wortformen zusammenzufassen, ist das **Stemming**. Beim Stemming werden Wörter mithilfe einfacher Regeln auf einen **Wortstamm** reduziert, indem typische Endungen entfernt werden. Dieser Wortstamm ist häufig **keine linguistisch korrekte Wortform**, erfüllt aber den Zweck, verschiedene Flexions- und Ableitungsformen automatisch zusammenzuführen.
+Eine weitere Möglichkeit, unterschiedliche Wortformen zusammenzufassen, ist das Stemming. Beim Stemming werden Wörter mithilfe einfacher Regeln auf einen Wortstamm reduziert, indem typische Endungen entfernt werden. Dieser Wortstamm ist häufig keine linguistisch korrekte Wortform, erfüllt aber den Zweck, verschiedene Flexions- und Ableitungsformen automatisch zusammenzuführen.
 
-*bedrohlich*, *Bedrohung*, *bedrohte*, *bedrohen* → **bedroh**
+*bedrohlich*, *Bedrohung*, *bedrohte*, *bedrohen* → bedroh
 
 Für Inhaltsanalysen ist diese Reduktion oft sinnvoll, da unterschiedliche Flexionsformen oder Wortarten häufig dasselbe inhaltliche Signal tragen (z. B. negatives Sentiment). Ob ein Ereignis in der Vergangenheit oder Gegenwart beschrieben wird, ist dann weniger relevant als die Bewertung selbst.
 
@@ -680,7 +680,12 @@ neg <- read.table(
   header = FALSE,
   encoding = "UTF-8",
 )
+```
 
+Wie immer schauen wir uns das Ergebnis zunächst einmal an, auch um zu prüfen ob alles geklappt hat.
+
+```{r}
+neg
 ```
 
 Die Form ist hier noch etwas ungünstig. Um mit den Daten arbeiten zu können, müssen wir sie ein wenig umformen.
