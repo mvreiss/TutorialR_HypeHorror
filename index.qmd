@@ -630,7 +630,7 @@ Lexikonbasierte Anwendungen haben einige Vorteile. So sind sie beispielsweise se
 
 Wir arbeiten in diesem Tutorial erneut mit dem Beispieldatenssatz, den ihr schon kennt. Zusätzlich laden wir einen weiteren Datensatz herunter. Nutzt aber gerne direkt auch eure eigenen Texte. Stärker als in der Vergangenheit können hier allerdings Probleme auftreten. Beispielsweise ist der Beispieldatensatz deutschsprachig; das ist nicht bei all euren Texten der Fall und erfordert teils Anpassungen.
 
-###### Nutzung existierender Lexika
+###### **Nutzung existierender Lexika**
 
 Oben haben wir schon gesehen, dass in dem Paket `quanteda` bereits Listen von sog. "Stopwords" inkludiert sind. Also Wörter, die in aller Regel keine inhaltliche Bedeutung für einen Text haben. Genauso sind in `quanteda` auch bereits ein paar inhaltliche Listen integriert; namentlich das Lexicoder Sentiment Dictionary (LSD). Schauen wir uns das mal an.
 
@@ -685,7 +685,7 @@ neg <- read.table(
 Wie immer schauen wir uns das Ergebnis zunächst einmal an, auch um zu prüfen ob alles geklappt hat.
 
 ```{r}
-neg
+neg[1:20,]
 ```
 
 Die Form ist hier noch etwas ungünstig. Um mit den Daten arbeiten zu können, müssen wir sie ein wenig umformen.
@@ -772,7 +772,7 @@ result
 
 Wir bekommen sowohl für das positive, als auch für das negative Lexikon jeweils Treffer. Wie kann das sein? Nun, erneut enthalten die Listen viele Wörter und teils überschneiden sich deutsche und englische Wörter schlicht. Die englische Form "abstrus" existiert beispielsweise auch im deutschen. Manchmal ist die Bedeutung ähnlich oder gleich, wie z.B. bei "abstrus", teils aber auch sehr unterschiedlich (Stichwort False Friends), wie z.B. bei "fatal" oder "liberal". Die Ergebnisse dieser Analyse sind also nicht glaubhaft und haben eine äusserst geringe Validität. Nur weil wir ein Ergebnis haben, ist es nicht automatisch richtig oder das Verfahren korrekt durchgeführt.
 
-###### Eigenes Dictionary erstellen 
+###### **Eigenes Dictionary erstellen** 
 
 Nun wollen wir statt einem bereits existierenden Lexikon ein eigenes erstellen. Die Grundlogik, was R betrifft, ist sehr ähnlich. Der Hauptunterschied ist, logischerweise, dass wir anstatt ein bestehendes zu nutzen, nun ein eigenes erstellen. Das ist theoretisch anspruchsvoll und bedarf grosser Sorgfalt. Ihr solltet genau überlegen ob die Wörter relevant und gut gewählt sind und ob ihr alle Nuancen bedacht habt. Idealerweise prüft ihr das auch nochmals (Validierung im Team, mit Freunden, etc.). Was die Erstellung in R angeht, ist es denkbar einfach:
 
