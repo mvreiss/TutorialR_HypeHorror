@@ -13,7 +13,7 @@ title-block-banner-color: "white"
 editor: visual
 css: styles.css
 author: "Michael V. Reiss"
-date: "December 11, 2025"
+date: "January 07, 2026"
 ---
 
 <br>
@@ -617,3 +617,250 @@ cor.test(data$length_head, data$length_text)
 Auch die Interpretation ist ähnlich zum t-Test. In der untersten Zeile wird der Korrelationskoeffizient angezeigt. Dieser ist mit -0,39 negativ. Das heisst, wenn die Überschriften länger werden, werden die Artikeltexte in der Tendenz kürzer. Allerdings ist der p-Wert (Zeile 2) mit 0,16 größer als 0,05. Das heisst, dass kein signifikanter Zusammenhang zwischen den Längen der beiden Variablen besteht. Unsere Hypothese, dass es keinen Zusammenhang zwischen der Länge der Überschrift und der Länge des Artikeltextes gibt kann daher vorläufig bestätigt werden. Auch hier haben wir allerdings noch sehr wenig Daten. Idealerweise wären für einen aussagekräftigeren Test mehr Daten gefordert.
 
 Bitte informiert euch für die Auswertung eurer Daten, welcher Test bzw. welche Analyse für eure Forschungsfrage sinnvoll bzw. gefordert ist. Hier wurden mit dem t-Test und dem Korrelationstest zwei Verfahren gezeigt. Diese können für eure Fragen relevant sein, das muss aber nicht so sein. **Nicht ideal wäre, wenn ihr einen Test anwendet, der für eure Forschungsfrage keine Relevanz hat, bzw. unsinnig ist.** Konsultiert im Zweifel eure Aufzeichnungen der Methoden und Statistik-Veranstaltungen, fragt eure Kommilitoninnen oder mich.
+
+## Lexikonbasierte Ansätze für die Inhaltsanalyse
+
+**07. Januar 2026**
+
+In den nächsten drei Sitzungen werden vier verschiedene Verfahren für die automatisierte Inhaltsanalyse vorgestellt. Begonnen wird in dieser Sitzung mit der lexikonbasierten Analyse.
+
+Das Grundprinzip der lexikonbasierten Analyse ist einfach: Wir nehmen an, das wir basierend auf den Wörtern in einem Text auf eine abstraktere Bedeutungsebene rückschliessen können. Die Bedeutungsebene ist unser Konstrukt, z.B. Emotionalität oder Sentiment. Nun müssen wir, theoretisch fundiert, eine Liste erstellen oder eine existierende Liste nutzen, die regelt, welche Wörter für welches Konstrukt stehen. Beispielsweise würden Wörter wie "hassen" oder "Wut" vermutlich Indiz für ein negatives Sentiment des Textes sein. Hat man eine Wortliste (auch Lexikon oder Diktionär) erstellt, wendet man es auf seine Texte an. Dabei wird letztlich schlicht gezählt, wie oft die definierten Wörter vorkommen. Final legt man fest, welche Regel nun genau gilt, um einen Text einem Konstrukt zuzurodnen. Reicht es bspw., wenn ein Wort aus der Liste in einem Text einmal vorkommt oder sagen wir, dass wir mindestens fünf Treffer pro Text haben wollen, bevor wir festlegen, dass ein bestimmtes Konstrukt in dem Text repräsentiert ist. Das muss theoretisch und konzeptionell begründet werden. Damit ist die formale Analyse beendet und wir müssen am Ende noch prüfen, ob die Messung valide ist, also dem entspricht, was wir tatsächlich, theoretisch messen wollen.
+
+Lexikonbasierte Anwendungen haben einige Vorteile. So sind sie beispielsweise sehr transparent und weil sie rein deterministisch erfolgen sind sie auch immer perfekt reliabel. Allerdings ist die Validität oft gering, weil Wörter doppeldeutig sein können, Negationen existieren, Ironie nicht erkannt werden kann, etc. Schaut hierfür bitte nochmal in die Folien der entsprechenden Sitzung, darin wird diese sehr wichtige Thematik ausführlicher besprochen.
+
+Wir arbeiten in diesem Tutorial erneut mit dem Beispieldatenssatz, den ihr schon kennt. Zusätzlich laden wir einen weiteren Datensatz herunter. Nutzt aber gerne direkt auch eure eigenen Texte. Stärker als in der Vergangenheit können hier allerdings Probleme auftreten. Beispielsweise ist der Beispieldatensatz deutschsprachig; das ist nicht bei all euren Texten der Fall und erfordert teils Anpassungen.
+
+###### Nutzung existierender Lexika
+
+Oben haben wir schon gesehen, dass in dem Paket `quanteda` bereits Listen von sog. "Stopwords" inkludiert sind. Also Wörter, die in aller Regel keine inhaltliche Bedeutung für einen Text haben. Genauso sind in `quanteda` auch bereits ein paar inhaltliche Listen integriert; namentlich das Lexicoder Sentiment Dictionary (LSD). Schauen wir uns das mal an.
+
+```{r}
+library(quanteda)
+data_dictionary_LSD2015
+```
+
+Wir sehen, dass LSD tatsächlich sogar vier Listen enthält, mit jeweil mehreren tausend englischen Wörtern, die entweder negativ oder positiv sind, oder der jeweiligen Negation entsprechen. Es fällt auf, dass einige Wörter ein \* am Ende enthalten. Dies zeigt an, dass nur der Wortstamm in der Liste enthalten ist, aber alle weiteren Zeichen nach dem Stamm, dann auch diesem Wort entsprechen. Das ist wichtig, da sehr viele Wörter eine Flexion, also eine grammatikalische Veränderung der Grundform erhalten, uns diese Flexion aber in vielen Fällen nicht interessiert. Diese Nuancen sind in der Grammatik relevant und um die Nuancen von Sprache zu verstehen, für eine Inhaltsanalyse aber oft nicht bedeutend.
+
+Zum Beispiel würde *„abolish\*“* sowohl *„abolish“*, *„abolishing“* als auch *„abolishment“* erfassen. Dies ist sehr praktisch, da man dafür nicht jede Wortform einzeln in ein Lexikon aufnehmen muss. Technisch handelt es sich dabei um eine **stamm-basierte Wildcard**, bei der alle Wörter berücksichtigt werden, die mit demselben Wortanfang beginnen.
+
+Eine weitere Möglichkeit, unterschiedliche Wortformen zusammenzufassen, ist das **Stemming**. Beim Stemming werden Wörter mithilfe einfacher Regeln auf einen **Wortstamm** reduziert, indem typische Endungen entfernt werden. Dieser Wortstamm ist häufig **keine linguistisch korrekte Wortform**, erfüllt aber den Zweck, verschiedene Flexions- und Ableitungsformen automatisch zusammenzuführen.
+
+*bedrohlich*, *Bedrohung*, *bedrohte*, *bedrohen* → **bedroh**
+
+Für Inhaltsanalysen ist diese Reduktion oft sinnvoll, da unterschiedliche Flexionsformen oder Wortarten häufig dasselbe inhaltliche Signal tragen (z. B. negatives Sentiment). Ob ein Ereignis in der Vergangenheit oder Gegenwart beschrieben wird, ist dann weniger relevant als die Bewertung selbst.
+
+Der Vorteil des Stemmings liegt in seiner Einfachheit und Geschwindigkeit. Nachteilig ist jedoch, dass unterschiedliche Wortarten und Bedeutungsnuancen zusammenfallen können und der resultierende Stamm nicht immer eindeutig interpretierbar ist. Das maximiert teils Treffer, aber nicht unbedingt Präzision. Beispielsweise würden die Wörter "demokratisch", "Demokratie" und "demokratisieren" alle auf den Stamm "demokrat" gekürzt werden. Für viele Fragestellungen sind das inhaltlich verschiedene Konzepte, diese Nuancen gehen verloren. Gleichzeitig kann man zu viel erfassen, wenn man zu kurze Stämme wählt, z.B. bei den Wörtern "rechts" und "Recht" oder "rechtlich".
+
+Eine weitergehende Methode ist die Lemmatisierung. Hierbei werden Wörter auf ihre sprachlich korrekte Grundform (Lemma) zurückgeführt. Im Gegensatz zum Stemming berücksichtigt die Lemmatisierung grammatische Informationen wie Wortart, Zeitform oder Numerus. Die verschiedenen Formen: lief, laufe, laufen, laufte, usw. würden alle auf "laufen" reduziert.
+
+Der Vorteil der Lemmatisierung besteht darin, dass die Ergebnisse linguistisch korrekt und besser interpretierbar sind. Sie eignet sich besonders für lexikonbasierte Inhaltsanalysen, bei denen Wörter gezielt Kategorien zugeordnet werden sollen. Gleichzeitig ist Lemmatisierung methodisch aufwendiger, da sie komplexe Sprachmodelle und umfangreiches grammatikalisches Wissen erfordert.
+
+Wichtig ist, dass sowohl das verwendete Lexikon als auch die zu analysierenden Texte derselben Vorverarbeitungslogik folgen. Lexikonbasierte Analysen setzen voraus, dass Wörter in Lexikon und Text in einer kompatiblen Form vorliegen. Ist ein Lexikon lemmatisiert, müssen auch die Texte lemmatisiert werden; basiert das Lexikon auf Wortstämmen oder Wildcards, müssen die Texte entsprechend unverändert oder kompatibel vorverarbeitet sein.
+
+Logischerweise gilt das auch für die Sprache. LSD enthält hier nur englische Wörter. Das hilft uns also gar nichts, wenn wir nur deutsche Texte haben, wie in unseren Testdaten. Wir verwenden hierfür also ein anderes, ein deutschsprachiges Lexikon, SentiWS.
+
+Dafür laden wir zunächst hier <https://wortschatz.uni-leipzig.de/de/download/> SentiWS in der Version v 2.0 herunter. Wir erhalten ein zip-file mit drei .txt Dateien. Zwei davon lesen wir nun ein. Dafür müssen wir uns zunächst einmal anschauen, wie die Daten in der .txt-Datei vorliegen, damit wir unseren Einlese-Befehl richtig strukturieren (bzw. dass die Daten so eingelesen werden, wie wir es dann letztlich haben wollen).
+
+```{r Read data}
+#| eval: false
+
+neg <- read.table("C:/Users/Name/Documents/Studium/WS25/HypeHorror/data/SentiWS_v2.0:Negative.txt",
+  sep = "\t",
+  header = FALSE,
+  encoding = "UTF-8",
+)
+```
+
+```{r}
+#| echo: false 
+
+neg <- read.table(
+  "C:/Users/Michael/OneDrive - Leibniz HBI/04_teaching/München/Inhaltsanalyse_WiSe25_26/SentiWS_v2.0/SentiWS_v2.0_Negative.txt",
+  sep = "\t",
+  header = FALSE,
+  encoding = "UTF-8",
+)
+
+```
+
+Die Form ist hier noch etwas ungünstig. Um mit den Daten arbeiten zu können, müssen wir sie ein wenig umformen.
+
+**Wichtig:** Solche Umformungen sind häufig notwendig und teils aufwendig. Sie gehören nicht strikt zur Inhaltsanalyse sind aber Bestandteil quasi jeder Arbeit mit Daten. Wenn ihr ein anderes existierendes Dictionary/Lexikon verwendet, sind sehr wahrscheinlich andere Anpassungen notwendig! Je nach dem ist hier ein wenig Arbeit notwendig.
+
+Wir müssen nun zunächst alle relevanten Inhalte von den irrelevanten isolieren. Was uns interessiert: die jeweiligen Wörter. Das heisst die Grundform in Spalte 1 (davon haben wir hier 1827 Wörter) und die jeweiligen Flexionen in Spalte 3.
+
+```{r}
+neg_words <- unique(c(
+  sub("\\|.*", "", neg[[1]]),
+  unlist(strsplit(neg[[3]], ","))
+))
+```
+
+Jetzt haben wir eine lange Liste mit 17932 Wörtern die als negativ markiert sind. Diese Liste können wir nun auf unseren Textkorpus anwenden und analysieren, wie negativ unsere Texte sind.
+
+**Hinweis:** Hier arbeiten wir mit keiner Form der Reduzierung der Wörter, sondern haben jeweils für die Grundformen von Wörtern allerlei Flexionen explizit auch mit aufgelistet, deswegen wurde die Liste bei "nur" 1827 Grundformen nun auch so lang.
+
+Nochmal zur Wiederholung lesen wir zunächst unsere Daten korrekt ein (identisch zu oben).
+
+```{r}
+text_tokens <- tokens(data$text, 
+                      remove_punct = TRUE)
+text_matrix <- dfm(text_tokens)
+text_matrix
+```
+
+**Tipp**: Es ist üblich, bei der Arbeit mit Textdaten, alle Wörter in Kleinschreibung zu behandeln. Das haben wir hier nun nicht gemacht, ist aber generell ratsam und lässt sich auch mit einer einzelnen Zeile oben im Code bewerkstelligen. Einfach mal selbst versuchen.
+
+Jetzt führen wir die eigentliche Inhaltsanalyse basierend auf unserem Lexikon durch und lassen uns das Ergebnis anzeigen.
+
+```{r}
+##### 2.2 Features aus Diktionär identifizieren #####
+ergebnis <- text_matrix %>% 
+  dfm_lookup(dictionary = dictionary(list(negative = neg_words)))
+
+ergebnis
+```
+
+So schnell kann es gehen. Wieder nur zwei Zeilen Code und wir sehen wie viele der Wörter aus unserer "negativ"-Liste in den jeweiligen Texten gefunden wurden. Das ist schon mal ein erster Erfolg. In einem realen Projekt sollte man sich die Ergebnisse nun noch im Detail anschauen und die Validität prüfen. Ist es glaubhaft, dass der eine Text nur so wenige, der andere aber so viele Treffer hat? Auch der Vergleich mit eurer menschlichen Codierung ist hier relevant. Korrelieren menschliche Codierung und das hier vorliegende Ergebnis?
+
+Wenn wir mit dem Ergebnis nun weiterarbeiten, fällt auf, dass die Texte unterschiedlich lang sind und es ist erwartbar, dass längere Texte im Durchschnitt auch mehr negative Wörter enthalten werden. Wir sollten daher auf die Artikellänge normieren. Um also mit den Ergebnissen arbeiten, fügen wir die gewonnenen Erkentnisse unserer Haupttabelle hinzu.
+
+```{r}
+data$negativität <- as.numeric(ergebnis[, "negative"])
+```
+
+Jetzt können wir die Negativität in Abhängigkeit der Textlänge berechnen:
+
+```{r}
+data$relative_neg <- data$negativität/data$word_count
+```
+
+Das ist schon mal besser. Um tatsächliche Erkenntnis zu erzeugen, wenden wir ein Verfahren der deskriptiven Statistik an, das wir schon von oben kennen:
+
+```{r}
+data %>% group_by(outlet) %>% summarise(mean_value = mean(relative_neg))
+```
+
+Wir sehen, dass die relative Negativität in den Texten vom Handelsblatt, Spiegel Online und der Zeit recht ähnlich ist. Lediglich die Texte der Tagesschau bilden eine gewisse Ausnahme und sind im Mittel ein gutes Stück negativer. Hier würde man nun noch einen statistischen Test durchführen, um zu prüfen ob diese Intuition auch statistisch haltbar ist. Da unser Testdatensatz allerdings sehr klein ist, macht das in dem Fall keinen Sinn. Je nach Fragestellung/Hypothese wäre man dann schon fertig mit der Analyse.
+
+**Wichtige Einschränkung**
+
+Dieser Ansatz hatte eine wichtige Einschränkung, fällt es dir auf? Ein Hinweis kann der Blick in die Rohdaten liefern (also in die .txt-Version des heruntergeladenen Lexikons).
+
+Und zwar haben wir jetzt alle Wörter gleich behandelt. Ein Wort wie "Stornierung" oder "Melodrama", das vielleicht nur eine sehr leichte negative Tendenz hat wurde gleich behandelt wie ein Wort wie "Streit" oder "Hölle", Wörter mit stark negativer Tendenz. Je nach dem kann das ein Problem sein oder nicht, das muss dann je nach Fall entschieden werden.
+
+In diesen Daten wären noch genauere Informationen enthalten, nämlich eine Zuordnung zu jedem Wort auf einer Skala von -1 bis 1, wobei -1 für Negativ und 1 für Positiv steht. Auf die Art und Weise wie wir das Lexikon erzeugt haben, haben wir diese Zusatzinformationen verloren und alle Wörter gleich behandelt. Man könnte diese Informationen auch einbeziehen und würde damit möglicherweise ein nuancierteres Bild erhalten, wenn sehr negative Wörter dann ein höheres Gewicht bekommen.
+
+Zudem ist die Liste sehr umfangreich und möglicherweise je nach Anwendungsgebiet zu unspezifisch; insbesondere wenn viele nicht sehr starke Wörter mitgezählt werden.
+
+**Verwendung des englischen Dictionary/Lexikons**
+
+Nur zum Spass können wir am Ende noch einmal das englischsprachige LSD-Lexikon auf unsere Texte anwenden. Da dies schon in quanteda existiert, funktioniert das denkbar einfach und eine Umformung und Vorarbeit ist nicht erforderlich.
+
+```{r}
+result <- text_matrix %>% 
+  dfm_weight(scheme = "prop") %>%  
+  dfm_lookup(dictionary = data_dictionary_LSD2015[1:2])
+
+result
+```
+
+Wir bekommen sowohl für das positive, als auch für das negative Lexikon jeweils Treffer. Wie kann das sein? Nun, erneut enthalten die Listen viele Wörter und teils überschneiden sich deutsche und englische Wörter schlicht. Die englische Form "abstrus" existiert beispielsweise auch im deutschen. Manchmal ist die Bedeutung ähnlich oder gleich, wie z.B. bei "abstrus", teils aber auch sehr unterschiedlich (Stichwort False Friends), wie z.B. bei "fatal" oder "liberal". Die Ergebnisse dieser Analyse sind also nicht glaubhaft und haben eine äusserst geringe Validität. Nur weil wir ein Ergebnis haben, ist es nicht automatisch richtig oder das Verfahren korrekt durchgeführt.
+
+###### Eigenes Dictionary erstellen 
+
+Nun wollen wir statt einem bereits existierenden Lexikon ein eigenes erstellen. Die Grundlogik, was R betrifft, ist sehr ähnlich. Der Hauptunterschied ist, logischerweise, dass wir anstatt ein bestehendes zu nutzen, nun ein eigenes erstellen. Das ist theoretisch anspruchsvoll und bedarf grosser Sorgfalt. Ihr solltet genau überlegen ob die Wörter relevant und gut gewählt sind und ob ihr alle Nuancen bedacht habt. Idealerweise prüft ihr das auch nochmals (Validierung im Team, mit Freunden, etc.). Was die Erstellung in R angeht, ist es denkbar einfach:
+
+```{r}
+lexikon <- dictionary(list(negativ = c(
+  "schlecht", "schlechter", "schlechte", "schlechtes", "schlechten",
+  "problematisch", "problematische", "problematischen",
+  "bedenklich", "bedenkliche", "bedenklichen",
+  "fragwürdig", "fragwürdige", "fragwürdigen",
+  "inakzeptabel", "unakzeptabel",
+  "untragbar",
+  "verwerflich", "verwerfliche",
+  "skandal", "skandale", "skandalös", "skandalöse", "skandalösen",
+  "affäre", "affären",
+  "korrupt", "korruption", "korrupten", "korrumpiert",
+  "illegal", "illegale", "illegalen",
+  "rechtswidrig", "rechtswidrige", "rechtswidrigen",
+  "verfassungswidrig", "verfassungswidrige",
+  "undemokratisch",
+  "autoritäre", "autoritarismus", "autoritären",
+  "konflikt", "konflikte", "konflikthaft",
+  "krise", "krisen", "krisenhaft",
+  "eskalation", "eskalieren", "eskaliert",
+  "spaltung", "spalten", "gespalten",
+  "polarisierung", "polarisieren", "polarisiert",
+  "scheitern", "scheiterte", "gescheitert",
+  "versagen", "versagte", "versagt",
+  "fehlentscheidung", "fehlentscheidungen",
+  "fehlschlag", "fehlschläge",
+  "blockade", "blockieren", "blockiert",
+  "stillstand",
+  "ineffizient", "ineffizienz",
+  "bedrohung", "bedrohlich", "bedrohen", "bedrohte",
+  "gefahr", "gefährlich", "risiko", "risiken",
+  "unsicherheit", "unsicher",
+  "gewalt", "gewalttätig",
+  "terror", "terroristisch", "terrorismus",
+  "extremismus", "extremistisch",
+  "radikalisierung", "radikalisiert",
+  "misstrauen", "misstrauisch",
+  "vertrauensverlust", "glaubwürdigkeitsverlust",
+  "zweifel", "anzweifeln",
+  "kritik", "kritisch",
+  "vorwurf", "vorwürfe",
+  "delegitimierung", "delegitimieren",
+  "systemversagen",
+  "machtmissbrauch",
+  "intransparenz",
+  "lobbyismus",
+  "klientelpolitik",
+  "arbeitslosigkeit",
+  "rezession",
+  "inflation",
+  "armut",
+  "ungleichheit"), positive = c("Diese", "Liste", "ist", "nur", "zur", "Demonstration", "und", "hat","keine","inhaltliche","Funktion")
+))
+```
+
+Ihr listet letztlich einfach alle Wörter auf und fügt sie mit dem Befehl `dictionary(list())` als Lexikon/Dictionary hinzu. Innerhalb des Befehls `list()` könnt ihr zudem gleichzeitig mehrere Listen von Wörtern erstellen. Hier seht ihr, dass ich nur eine Liste namens "negativ" erstellt habe und am Ende auch noch eine Liste names "positiv". Man könnte anschliessend auf die gleiche Weise noch weitere Listen erstellen; achtet nur darauf, die Klammern korrekt zu setzen. Das `c()` steht dabei übrignes für combine und ist notwendig, damit einzelne Elemente in einen Vektor zusammen gefasst werden; in dem Fall unsere lange Liste an Wörtern.
+
+Schauen wir uns das Ergebnis an.
+
+```{r}
+lexikon
+```
+
+Anschliessend können wir unser Lexikon direkt auf unsere Texte anwenden - genau wie zuvor (auch hier berechnen wir direkt die relative Anzahl)
+
+```{r}
+
+result <- text_matrix %>% 
+  dfm_weight(scheme = "prop") %>%  
+  dfm_lookup(dictionary = lexikon)
+
+result
+
+```
+
+Was fällt uns auf?
+
+Auch hier fügen wir das Ergebnis wieder zu unseren Hauptdaten hinzu und berechnen direkt die Korrelation mit dem Ergebnis der Analyse basierend auf dem existierenden Lexikons von oben.
+
+```{r}
+data$eigene_negativität <- as.numeric(result[, "negativ"])
+cor.test(data$relative_neg, data$eigene_negativität)
+```
+
+Wir haben eine positive Korrelation, die ist allerdings moderat bzw. mittelmässig. Was sagt uns das nun, welche Analyse war die richtige(re)? Auf welche Analyse würden wir uns nun verlassen?
+
+Wir müssen uns sicher sein können, dass wir eine valide Analyse durchführen, denn auf unserer Analyse fusst die ganze Interpretation der Ergebnisse. Je nach Analyse kann diese ganz unterschiedlich ausfallen:
+
+```{r}
+data %>% group_by(outlet) %>% summarise(mean_value = mean(eigene_negativität))
+```
+
+Mit dem eigenen Lexikon ist die Tagesschau nicht mehr Spitzenreiter bei der Negativität ihrer Texte, die Texte von Zeit Online weisen nun eine höhere Negativität auf. Das ist ein recht stark anderes Ergebnis als zuvor.

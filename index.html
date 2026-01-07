@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael V. Reiss">
-<meta name="dcterms.date" content="2025-12-11">
+<meta name="dcterms.date" content="2026-01-07">
 
 <title>Begleitung in R</title>
 <style>
@@ -114,7 +114,7 @@ background: #00008B;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 11, 2025</p>
+        <p class="date">January 7, 2026</p>
       </div>
     </div>
     
@@ -146,6 +146,11 @@ background: #00008B;
   <ul>
   <li><a href="#mittelwertvergleich-t-test" id="toc-mittelwertvergleich-t-test" class="nav-link" data-scroll-target="#mittelwertvergleich-t-test"><strong>Mittelwertvergleich (t-test)</strong></a></li>
   <li><a href="#korrelationstest" id="toc-korrelationstest" class="nav-link" data-scroll-target="#korrelationstest"><strong>Korrelationstest</strong></a></li>
+  </ul></li>
+  <li><a href="#lexikonbasierte-ansätze-für-die-inhaltsanalyse" id="toc-lexikonbasierte-ansätze-für-die-inhaltsanalyse" class="nav-link" data-scroll-target="#lexikonbasierte-ansätze-für-die-inhaltsanalyse">Lexikonbasierte Ansätze für die Inhaltsanalyse</a>
+  <ul>
+  <li><a href="#nutzung-existierender-lexika" id="toc-nutzung-existierender-lexika" class="nav-link" data-scroll-target="#nutzung-existierender-lexika">Nutzung existierender Lexika</a></li>
+  <li><a href="#eigenes-dictionary-erstellen" id="toc-eigenes-dictionary-erstellen" class="nav-link" data-scroll-target="#eigenes-dictionary-erstellen">Eigenes Dictionary erstellen</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -619,19 +624,21 @@ as.numeric(x)</code></pre>
 <pre><code>Paket 'quanteda' erfolgreich ausgepackt und MD5 Summen abgeglichen</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Paket 'quanteda.textplots' erfolgreich ausgepackt und MD5 Summen abgeglichen
-
-Die heruntergeladenen Binärpakete sind in 
-    C:\Users\Michael\AppData\Local\Temp\RtmpqiljCd\downloaded_packages</code></pre>
+<pre><code>Paket 'quanteda.textplots' erfolgreich ausgepackt und MD5 Summen abgeglichen</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Die heruntergeladenen Binärpakete sind in 
+    C:\Users\Michael\AppData\Local\Temp\RtmpQ3XLOs\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Die Autoren dieses Pakets haben uns viel Arbeit erspart und machen es uns einfach: Um nun eine Wortwolke zu erzeugen sind nur drei einfache Schritte notwendig. Ihre Bedeutung habe ich in den Kommentaren im Code erläutert:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text) <span class="co">#die Texte der Artikel werden in einzelne Wörter aufgetrennt </span></span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) <span class="co">#die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix DFM)</span></span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix) <span class="co"># aus dieser DFM wird eine Wortwolke kreiert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text) <span class="co">#die Texte der Artikel werden in einzelne Wörter aufgetrennt </span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) <span class="co">#die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix DFM)</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix) <span class="co"># aus dieser DFM wird eine Wortwolke kreiert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -642,7 +649,7 @@ Die heruntergeladenen Binärpakete sind in
 </div>
 <p>Das ist schon ganz cool, aber auch ein wenig unübersichtlich. Wir wollen die Wolke nun auf die 50 häufigsten Wörter (hier: tokens) limitieren Das ist durch quanteda einfach möglich, da es im Befehl für die Wordcloud ein Argument gibt, die Grösse zu beschränken (siehe <code>?textplot_wordcloud()</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -653,7 +660,7 @@ Die heruntergeladenen Binärpakete sind in
 </div>
 <p>Nun ist diese Darstellung allerdings übersichtlich, aber noch nicht sehr hilfreich, da wir lauter inhaltslose Füllwörter wie “der”, “die”, “und”, etc. haben. Solche inhaltslose Füllwörter werden als “Stopwords” bezeichnet. Für verschiedene Sprachen sind hier in dem Paket <code>quanteda</code> bereits Listen hinterlegt, die festlegen welche Wörter als solche stopwords zählen (wir können solche Listen auch selbst definieren). Diese existierende Liste können wir uns auch anzeigen lassen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"german"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"german"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "aber"      "alle"      "allem"     "allen"     "aller"     "alles"    
   [7] "als"       "also"      "am"        "an"        "ander"     "andere"   
@@ -698,10 +705,10 @@ Die heruntergeladenen Binärpakete sind in
 </div>
 <p>Diese Wöter wollen wir nun aus unseren Texten entfernen. Das geht wie folgt. Wir fangen dabei wieder bei unseren Ausgangsdaten an und der Code ist fast identisch zu davor. Mit einem kleinen Zusatz. Schau gerne ob du ihn entdeckst und erraten kannst, was dort passiert und auch, was ich sonst noch geändert habe und warum:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(text_tokens, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"german"</span>))</span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) </span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(text_tokens, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"german"</span>))</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) </span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -715,7 +722,7 @@ Die heruntergeladenen Binärpakete sind in
 <p><strong>Nice to know:</strong></p>
 <p>Die Art und Weise wie in der Textverarbeitung Texte oft gespeichert werden - auch bei uns oben - ist ziemlich raffiniert. Schaut euch dazu die Document-Frequency-Matrix einmal an. Fällt euch was auf?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 2,638 features (88.24% sparse) and 0 docvars.
        features
@@ -751,20 +758,20 @@ docs    republikaner bundesstaat south carolina
 <p>Für ein Mindestmass an wissenschaftlicher Güte und Reliabilität sollte Alpha mindestens Werte von 0,667 annehmen, besser wären Werte von 0,8 und höher.</p>
 <p>Sofern Bewertungen verschiedener Coder zu mehreren Texten vorhanden sind, lässt sich Krippendorff’s Alpha in R leicht ausrechnen.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein neues Paket wird für die Berechnung von Krippendorff's Alpha benötigt </span></span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"irr"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein neues Paket wird für die Berechnung von Krippendorff's Alpha benötigt </span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"irr"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Paket 'irr' wird gerade benutzt und deshab nicht installiert</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Die relevanten Spalten aus "data", also die Bewertungen der drei Coder  </span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co"># werden in einer neuen Datentabelle abgespeichert. (Ihr seht dann rechts  </span></span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co"># im Environment den neuen Datensatz mit dem namen "bewertungen") </span></span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>bewertungen <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"tone_trump_c1"</span>,<span class="st">"tone_trump_c2"</span>, <span class="st">"tone_trump_c3"</span>)]  </span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Berechnung von Krippendorff's Alpha </span></span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kripp.alpha</span>(<span class="fu">t</span>(bewertungen), <span class="at">method =</span> <span class="st">"ordinal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Die relevanten Spalten aus "data", also die Bewertungen der drei Coder  </span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="co"># werden in einer neuen Datentabelle abgespeichert. (Ihr seht dann rechts  </span></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="co"># im Environment den neuen Datensatz mit dem namen "bewertungen") </span></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>bewertungen <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"tone_trump_c1"</span>,<span class="st">"tone_trump_c2"</span>, <span class="st">"tone_trump_c3"</span>)]  </span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Berechnung von Krippendorff's Alpha </span></span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kripp.alpha</span>(<span class="fu">t</span>(bewertungen), <span class="at">method =</span> <span class="st">"ordinal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Krippendorff's alpha
 
@@ -799,15 +806,15 @@ docs    republikaner bundesstaat south carolina
 <p>Für unsere Frage interessieren uns als Variable die Anzahl der Fotos. Und die Gruppen, zu denen wir die Anzahl an Fotos vergleichen wollen, sind vier unterschiedliche Outlets (hier: Spiegel Online, Zeit Online, Handelsblatt und Tagesschau). Zu Beginn ist es immer hilfreich, sich einen Überblick zu verschaffen. Dazu gehört zunächst, sich die Mittelwerte der Anzahl der Fotos pro Artikel anzuschauen.</p>
 <p>Die durchschnittliche Anzahl an Fotos insgesamt lässt sich leicht ausrechnen, das haben wir bereits oben gelernt:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.533333</code></pre>
 </div>
 </div>
 <p>Jetzt wollen wir uns anschauen, was die Durchschnittswerte für die vier Outlets sind. Es gibt unterschiedliche Wege, den Mittelwert für mehrere Gruppen zu berechnen. Eine der elegantesten Lösungen ist (dafür braucht ihr das Package dplyr):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -822,14 +829,14 @@ docs    republikaner bundesstaat south carolina
 <p>Dazu wenden wir nun schon den t-Test an. Dieser wird mit dem Befehl <code>t.test()</code> in R aufgerufen. Damit R weiss, welche Mittelwerte es vergleichen soll, müssen wir diese R mitteilen. Die Logik ist dabei <code>t.test(Werte der Variable von Gruppe A, Werte der Variable von Gruppe B)</code>. Die Variable ist die Anzahl der Fotos und die Gruppen sind unsere Outlets.</p>
 <p>Dazu teilen wir unsere Daten in die beiden Gruppen, die uns interessieren. Einmal alle Artikel vom Handelsblatt und das andere Mal der Rest. Das geht mit dem <code>subset()</code>-Befehl:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>)</span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit diesem Befehl werden alle Daten, die in der Spalte "outlet" den Wert "handel" haben in eine neue Tabelle namens "handel_data" geschrieben</span></span>
-<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>no_handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>)</span>
-<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Das "!=" bedeutet "nicht". Hier werden also alle Daten, die in der Spalte "outlet" NICHT den Wert "handel" haben in eine neue Tabelle namens "no_handel_data" geschrieben. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>)</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit diesem Befehl werden alle Daten, die in der Spalte "outlet" den Wert "handel" haben in eine neue Tabelle namens "handel_data" geschrieben</span></span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>no_handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>)</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Das "!=" bedeutet "nicht". Hier werden also alle Daten, die in der Spalte "outlet" NICHT den Wert "handel" haben in eine neue Tabelle namens "no_handel_data" geschrieben. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Nun können wir schon den t-Test auf die Daten beider Gruppen anwenden:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(handel_data<span class="sc">$</span>pics, no_handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(handel_data<span class="sc">$</span>pics, no_handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -846,7 +853,7 @@ mean of x mean of y
 </div>
 <p>Alternativ kann man sich die Befehle <code>subset()</code> sparen, und die Definition der Gruppen (=&gt; Teilmengen), also Artikel von Handelsblatt vs.&nbsp;Artikeln von allen anderen direkt im t-test-Befehl machen. Das geht so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>], data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>], data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -878,12 +885,12 @@ mean of x mean of y
 <p>Um diese Hypothese zu prüfen benötigen wir zwei Variablen: Die Längen der Überschriften und die Längen der Artikeltexte. Wir haben zwar die Überschriften und Texte, aber nicht die Länge dieser beiden Variablen. Das heißt, wir müssen diese Information erst aus den Überschriften und Texten generieren. Das ist ein gutes und praxisnahes Beispiel, welches zeigt, dass der Weg, Daten in das benötigte Format zu bekommen, beträchtlich länger und aufwendiger sein kann als der finale Test.</p>
 <p>Um die Länge der beiden Variablen <code>headline</code> und <code>text</code> zu bestimmen, benötigen wir den Befehl <code>nchar()</code>. Wie der Name insinuiert, bestimmt <code>nchar()</code> die Länge von Texten (Variablen vom Type character):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_head <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>headline)</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_text <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_head <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>headline)</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_text <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Nachdem wir in zwei (zugegeben einfachen) Schritten die Textlänge der beiden Variablen bestimmt haben, können wir direkt den Korrelationstest mit nur einer Zeile Code darauf anwenden. Die Syntax ist quasi identisch zu der des t-Tests.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>length_head, data<span class="sc">$</span>length_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>length_head, data<span class="sc">$</span>length_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -900,6 +907,284 @@ sample estimates:
 </div>
 <p>Auch die Interpretation ist ähnlich zum t-Test. In der untersten Zeile wird der Korrelationskoeffizient angezeigt. Dieser ist mit -0,39 negativ. Das heisst, wenn die Überschriften länger werden, werden die Artikeltexte in der Tendenz kürzer. Allerdings ist der p-Wert (Zeile 2) mit 0,16 größer als 0,05. Das heisst, dass kein signifikanter Zusammenhang zwischen den Längen der beiden Variablen besteht. Unsere Hypothese, dass es keinen Zusammenhang zwischen der Länge der Überschrift und der Länge des Artikeltextes gibt kann daher vorläufig bestätigt werden. Auch hier haben wir allerdings noch sehr wenig Daten. Idealerweise wären für einen aussagekräftigeren Test mehr Daten gefordert.</p>
 <p>Bitte informiert euch für die Auswertung eurer Daten, welcher Test bzw. welche Analyse für eure Forschungsfrage sinnvoll bzw. gefordert ist. Hier wurden mit dem t-Test und dem Korrelationstest zwei Verfahren gezeigt. Diese können für eure Fragen relevant sein, das muss aber nicht so sein. <strong>Nicht ideal wäre, wenn ihr einen Test anwendet, der für eure Forschungsfrage keine Relevanz hat, bzw. unsinnig ist.</strong> Konsultiert im Zweifel eure Aufzeichnungen der Methoden und Statistik-Veranstaltungen, fragt eure Kommilitoninnen oder mich.</p>
+</section>
+</section>
+<section id="lexikonbasierte-ansätze-für-die-inhaltsanalyse" class="level2">
+<h2 class="anchored" data-anchor-id="lexikonbasierte-ansätze-für-die-inhaltsanalyse">Lexikonbasierte Ansätze für die Inhaltsanalyse</h2>
+<p><strong>07. Januar 2026</strong></p>
+<p>In den nächsten drei Sitzungen werden vier verschiedene Verfahren für die automatisierte Inhaltsanalyse vorgestellt. Begonnen wird in dieser Sitzung mit der lexikonbasierten Analyse.</p>
+<p>Das Grundprinzip der lexikonbasierten Analyse ist einfach: Wir nehmen an, das wir basierend auf den Wörtern in einem Text auf eine abstraktere Bedeutungsebene rückschliessen können. Die Bedeutungsebene ist unser Konstrukt, z.B. Emotionalität oder Sentiment. Nun müssen wir, theoretisch fundiert, eine Liste erstellen oder eine existierende Liste nutzen, die regelt, welche Wörter für welches Konstrukt stehen. Beispielsweise würden Wörter wie “hassen” oder “Wut” vermutlich Indiz für ein negatives Sentiment des Textes sein. Hat man eine Wortliste (auch Lexikon oder Diktionär) erstellt, wendet man es auf seine Texte an. Dabei wird letztlich schlicht gezählt, wie oft die definierten Wörter vorkommen. Final legt man fest, welche Regel nun genau gilt, um einen Text einem Konstrukt zuzurodnen. Reicht es bspw., wenn ein Wort aus der Liste in einem Text einmal vorkommt oder sagen wir, dass wir mindestens fünf Treffer pro Text haben wollen, bevor wir festlegen, dass ein bestimmtes Konstrukt in dem Text repräsentiert ist. Das muss theoretisch und konzeptionell begründet werden. Damit ist die formale Analyse beendet und wir müssen am Ende noch prüfen, ob die Messung valide ist, also dem entspricht, was wir tatsächlich, theoretisch messen wollen.</p>
+<p>Lexikonbasierte Anwendungen haben einige Vorteile. So sind sie beispielsweise sehr transparent und weil sie rein deterministisch erfolgen sind sie auch immer perfekt reliabel. Allerdings ist die Validität oft gering, weil Wörter doppeldeutig sein können, Negationen existieren, Ironie nicht erkannt werden kann, etc. Schaut hierfür bitte nochmal in die Folien der entsprechenden Sitzung, darin wird diese sehr wichtige Thematik ausführlicher besprochen.</p>
+<p>Wir arbeiten in diesem Tutorial erneut mit dem Beispieldatenssatz, den ihr schon kennt. Zusätzlich laden wir einen weiteren Datensatz herunter. Nutzt aber gerne direkt auch eure eigenen Texte. Stärker als in der Vergangenheit können hier allerdings Probleme auftreten. Beispielsweise ist der Beispieldatensatz deutschsprachig; das ist nicht bei all euren Texten der Fall und erfordert teils Anpassungen.</p>
+<section id="nutzung-existierender-lexika" class="level6">
+<h6 class="anchored" data-anchor-id="nutzung-existierender-lexika">Nutzung existierender Lexika</h6>
+<p>Oben haben wir schon gesehen, dass in dem Paket <code>quanteda</code> bereits Listen von sog. “Stopwords” inkludiert sind. Also Wörter, die in aller Regel keine inhaltliche Bedeutung für einen Text haben. Genauso sind in <code>quanteda</code> auch bereits ein paar inhaltliche Listen integriert; namentlich das Lexicoder Sentiment Dictionary (LSD). Schauen wir uns das mal an.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>data_dictionary_LSD2015</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dictionary object with 4 key entries.
+- [negative]:
+  - a lie, abandon*, abas*, abattoir*, abdicat*, aberra*, abhor*, abject*, abnormal*, abolish*, abominab*, abominat*, abrasiv*, absent*, abstrus*, absurd*, abus*, accident*, accost*, accursed* [ ... and 2,838 more ]
+- [positive]:
+  - ability*, abound*, absolv*, absorbent*, absorption*, abundanc*, abundant*, acced*, accentuat*, accept*, accessib*, acclaim*, acclamation*, accolad*, accommodat*, accomplish*, accord, accordan*, accorded*, accords [ ... and 1,689 more ]
+- [neg_positive]:
+  - best not, better not, no damag*, no no, not ability*, not able, not abound*, not absolv*, not absorbent*, not absorption*, not abundanc*, not abundant*, not acced*, not accentuat*, not accept*, not accessib*, not acclaim*, not acclamation*, not accolad*, not accommodat* [ ... and 1,701 more ]
+- [neg_negative]:
+  - not a lie, not abandon*, not abas*, not abattoir*, not abdicat*, not aberra*, not abhor*, not abject*, not abnormal*, not abolish*, not abominab*, not abominat*, not abrasiv*, not absent*, not abstrus*, not absurd*, not abus*, not accident*, not accost*, not accursed* [ ... and 2,840 more ]</code></pre>
+</div>
+</div>
+<p>Wir sehen, dass LSD tatsächlich sogar vier Listen enthält, mit jeweil mehreren tausend englischen Wörtern, die entweder negativ oder positiv sind, oder der jeweiligen Negation entsprechen. Es fällt auf, dass einige Wörter ein * am Ende enthalten. Dies zeigt an, dass nur der Wortstamm in der Liste enthalten ist, aber alle weiteren Zeichen nach dem Stamm, dann auch diesem Wort entsprechen. Das ist wichtig, da sehr viele Wörter eine Flexion, also eine grammatikalische Veränderung der Grundform erhalten, uns diese Flexion aber in vielen Fällen nicht interessiert. Diese Nuancen sind in der Grammatik relevant und um die Nuancen von Sprache zu verstehen, für eine Inhaltsanalyse aber oft nicht bedeutend.</p>
+<p>Zum Beispiel würde <em>„abolish*“</em> sowohl <em>„abolish“</em>, <em>„abolishing“</em> als auch <em>„abolishment“</em> erfassen. Dies ist sehr praktisch, da man dafür nicht jede Wortform einzeln in ein Lexikon aufnehmen muss. Technisch handelt es sich dabei um eine <strong>stamm-basierte Wildcard</strong>, bei der alle Wörter berücksichtigt werden, die mit demselben Wortanfang beginnen.</p>
+<p>Eine weitere Möglichkeit, unterschiedliche Wortformen zusammenzufassen, ist das <strong>Stemming</strong>. Beim Stemming werden Wörter mithilfe einfacher Regeln auf einen <strong>Wortstamm</strong> reduziert, indem typische Endungen entfernt werden. Dieser Wortstamm ist häufig <strong>keine linguistisch korrekte Wortform</strong>, erfüllt aber den Zweck, verschiedene Flexions- und Ableitungsformen automatisch zusammenzuführen.</p>
+<p><em>bedrohlich</em>, <em>Bedrohung</em>, <em>bedrohte</em>, <em>bedrohen</em> → <strong>bedroh</strong></p>
+<p>Für Inhaltsanalysen ist diese Reduktion oft sinnvoll, da unterschiedliche Flexionsformen oder Wortarten häufig dasselbe inhaltliche Signal tragen (z. B. negatives Sentiment). Ob ein Ereignis in der Vergangenheit oder Gegenwart beschrieben wird, ist dann weniger relevant als die Bewertung selbst.</p>
+<p>Der Vorteil des Stemmings liegt in seiner Einfachheit und Geschwindigkeit. Nachteilig ist jedoch, dass unterschiedliche Wortarten und Bedeutungsnuancen zusammenfallen können und der resultierende Stamm nicht immer eindeutig interpretierbar ist. Das maximiert teils Treffer, aber nicht unbedingt Präzision. Beispielsweise würden die Wörter “demokratisch”, “Demokratie” und “demokratisieren” alle auf den Stamm “demokrat” gekürzt werden. Für viele Fragestellungen sind das inhaltlich verschiedene Konzepte, diese Nuancen gehen verloren. Gleichzeitig kann man zu viel erfassen, wenn man zu kurze Stämme wählt, z.B. bei den Wörtern “rechts” und “Recht” oder “rechtlich”.</p>
+<p>Eine weitergehende Methode ist die Lemmatisierung. Hierbei werden Wörter auf ihre sprachlich korrekte Grundform (Lemma) zurückgeführt. Im Gegensatz zum Stemming berücksichtigt die Lemmatisierung grammatische Informationen wie Wortart, Zeitform oder Numerus. Die verschiedenen Formen: lief, laufe, laufen, laufte, usw. würden alle auf “laufen” reduziert.</p>
+<p>Der Vorteil der Lemmatisierung besteht darin, dass die Ergebnisse linguistisch korrekt und besser interpretierbar sind. Sie eignet sich besonders für lexikonbasierte Inhaltsanalysen, bei denen Wörter gezielt Kategorien zugeordnet werden sollen. Gleichzeitig ist Lemmatisierung methodisch aufwendiger, da sie komplexe Sprachmodelle und umfangreiches grammatikalisches Wissen erfordert.</p>
+<p>Wichtig ist, dass sowohl das verwendete Lexikon als auch die zu analysierenden Texte derselben Vorverarbeitungslogik folgen. Lexikonbasierte Analysen setzen voraus, dass Wörter in Lexikon und Text in einer kompatiblen Form vorliegen. Ist ein Lexikon lemmatisiert, müssen auch die Texte lemmatisiert werden; basiert das Lexikon auf Wortstämmen oder Wildcards, müssen die Texte entsprechend unverändert oder kompatibel vorverarbeitet sein.</p>
+<p>Logischerweise gilt das auch für die Sprache. LSD enthält hier nur englische Wörter. Das hilft uns also gar nichts, wenn wir nur deutsche Texte haben, wie in unseren Testdaten. Wir verwenden hierfür also ein anderes, ein deutschsprachiges Lexikon, SentiWS.</p>
+<p>Dafür laden wir zunächst hier <a href="https://wortschatz.uni-leipzig.de/de/download/" class="uri">https://wortschatz.uni-leipzig.de/de/download/</a> SentiWS in der Version v 2.0 herunter. Wir erhalten ein zip-file mit drei .txt Dateien. Zwei davon lesen wir nun ein. Dafür müssen wir uns zunächst einmal anschauen, wie die Daten in der .txt-Datei vorliegen, damit wir unseren Einlese-Befehl richtig strukturieren (bzw. dass die Daten so eingelesen werden, wie wir es dann letztlich haben wollen).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>neg <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"C:/Users/Name/Documents/Studium/WS25/HypeHorror/data/SentiWS_v2.0:Negative.txt"</span>,</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">encoding =</span> <span class="st">"UTF-8"</span>,</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Die Form ist hier noch etwas ungünstig. Um mit den Daten arbeiten zu können, müssen wir sie ein wenig umformen.</p>
+<p><strong>Wichtig:</strong> Solche Umformungen sind häufig notwendig und teils aufwendig. Sie gehören nicht strikt zur Inhaltsanalyse sind aber Bestandteil quasi jeder Arbeit mit Daten. Wenn ihr ein anderes existierendes Dictionary/Lexikon verwendet, sind sehr wahrscheinlich andere Anpassungen notwendig! Je nach dem ist hier ein wenig Arbeit notwendig.</p>
+<p>Wir müssen nun zunächst alle relevanten Inhalte von den irrelevanten isolieren. Was uns interessiert: die jeweiligen Wörter. Das heisst die Grundform in Spalte 1 (davon haben wir hier 1827 Wörter) und die jeweiligen Flexionen in Spalte 3.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>neg_words <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, neg[[<span class="dv">1</span>]]),</span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>(<span class="fu">strsplit</span>(neg[[<span class="dv">3</span>]], <span class="st">","</span>))</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Jetzt haben wir eine lange Liste mit 17932 Wörtern die als negativ markiert sind. Diese Liste können wir nun auf unseren Textkorpus anwenden und analysieren, wie negativ unsere Texte sind.</p>
+<p><strong>Hinweis:</strong> Hier arbeiten wir mit keiner Form der Reduzierung der Wörter, sondern haben jeweils für die Grundformen von Wörtern allerlei Flexionen explizit auch mit aufgelistet, deswegen wurde die Liste bei “nur” 1827 Grundformen nun auch so lang.</p>
+<p>Nochmal zur Wiederholung lesen wir zunächst unsere Daten korrekt ein (identisch zu oben).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, </span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">remove_punct =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens)</span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 15 documents, 2,816 features (85.97% sparse) and 0 docvars.
+       features
+docs    der frühere us-präsident donald trump hat die vorwahl zur
+  text1  11       1            1      1     5   4  12       2   1
+  text2  18       0            1      1    10   4  11       2   1
+  text3  32       0            0      3    13   5  26       3   2
+  text4  12       1            0      2    10   3  14       0   1
+  text5  27       0            0      2    29   8  30       0   1
+  text6  15       0            1      1     7   1  11       0   1
+       features
+docs    präsidentschaftskandidatur
+  text1                          1
+  text2                          0
+  text3                          1
+  text4                          0
+  text5                          0
+  text6                          0
+[ reached max_ndoc ... 9 more documents, reached max_nfeat ... 2,806 more features ]</code></pre>
+</div>
+</div>
+<p><strong>Tipp</strong>: Es ist üblich, bei der Arbeit mit Textdaten, alle Wörter in Kleinschreibung zu behandeln. Das haben wir hier nun nicht gemacht, ist aber generell ratsam und lässt sich auch mit einer einzelnen Zeile oben im Code bewerkstelligen. Einfach mal selbst versuchen.</p>
+<p>Jetzt führen wir die eigentliche Inhaltsanalyse basierend auf unserem Lexikon durch und lassen uns das Ergebnis anzeigen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### 2.2 Features aus Diktionär identifizieren #####</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>ergebnis <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> <span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">negative =</span> neg_words)))</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>ergebnis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 15 documents, 1 feature (0.00% sparse) and 0 docvars.
+       features
+docs    negative
+  text1        8
+  text2        8
+  text3       12
+  text4       10
+  text5       30
+  text6       13
+[ reached max_ndoc ... 9 more documents ]</code></pre>
+</div>
+</div>
+<p>So schnell kann es gehen. Wieder nur zwei Zeilen Code und wir sehen wie viele der Wörter aus unserer “negativ”-Liste in den jeweiligen Texten gefunden wurden. Das ist schon mal ein erster Erfolg. In einem realen Projekt sollte man sich die Ergebnisse nun noch im Detail anschauen und die Validität prüfen. Ist es glaubhaft, dass der eine Text nur so wenige, der andere aber so viele Treffer hat? Auch der Vergleich mit eurer menschlichen Codierung ist hier relevant. Korrelieren menschliche Codierung und das hier vorliegende Ergebnis?</p>
+<p>Wenn wir mit dem Ergebnis nun weiterarbeiten, fällt auf, dass die Texte unterschiedlich lang sind und es ist erwartbar, dass längere Texte im Durchschnitt auch mehr negative Wörter enthalten werden. Wir sollten daher auf die Artikellänge normieren. Um also mit den Ergebnissen arbeiten, fügen wir die gewonnenen Erkentnisse unserer Haupttabelle hinzu.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>negativität <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ergebnis[, <span class="st">"negative"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Jetzt können wir die Negativität in Abhängigkeit der Textlänge berechnen:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>relative_neg <span class="ot">&lt;-</span> data<span class="sc">$</span>negativität<span class="sc">/</span>data<span class="sc">$</span>word_count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Das ist schon mal besser. Um tatsächliche Erkenntnis zu erzeugen, wenden wir ein Verfahren der deskriptiven Statistik an, das wir schon von oben kennen:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(relative_neg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  outlet mean_value
+  &lt;chr&gt;       &lt;dbl&gt;
+1 handel     0.0222
+2 spon       0.0201
+3 tages      0.0406
+4 zon        0.0286</code></pre>
+</div>
+</div>
+<p>Wir sehen, dass die relative Negativität in den Texten vom Handelsblatt, Spiegel Online und der Zeit recht ähnlich ist. Lediglich die Texte der Tagesschau bilden eine gewisse Ausnahme und sind im Mittel ein gutes Stück negativer. Hier würde man nun noch einen statistischen Test durchführen, um zu prüfen ob diese Intuition auch statistisch haltbar ist. Da unser Testdatensatz allerdings sehr klein ist, macht das in dem Fall keinen Sinn. Je nach Fragestellung/Hypothese wäre man dann schon fertig mit der Analyse.</p>
+<p><strong>Wichtige Einschränkung</strong></p>
+<p>Dieser Ansatz hatte eine wichtige Einschränkung, fällt es dir auf? Ein Hinweis kann der Blick in die Rohdaten liefern (also in die .txt-Version des heruntergeladenen Lexikons).</p>
+<p>Und zwar haben wir jetzt alle Wörter gleich behandelt. Ein Wort wie “Stornierung” oder “Melodrama”, das vielleicht nur eine sehr leichte negative Tendenz hat wurde gleich behandelt wie ein Wort wie “Streit” oder “Hölle”, Wörter mit stark negativer Tendenz. Je nach dem kann das ein Problem sein oder nicht, das muss dann je nach Fall entschieden werden.</p>
+<p>In diesen Daten wären noch genauere Informationen enthalten, nämlich eine Zuordnung zu jedem Wort auf einer Skala von -1 bis 1, wobei -1 für Negativ und 1 für Positiv steht. Auf die Art und Weise wie wir das Lexikon erzeugt haben, haben wir diese Zusatzinformationen verloren und alle Wörter gleich behandelt. Man könnte diese Informationen auch einbeziehen und würde damit möglicherweise ein nuancierteres Bild erhalten, wenn sehr negative Wörter dann ein höheres Gewicht bekommen.</p>
+<p>Zudem ist die Liste sehr umfangreich und möglicherweise je nach Anwendungsgebiet zu unspezifisch; insbesondere wenn viele nicht sehr starke Wörter mitgezählt werden.</p>
+<p><strong>Verwendung des englischen Dictionary/Lexikons</strong></p>
+<p>Nur zum Spass können wir am Ende noch einmal das englischsprachige LSD-Lexikon auf unsere Texte anwenden. Da dies schon in quanteda existiert, funktioniert das denkbar einfach und eine Umformung und Vorarbeit ist nicht erforderlich.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_weight</span>(<span class="at">scheme =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> data_dictionary_LSD2015[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 15 documents, 2 features (0.00% sparse) and 0 docvars.
+       features
+docs      negative    positive
+  text1 0.03926702 0.020942408
+  text2 0.03125000 0.010416667
+  text3 0.02825429 0.022199798
+  text4 0.05142857 0.014285714
+  text5 0.03466466 0.011303693
+  text6 0.02725367 0.004192872
+[ reached max_ndoc ... 9 more documents ]</code></pre>
+</div>
+</div>
+<p>Wir bekommen sowohl für das positive, als auch für das negative Lexikon jeweils Treffer. Wie kann das sein? Nun, erneut enthalten die Listen viele Wörter und teils überschneiden sich deutsche und englische Wörter schlicht. Die englische Form “abstrus” existiert beispielsweise auch im deutschen. Manchmal ist die Bedeutung ähnlich oder gleich, wie z.B. bei “abstrus”, teils aber auch sehr unterschiedlich (Stichwort False Friends), wie z.B. bei “fatal” oder “liberal”. Die Ergebnisse dieser Analyse sind also nicht glaubhaft und haben eine äusserst geringe Validität. Nur weil wir ein Ergebnis haben, ist es nicht automatisch richtig oder das Verfahren korrekt durchgeführt.</p>
+</section>
+<section id="eigenes-dictionary-erstellen" class="level6">
+<h6 class="anchored" data-anchor-id="eigenes-dictionary-erstellen">Eigenes Dictionary erstellen</h6>
+<p>Nun wollen wir statt einem bereits existierenden Lexikon ein eigenes erstellen. Die Grundlogik, was R betrifft, ist sehr ähnlich. Der Hauptunterschied ist, logischerweise, dass wir anstatt ein bestehendes zu nutzen, nun ein eigenes erstellen. Das ist theoretisch anspruchsvoll und bedarf grosser Sorgfalt. Ihr solltet genau überlegen ob die Wörter relevant und gut gewählt sind und ob ihr alle Nuancen bedacht habt. Idealerweise prüft ihr das auch nochmals (Validierung im Team, mit Freunden, etc.). Was die Erstellung in R angeht, ist es denkbar einfach:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>lexikon <span class="ot">&lt;-</span> <span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">negativ =</span> <span class="fu">c</span>(</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"schlecht"</span>, <span class="st">"schlechter"</span>, <span class="st">"schlechte"</span>, <span class="st">"schlechtes"</span>, <span class="st">"schlechten"</span>,</span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"problematisch"</span>, <span class="st">"problematische"</span>, <span class="st">"problematischen"</span>,</span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bedenklich"</span>, <span class="st">"bedenkliche"</span>, <span class="st">"bedenklichen"</span>,</span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fragwürdig"</span>, <span class="st">"fragwürdige"</span>, <span class="st">"fragwürdigen"</span>,</span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"inakzeptabel"</span>, <span class="st">"unakzeptabel"</span>,</span>
+<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"untragbar"</span>,</span>
+<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"verwerflich"</span>, <span class="st">"verwerfliche"</span>,</span>
+<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"skandal"</span>, <span class="st">"skandale"</span>, <span class="st">"skandalös"</span>, <span class="st">"skandalöse"</span>, <span class="st">"skandalösen"</span>,</span>
+<span id="cb122-10"><a href="#cb122-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"affäre"</span>, <span class="st">"affären"</span>,</span>
+<span id="cb122-11"><a href="#cb122-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"korrupt"</span>, <span class="st">"korruption"</span>, <span class="st">"korrupten"</span>, <span class="st">"korrumpiert"</span>,</span>
+<span id="cb122-12"><a href="#cb122-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"illegal"</span>, <span class="st">"illegale"</span>, <span class="st">"illegalen"</span>,</span>
+<span id="cb122-13"><a href="#cb122-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rechtswidrig"</span>, <span class="st">"rechtswidrige"</span>, <span class="st">"rechtswidrigen"</span>,</span>
+<span id="cb122-14"><a href="#cb122-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"verfassungswidrig"</span>, <span class="st">"verfassungswidrige"</span>,</span>
+<span id="cb122-15"><a href="#cb122-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"undemokratisch"</span>,</span>
+<span id="cb122-16"><a href="#cb122-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"autoritäre"</span>, <span class="st">"autoritarismus"</span>, <span class="st">"autoritären"</span>,</span>
+<span id="cb122-17"><a href="#cb122-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"konflikt"</span>, <span class="st">"konflikte"</span>, <span class="st">"konflikthaft"</span>,</span>
+<span id="cb122-18"><a href="#cb122-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"krise"</span>, <span class="st">"krisen"</span>, <span class="st">"krisenhaft"</span>,</span>
+<span id="cb122-19"><a href="#cb122-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"eskalation"</span>, <span class="st">"eskalieren"</span>, <span class="st">"eskaliert"</span>,</span>
+<span id="cb122-20"><a href="#cb122-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"spaltung"</span>, <span class="st">"spalten"</span>, <span class="st">"gespalten"</span>,</span>
+<span id="cb122-21"><a href="#cb122-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"polarisierung"</span>, <span class="st">"polarisieren"</span>, <span class="st">"polarisiert"</span>,</span>
+<span id="cb122-22"><a href="#cb122-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"scheitern"</span>, <span class="st">"scheiterte"</span>, <span class="st">"gescheitert"</span>,</span>
+<span id="cb122-23"><a href="#cb122-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"versagen"</span>, <span class="st">"versagte"</span>, <span class="st">"versagt"</span>,</span>
+<span id="cb122-24"><a href="#cb122-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fehlentscheidung"</span>, <span class="st">"fehlentscheidungen"</span>,</span>
+<span id="cb122-25"><a href="#cb122-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fehlschlag"</span>, <span class="st">"fehlschläge"</span>,</span>
+<span id="cb122-26"><a href="#cb122-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"blockade"</span>, <span class="st">"blockieren"</span>, <span class="st">"blockiert"</span>,</span>
+<span id="cb122-27"><a href="#cb122-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"stillstand"</span>,</span>
+<span id="cb122-28"><a href="#cb122-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ineffizient"</span>, <span class="st">"ineffizienz"</span>,</span>
+<span id="cb122-29"><a href="#cb122-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bedrohung"</span>, <span class="st">"bedrohlich"</span>, <span class="st">"bedrohen"</span>, <span class="st">"bedrohte"</span>,</span>
+<span id="cb122-30"><a href="#cb122-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gefahr"</span>, <span class="st">"gefährlich"</span>, <span class="st">"risiko"</span>, <span class="st">"risiken"</span>,</span>
+<span id="cb122-31"><a href="#cb122-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unsicherheit"</span>, <span class="st">"unsicher"</span>,</span>
+<span id="cb122-32"><a href="#cb122-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gewalt"</span>, <span class="st">"gewalttätig"</span>,</span>
+<span id="cb122-33"><a href="#cb122-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"terror"</span>, <span class="st">"terroristisch"</span>, <span class="st">"terrorismus"</span>,</span>
+<span id="cb122-34"><a href="#cb122-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"extremismus"</span>, <span class="st">"extremistisch"</span>,</span>
+<span id="cb122-35"><a href="#cb122-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"radikalisierung"</span>, <span class="st">"radikalisiert"</span>,</span>
+<span id="cb122-36"><a href="#cb122-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"misstrauen"</span>, <span class="st">"misstrauisch"</span>,</span>
+<span id="cb122-37"><a href="#cb122-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vertrauensverlust"</span>, <span class="st">"glaubwürdigkeitsverlust"</span>,</span>
+<span id="cb122-38"><a href="#cb122-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"zweifel"</span>, <span class="st">"anzweifeln"</span>,</span>
+<span id="cb122-39"><a href="#cb122-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"kritik"</span>, <span class="st">"kritisch"</span>,</span>
+<span id="cb122-40"><a href="#cb122-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vorwurf"</span>, <span class="st">"vorwürfe"</span>,</span>
+<span id="cb122-41"><a href="#cb122-41" aria-hidden="true" tabindex="-1"></a>  <span class="st">"delegitimierung"</span>, <span class="st">"delegitimieren"</span>,</span>
+<span id="cb122-42"><a href="#cb122-42" aria-hidden="true" tabindex="-1"></a>  <span class="st">"systemversagen"</span>,</span>
+<span id="cb122-43"><a href="#cb122-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"machtmissbrauch"</span>,</span>
+<span id="cb122-44"><a href="#cb122-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"intransparenz"</span>,</span>
+<span id="cb122-45"><a href="#cb122-45" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lobbyismus"</span>,</span>
+<span id="cb122-46"><a href="#cb122-46" aria-hidden="true" tabindex="-1"></a>  <span class="st">"klientelpolitik"</span>,</span>
+<span id="cb122-47"><a href="#cb122-47" aria-hidden="true" tabindex="-1"></a>  <span class="st">"arbeitslosigkeit"</span>,</span>
+<span id="cb122-48"><a href="#cb122-48" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rezession"</span>,</span>
+<span id="cb122-49"><a href="#cb122-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"inflation"</span>,</span>
+<span id="cb122-50"><a href="#cb122-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">"armut"</span>,</span>
+<span id="cb122-51"><a href="#cb122-51" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ungleichheit"</span>), <span class="at">positive =</span> <span class="fu">c</span>(<span class="st">"Diese"</span>, <span class="st">"Liste"</span>, <span class="st">"ist"</span>, <span class="st">"nur"</span>, <span class="st">"zur"</span>, <span class="st">"Demonstration"</span>, <span class="st">"und"</span>, <span class="st">"hat"</span>,<span class="st">"keine"</span>,<span class="st">"inhaltliche"</span>,<span class="st">"Funktion"</span>)</span>
+<span id="cb122-52"><a href="#cb122-52" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ihr listet letztlich einfach alle Wörter auf und fügt sie mit dem Befehl <code>dictionary(list())</code> als Lexikon/Dictionary hinzu. Innerhalb des Befehls <code>list()</code> könnt ihr zudem gleichzeitig mehrere Listen von Wörtern erstellen. Hier seht ihr, dass ich nur eine Liste namens “negativ” erstellt habe und am Ende auch noch eine Liste names “positiv”. Man könnte anschliessend auf die gleiche Weise noch weitere Listen erstellen; achtet nur darauf, die Klammern korrekt zu setzen. Das <code>c()</code> steht dabei übrignes für combine und ist notwendig, damit einzelne Elemente in einen Vektor zusammen gefasst werden; in dem Fall unsere lange Liste an Wörtern.</p>
+<p>Schauen wir uns das Ergebnis an.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>lexikon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dictionary object with 2 key entries.
+- [negativ]:
+  - schlecht, schlechter, schlechte, schlechtes, schlechten, problematisch, problematische, problematischen, bedenklich, bedenkliche, bedenklichen, fragwürdig, fragwürdige, fragwürdigen, inakzeptabel, unakzeptabel, untragbar, verwerflich, verwerfliche, skandal [ ... and 94 more ]
+- [positive]:
+  - diese, liste, ist, nur, zur, demonstration, und, hat, keine, inhaltliche, funktion</code></pre>
+</div>
+</div>
+<p>Anschliessend können wir unser Lexikon direkt auf unsere Texte anwenden - genau wie zuvor (auch hier berechnen wir direkt die relative Anzahl)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_weight</span>(<span class="at">scheme =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> lexikon)</span>
+<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 15 documents, 2 features (13.33% sparse) and 0 docvars.
+       features
+docs        negativ   positive
+  text1 0           0.04973822
+  text2 0           0.03541667
+  text3 0.001009082 0.03632694
+  text4 0.002857143 0.02571429
+  text5 0.001507159 0.05275057
+  text6 0.008385744 0.04192872
+[ reached max_ndoc ... 9 more documents ]</code></pre>
+</div>
+</div>
+<p>Was fällt uns auf?</p>
+<p>Auch hier fügen wir das Ergebnis wieder zu unseren Hauptdaten hinzu und berechnen direkt die Korrelation mit dem Ergebnis der Analyse basierend auf dem existierenden Lexikons von oben.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>eigene_negativität <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(result[, <span class="st">"negativ"</span>])</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>relative_neg, data<span class="sc">$</span>eigene_negativität)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  data$relative_neg and data$eigene_negativität
+t = 1.8288, df = 13, p-value = 0.09046
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.0779841  0.7831413
+sample estimates:
+      cor 
+0.4523494 </code></pre>
+</div>
+</div>
+<p>Wir haben eine positive Korrelation, die ist allerdings moderat bzw. mittelmässig. Was sagt uns das nun, welche Analyse war die richtige(re)? Auf welche Analyse würden wir uns nun verlassen?</p>
+<p>Wir müssen uns sicher sein können, dass wir eine valide Analyse durchführen, denn auf unserer Analyse fusst die ganze Interpretation der Ergebnisse. Je nach Analyse kann diese ganz unterschiedlich ausfallen:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(eigene_negativität))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  outlet mean_value
+  &lt;chr&gt;       &lt;dbl&gt;
+1 handel    0.00184
+2 spon      0.00107
+3 tages     0.00322
+4 zon       0.00333</code></pre>
+</div>
+</div>
+<p>Mit dem eigenen Lexikon ist die Tagesschau nicht mehr Spitzenreiter bei der Negativität ihrer Texte, die Texte von Zeit Online weisen nun eine höhere Negativität auf. Das ist ein recht stark anderes Ergebnis als zuvor.</p>
 </section>
 </section>
 
