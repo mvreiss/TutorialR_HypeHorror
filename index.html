@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael V. Reiss">
-<meta name="dcterms.date" content="2026-01-07">
+<meta name="dcterms.date" content="2026-01-14">
 
 <title>Begleitung in R</title>
 <style>
@@ -114,7 +114,7 @@ background: #00008B;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 7, 2026</p>
+        <p class="date">January 14, 2026</p>
       </div>
     </div>
     
@@ -152,6 +152,16 @@ background: #00008B;
   <li><a href="#nutzung-existierender-lexika" id="toc-nutzung-existierender-lexika" class="nav-link" data-scroll-target="#nutzung-existierender-lexika"><strong>Nutzung existierender Lexika</strong></a></li>
   <li><a href="#eigenes-dictionary-erstellen" id="toc-eigenes-dictionary-erstellen" class="nav-link" data-scroll-target="#eigenes-dictionary-erstellen"><strong>Eigenes Dictionary erstellen</strong></a></li>
   </ul></li>
+  <li><a href="#überwachtes-maschinelles-lernen-als-ansatz-für-die-inhaltsanalyse" id="toc-überwachtes-maschinelles-lernen-als-ansatz-für-die-inhaltsanalyse" class="nav-link" data-scroll-target="#überwachtes-maschinelles-lernen-als-ansatz-für-die-inhaltsanalyse">Überwachtes maschinelles Lernen als Ansatz für die Inhaltsanalyse</a>
+  <ul>
+  <li><a href="#train-test-split" id="toc-train-test-split" class="nav-link" data-scroll-target="#train-test-split"><strong>Train / Test-Split</strong></a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"><strong>Preprocessing</strong></a></li>
+  <li><a href="#modellwahl-und-analyse" id="toc-modellwahl-und-analyse" class="nav-link" data-scroll-target="#modellwahl-und-analyse"><strong>Modellwahl und Analyse</strong></a></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation"><strong>Evaluation</strong></a></li>
+  <li><a href="#anwendung-auf-neue-daten" id="toc-anwendung-auf-neue-daten" class="nav-link" data-scroll-target="#anwendung-auf-neue-daten"><strong>Anwendung auf neue Daten</strong></a></li>
+  <li><a href="#wichtige-anmerkungen" id="toc-wichtige-anmerkungen" class="nav-link" data-scroll-target="#wichtige-anmerkungen"><strong>Wichtige Anmerkungen</strong></a></li>
+  </ul></li>
+  <li><a href="#vergleich-lexikon-vs.-sml" id="toc-vergleich-lexikon-vs.-sml" class="nav-link" data-scroll-target="#vergleich-lexikon-vs.-sml">Vergleich: Lexikon vs.&nbsp;SML</a></li>
   </ul>
 </nav>
 </div>
@@ -624,21 +634,19 @@ as.numeric(x)</code></pre>
 <pre><code>Paket 'quanteda' erfolgreich ausgepackt und MD5 Summen abgeglichen</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Paket 'quanteda.textplots' erfolgreich ausgepackt und MD5 Summen abgeglichen</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
+<pre><code>Paket 'quanteda.textplots' erfolgreich ausgepackt und MD5 Summen abgeglichen
+
 Die heruntergeladenen Binärpakete sind in 
-    C:\Users\Michael\AppData\Local\Temp\RtmpC6V0fT\downloaded_packages</code></pre>
+    C:\Users\Michael\AppData\Local\Temp\RtmpUZcS8d\downloaded_packages</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Die Autoren dieses Pakets haben uns viel Arbeit erspart und machen es uns einfach: Um nun eine Wortwolke zu erzeugen sind nur drei einfache Schritte notwendig. Ihre Bedeutung habe ich in den Kommentaren im Code erläutert:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text) <span class="co">#die Texte der Artikel werden in einzelne Wörter aufgetrennt </span></span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) <span class="co">#die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix DFM)</span></span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix) <span class="co"># aus dieser DFM wird eine Wortwolke kreiert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text) <span class="co">#die Texte der Artikel werden in einzelne Wörter aufgetrennt </span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) <span class="co">#die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix DFM)</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix) <span class="co"># aus dieser DFM wird eine Wortwolke kreiert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -649,7 +657,7 @@ Die heruntergeladenen Binärpakete sind in
 </div>
 <p>Das ist schon ganz cool, aber auch ein wenig unübersichtlich. Wir wollen die Wolke nun auf die 50 häufigsten Wörter (hier: tokens) limitieren Das ist durch quanteda einfach möglich, da es im Befehl für die Wordcloud ein Argument gibt, die Grösse zu beschränken (siehe <code>?textplot_wordcloud()</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -660,7 +668,7 @@ Die heruntergeladenen Binärpakete sind in
 </div>
 <p>Nun ist diese Darstellung allerdings übersichtlich, aber noch nicht sehr hilfreich, da wir lauter inhaltslose Füllwörter wie “der”, “die”, “und”, etc. haben. Solche inhaltslose Füllwörter werden als “Stopwords” bezeichnet. Für verschiedene Sprachen sind hier in dem Paket <code>quanteda</code> bereits Listen hinterlegt, die festlegen welche Wörter als solche stopwords zählen (wir können solche Listen auch selbst definieren). Diese existierende Liste können wir uns auch anzeigen lassen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"german"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"german"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "aber"      "alle"      "allem"     "allen"     "aller"     "alles"    
   [7] "als"       "also"      "am"        "an"        "ander"     "andere"   
@@ -705,10 +713,10 @@ Die heruntergeladenen Binärpakete sind in
 </div>
 <p>Diese Wöter wollen wir nun aus unseren Texten entfernen. Das geht wie folgt. Wir fangen dabei wieder bei unseren Ausgangsdaten an und der Code ist fast identisch zu davor. Mit einem kleinen Zusatz. Schau gerne ob du ihn entdeckst und erraten kannst, was dort passiert und auch, was ich sonst noch geändert habe und warum:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(text_tokens, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"german"</span>))</span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) </span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(text_tokens, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"german"</span>))</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens) </span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(text_matrix, <span class="at">max_words =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -722,7 +730,7 @@ Die heruntergeladenen Binärpakete sind in
 <p><strong>Nice to know:</strong></p>
 <p>Die Art und Weise wie in der Textverarbeitung Texte oft gespeichert werden - auch bei uns oben - ist ziemlich raffiniert. Schaut euch dazu die Document-Frequency-Matrix einmal an. Fällt euch was auf?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 2,638 features (88.24% sparse) and 0 docvars.
        features
@@ -758,20 +766,20 @@ docs    republikaner bundesstaat south carolina
 <p>Für ein Mindestmass an wissenschaftlicher Güte und Reliabilität sollte Alpha mindestens Werte von 0,667 annehmen, besser wären Werte von 0,8 und höher.</p>
 <p>Sofern Bewertungen verschiedener Coder zu mehreren Texten vorhanden sind, lässt sich Krippendorff’s Alpha in R leicht ausrechnen.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein neues Paket wird für die Berechnung von Krippendorff's Alpha benötigt </span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"irr"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein neues Paket wird für die Berechnung von Krippendorff's Alpha benötigt </span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"irr"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Paket 'irr' wird gerade benutzt und deshab nicht installiert</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Die relevanten Spalten aus "data", also die Bewertungen der drei Coder  </span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="co"># werden in einer neuen Datentabelle abgespeichert. (Ihr seht dann rechts  </span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="co"># im Environment den neuen Datensatz mit dem namen "bewertungen") </span></span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>bewertungen <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"tone_trump_c1"</span>,<span class="st">"tone_trump_c2"</span>, <span class="st">"tone_trump_c3"</span>)]  </span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Berechnung von Krippendorff's Alpha </span></span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kripp.alpha</span>(<span class="fu">t</span>(bewertungen), <span class="at">method =</span> <span class="st">"ordinal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Die relevanten Spalten aus "data", also die Bewertungen der drei Coder  </span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co"># werden in einer neuen Datentabelle abgespeichert. (Ihr seht dann rechts  </span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co"># im Environment den neuen Datensatz mit dem namen "bewertungen") </span></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>bewertungen <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"tone_trump_c1"</span>,<span class="st">"tone_trump_c2"</span>, <span class="st">"tone_trump_c3"</span>)]  </span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Berechnung von Krippendorff's Alpha </span></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kripp.alpha</span>(<span class="fu">t</span>(bewertungen), <span class="at">method =</span> <span class="st">"ordinal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Krippendorff's alpha
 
@@ -806,15 +814,15 @@ docs    republikaner bundesstaat south carolina
 <p>Für unsere Frage interessieren uns als Variable die Anzahl der Fotos. Und die Gruppen, zu denen wir die Anzahl an Fotos vergleichen wollen, sind vier unterschiedliche Outlets (hier: Spiegel Online, Zeit Online, Handelsblatt und Tagesschau). Zu Beginn ist es immer hilfreich, sich einen Überblick zu verschaffen. Dazu gehört zunächst, sich die Mittelwerte der Anzahl der Fotos pro Artikel anzuschauen.</p>
 <p>Die durchschnittliche Anzahl an Fotos insgesamt lässt sich leicht ausrechnen, das haben wir bereits oben gelernt:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.533333</code></pre>
 </div>
 </div>
 <p>Jetzt wollen wir uns anschauen, was die Durchschnittswerte für die vier Outlets sind. Es gibt unterschiedliche Wege, den Mittelwert für mehrere Gruppen zu berechnen. Eine der elegantesten Lösungen ist (dafür braucht ihr das Package dplyr):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>outlet_means <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(pics))</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>outlet_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -829,14 +837,14 @@ docs    republikaner bundesstaat south carolina
 <p>Dazu wenden wir nun schon den t-Test an. Dieser wird mit dem Befehl <code>t.test()</code> in R aufgerufen. Damit R weiss, welche Mittelwerte es vergleichen soll, müssen wir diese R mitteilen. Die Logik ist dabei <code>t.test(Werte der Variable von Gruppe A, Werte der Variable von Gruppe B)</code>. Die Variable ist die Anzahl der Fotos und die Gruppen sind unsere Outlets.</p>
 <p>Dazu teilen wir unsere Daten in die beiden Gruppen, die uns interessieren. Einmal alle Artikel vom Handelsblatt und das andere Mal der Rest. Das geht mit dem <code>subset()</code>-Befehl:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>)</span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit diesem Befehl werden alle Daten, die in der Spalte "outlet" den Wert "handel" haben in eine neue Tabelle namens "handel_data" geschrieben</span></span>
-<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>no_handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>)</span>
-<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Das "!=" bedeutet "nicht". Hier werden also alle Daten, die in der Spalte "outlet" NICHT den Wert "handel" haben in eine neue Tabelle namens "no_handel_data" geschrieben. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit diesem Befehl werden alle Daten, die in der Spalte "outlet" den Wert "handel" haben in eine neue Tabelle namens "handel_data" geschrieben</span></span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>no_handel_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>)</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Das "!=" bedeutet "nicht". Hier werden also alle Daten, die in der Spalte "outlet" NICHT den Wert "handel" haben in eine neue Tabelle namens "no_handel_data" geschrieben. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Nun können wir schon den t-Test auf die Daten beider Gruppen anwenden:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(handel_data<span class="sc">$</span>pics, no_handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(handel_data<span class="sc">$</span>pics, no_handel_data<span class="sc">$</span>pics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -853,7 +861,7 @@ mean of x mean of y
 </div>
 <p>Alternativ kann man sich die Befehle <code>subset()</code> sparen, und die Definition der Gruppen (=&gt; Teilmengen), also Artikel von Handelsblatt vs.&nbsp;Artikeln von allen anderen direkt im t-test-Befehl machen. Das geht so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>], data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">!=</span><span class="st">"handel"</span>], data<span class="sc">$</span>pics[data<span class="sc">$</span>outlet<span class="sc">==</span><span class="st">"handel"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -885,12 +893,12 @@ mean of x mean of y
 <p>Um diese Hypothese zu prüfen benötigen wir zwei Variablen: Die Längen der Überschriften und die Längen der Artikeltexte. Wir haben zwar die Überschriften und Texte, aber nicht die Länge dieser beiden Variablen. Das heißt, wir müssen diese Information erst aus den Überschriften und Texten generieren. Das ist ein gutes und praxisnahes Beispiel, welches zeigt, dass der Weg, Daten in das benötigte Format zu bekommen, beträchtlich länger und aufwendiger sein kann als der finale Test.</p>
 <p>Um die Länge der beiden Variablen <code>headline</code> und <code>text</code> zu bestimmen, benötigen wir den Befehl <code>nchar()</code>. Wie der Name insinuiert, bestimmt <code>nchar()</code> die Länge von Texten (Variablen vom Type character):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_head <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>headline)</span>
-<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_text <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_head <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>headline)</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>length_text <span class="ot">&lt;-</span> <span class="fu">nchar</span>(data<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Nachdem wir in zwei (zugegeben einfachen) Schritten die Textlänge der beiden Variablen bestimmt haben, können wir direkt den Korrelationstest mit nur einer Zeile Code darauf anwenden. Die Syntax ist quasi identisch zu der des t-Tests.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>length_head, data<span class="sc">$</span>length_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>length_head, data<span class="sc">$</span>length_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -920,8 +928,8 @@ sample estimates:
 <h6 class="anchored" data-anchor-id="nutzung-existierender-lexika"><strong>Nutzung existierender Lexika</strong></h6>
 <p>Oben haben wir schon gesehen, dass in dem Paket <code>quanteda</code> bereits Listen von sog. “Stopwords” inkludiert sind. Also Wörter, die in aller Regel keine inhaltliche Bedeutung für einen Text haben. Genauso sind in <code>quanteda</code> auch bereits ein paar inhaltliche Listen integriert; namentlich das Lexicoder Sentiment Dictionary (LSD). Schauen wir uns das mal an.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>data_dictionary_LSD2015</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>data_dictionary_LSD2015</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Dictionary object with 4 key entries.
 - [negative]:
@@ -946,15 +954,15 @@ sample estimates:
 <p>Logischerweise gilt das auch für die Sprache. LSD enthält hier nur englische Wörter. Das hilft uns also gar nichts, wenn wir nur deutsche Texte haben, wie in unseren Testdaten. Wir verwenden hierfür also ein anderes, ein deutschsprachiges Lexikon, SentiWS.</p>
 <p>Dafür laden wir zunächst hier <a href="https://wortschatz.uni-leipzig.de/de/download/" class="uri">https://wortschatz.uni-leipzig.de/de/download/</a> SentiWS in der Version v 2.0 herunter. Wir erhalten ein zip-file mit drei .txt Dateien. Zwei davon lesen wir nun ein. Dafür müssen wir uns zunächst einmal anschauen, wie die Daten in der .txt-Datei vorliegen, damit wir unseren Einlese-Befehl richtig strukturieren (bzw. dass die Daten so eingelesen werden, wie wir es dann letztlich haben wollen).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>neg <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"C:/Users/Name/Documents/Studium/WS25/HypeHorror/data/SentiWS_v2.0:Negative.txt"</span>,</span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
-<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">encoding =</span> <span class="st">"UTF-8"</span>,</span>
-<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>neg <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"C:/Users/Name/Documents/Studium/WS25/HypeHorror/data/SentiWS_v2.0:Negative.txt"</span>,</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">encoding =</span> <span class="st">"UTF-8"</span>,</span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Wie immer schauen wir uns das Ergebnis zunächst einmal an, auch um zu prüfen ob alles geklappt hat.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>neg[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>neg[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                V1      V2                                             V3
 1         Abbau|NN -0.0580         Abbaus,Abbaues,Abbauen,Abbaue,Abbauten
@@ -983,19 +991,19 @@ sample estimates:
 <p><strong>Wichtig:</strong> Solche Umformungen sind häufig notwendig und teils aufwendig. Sie gehören nicht strikt zur Inhaltsanalyse sind aber Bestandteil quasi jeder Arbeit mit Daten. Wenn ihr ein anderes existierendes Dictionary/Lexikon verwendet, sind sehr wahrscheinlich andere Anpassungen notwendig! Je nach dem ist hier ein wenig Arbeit notwendig.</p>
 <p>Wir müssen nun zunächst alle relevanten Inhalte von den irrelevanten isolieren. Was uns interessiert: die jeweiligen Wörter. Das heisst die Grundform in Spalte 1 (davon haben wir hier 1827 Wörter) und die jeweiligen Flexionen in Spalte 3.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>neg_words <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(</span>
-<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, neg[[<span class="dv">1</span>]]),</span>
-<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>(<span class="fu">strsplit</span>(neg[[<span class="dv">3</span>]], <span class="st">","</span>))</span>
-<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>neg_words <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, neg[[<span class="dv">1</span>]]),</span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>(<span class="fu">strsplit</span>(neg[[<span class="dv">3</span>]], <span class="st">","</span>))</span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Jetzt haben wir eine lange Liste mit 17932 Wörtern die als negativ markiert sind. Diese Liste können wir nun auf unseren Textkorpus anwenden und analysieren, wie negativ unsere Texte sind.</p>
 <p><strong>Hinweis:</strong> Hier arbeiten wir mit keiner Form der Reduzierung der Wörter, sondern haben jeweils für die Grundformen von Wörtern allerlei Flexionen explizit auch mit aufgelistet, deswegen wurde die Liste bei “nur” 1827 Grundformen nun auch so lang.</p>
 <p>Nochmal zur Wiederholung lesen wir zunächst unsere Daten korrekt ein (identisch zu oben).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, </span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">remove_punct =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens)</span>
-<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>text_tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(data<span class="sc">$</span>text, </span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">remove_punct =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>text_matrix <span class="ot">&lt;-</span> <span class="fu">dfm</span>(text_tokens)</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>text_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 2,816 features (85.97% sparse) and 0 docvars.
        features
@@ -1020,11 +1028,11 @@ docs    präsidentschaftskandidatur
 <p><strong>Tipp</strong>: Es ist üblich, bei der Arbeit mit Textdaten, alle Wörter in Kleinschreibung zu behandeln. Das haben wir hier nun nicht gemacht, ist aber generell ratsam und lässt sich auch mit einer einzelnen Zeile oben im Code bewerkstelligen. Einfach mal selbst versuchen.</p>
 <p>Jetzt führen wir die eigentliche Inhaltsanalyse basierend auf unserem Lexikon durch und lassen uns das Ergebnis anzeigen.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### 2.2 Features aus Diktionär identifizieren #####</span></span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>ergebnis <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
-<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> <span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">negative =</span> neg_words)))</span>
-<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>ergebnis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### 2.2 Features aus Diktionär identifizieren #####</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>ergebnis <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> <span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">negative =</span> neg_words)))</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>ergebnis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 1 feature (0.00% sparse) and 0 docvars.
        features
@@ -1041,15 +1049,15 @@ docs    negative
 <p>So schnell kann es gehen. Wieder nur zwei Zeilen Code und wir sehen wie viele der Wörter aus unserer “negativ”-Liste in den jeweiligen Texten gefunden wurden. Das ist schon mal ein erster Erfolg. In einem realen Projekt sollte man sich die Ergebnisse nun noch im Detail anschauen und die Validität prüfen. Ist es glaubhaft, dass der eine Text nur so wenige, der andere aber so viele Treffer hat? Auch der Vergleich mit eurer menschlichen Codierung ist hier relevant. Korrelieren menschliche Codierung und das hier vorliegende Ergebnis?</p>
 <p>Wenn wir mit dem Ergebnis nun weiterarbeiten, fällt auf, dass die Texte unterschiedlich lang sind und es ist erwartbar, dass längere Texte im Durchschnitt auch mehr negative Wörter enthalten werden. Wir sollten daher auf die Artikellänge normieren. Um also mit den Ergebnissen arbeiten, fügen wir die gewonnenen Erkentnisse unserer Haupttabelle hinzu.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>negativität <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ergebnis[, <span class="st">"negative"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>negativität <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ergebnis[, <span class="st">"negative"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Jetzt können wir die Negativität in Abhängigkeit der Textlänge berechnen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>relative_neg <span class="ot">&lt;-</span> data<span class="sc">$</span>negativität<span class="sc">/</span>data<span class="sc">$</span>word_count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>relative_neg <span class="ot">&lt;-</span> data<span class="sc">$</span>negativität<span class="sc">/</span>data<span class="sc">$</span>word_count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Das ist schon mal besser. Um tatsächliche Erkenntnis zu erzeugen, wenden wir ein Verfahren der deskriptiven Statistik an, das wir schon von oben kennen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(relative_neg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(relative_neg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -1069,11 +1077,11 @@ docs    negative
 <p><strong>Verwendung des englischen Dictionary/Lexikons</strong></p>
 <p>Nur zum Spass können wir am Ende noch einmal das englischsprachige LSD-Lexikon auf unsere Texte anwenden. Da dies schon in quanteda existiert, funktioniert das denkbar einfach und eine Umformung und Vorarbeit ist nicht erforderlich.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_weight</span>(<span class="at">scheme =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> data_dictionary_LSD2015[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_weight</span>(<span class="at">scheme =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> data_dictionary_LSD2015[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 2 features (0.00% sparse) and 0 docvars.
        features
@@ -1093,63 +1101,63 @@ docs      negative    positive
 <h6 class="anchored" data-anchor-id="eigenes-dictionary-erstellen"><strong>Eigenes Dictionary erstellen</strong></h6>
 <p>Nun wollen wir statt einem bereits existierenden Lexikon ein eigenes erstellen. Die Grundlogik, was R betrifft, ist sehr ähnlich. Der Hauptunterschied ist, logischerweise, dass wir anstatt ein bestehendes zu nutzen, nun ein eigenes erstellen. Das ist theoretisch anspruchsvoll und bedarf grosser Sorgfalt. Ihr solltet genau überlegen ob die Wörter relevant und gut gewählt sind und ob ihr alle Nuancen bedacht habt. Idealerweise prüft ihr das auch nochmals (Validierung im Team, mit Freunden, etc.). Was die Erstellung in R angeht, ist es denkbar einfach:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>lexikon <span class="ot">&lt;-</span> <span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">negativ =</span> <span class="fu">c</span>(</span>
-<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"schlecht"</span>, <span class="st">"schlechter"</span>, <span class="st">"schlechte"</span>, <span class="st">"schlechtes"</span>, <span class="st">"schlechten"</span>,</span>
-<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"problematisch"</span>, <span class="st">"problematische"</span>, <span class="st">"problematischen"</span>,</span>
-<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bedenklich"</span>, <span class="st">"bedenkliche"</span>, <span class="st">"bedenklichen"</span>,</span>
-<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fragwürdig"</span>, <span class="st">"fragwürdige"</span>, <span class="st">"fragwürdigen"</span>,</span>
-<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"inakzeptabel"</span>, <span class="st">"unakzeptabel"</span>,</span>
-<span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"untragbar"</span>,</span>
-<span id="cb124-8"><a href="#cb124-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"verwerflich"</span>, <span class="st">"verwerfliche"</span>,</span>
-<span id="cb124-9"><a href="#cb124-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"skandal"</span>, <span class="st">"skandale"</span>, <span class="st">"skandalös"</span>, <span class="st">"skandalöse"</span>, <span class="st">"skandalösen"</span>,</span>
-<span id="cb124-10"><a href="#cb124-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"affäre"</span>, <span class="st">"affären"</span>,</span>
-<span id="cb124-11"><a href="#cb124-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"korrupt"</span>, <span class="st">"korruption"</span>, <span class="st">"korrupten"</span>, <span class="st">"korrumpiert"</span>,</span>
-<span id="cb124-12"><a href="#cb124-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"illegal"</span>, <span class="st">"illegale"</span>, <span class="st">"illegalen"</span>,</span>
-<span id="cb124-13"><a href="#cb124-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rechtswidrig"</span>, <span class="st">"rechtswidrige"</span>, <span class="st">"rechtswidrigen"</span>,</span>
-<span id="cb124-14"><a href="#cb124-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"verfassungswidrig"</span>, <span class="st">"verfassungswidrige"</span>,</span>
-<span id="cb124-15"><a href="#cb124-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"undemokratisch"</span>,</span>
-<span id="cb124-16"><a href="#cb124-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"autoritäre"</span>, <span class="st">"autoritarismus"</span>, <span class="st">"autoritären"</span>,</span>
-<span id="cb124-17"><a href="#cb124-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"konflikt"</span>, <span class="st">"konflikte"</span>, <span class="st">"konflikthaft"</span>,</span>
-<span id="cb124-18"><a href="#cb124-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"krise"</span>, <span class="st">"krisen"</span>, <span class="st">"krisenhaft"</span>,</span>
-<span id="cb124-19"><a href="#cb124-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"eskalation"</span>, <span class="st">"eskalieren"</span>, <span class="st">"eskaliert"</span>,</span>
-<span id="cb124-20"><a href="#cb124-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"spaltung"</span>, <span class="st">"spalten"</span>, <span class="st">"gespalten"</span>,</span>
-<span id="cb124-21"><a href="#cb124-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"polarisierung"</span>, <span class="st">"polarisieren"</span>, <span class="st">"polarisiert"</span>,</span>
-<span id="cb124-22"><a href="#cb124-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"scheitern"</span>, <span class="st">"scheiterte"</span>, <span class="st">"gescheitert"</span>,</span>
-<span id="cb124-23"><a href="#cb124-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"versagen"</span>, <span class="st">"versagte"</span>, <span class="st">"versagt"</span>,</span>
-<span id="cb124-24"><a href="#cb124-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fehlentscheidung"</span>, <span class="st">"fehlentscheidungen"</span>,</span>
-<span id="cb124-25"><a href="#cb124-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fehlschlag"</span>, <span class="st">"fehlschläge"</span>,</span>
-<span id="cb124-26"><a href="#cb124-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"blockade"</span>, <span class="st">"blockieren"</span>, <span class="st">"blockiert"</span>,</span>
-<span id="cb124-27"><a href="#cb124-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"stillstand"</span>,</span>
-<span id="cb124-28"><a href="#cb124-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ineffizient"</span>, <span class="st">"ineffizienz"</span>,</span>
-<span id="cb124-29"><a href="#cb124-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bedrohung"</span>, <span class="st">"bedrohlich"</span>, <span class="st">"bedrohen"</span>, <span class="st">"bedrohte"</span>,</span>
-<span id="cb124-30"><a href="#cb124-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gefahr"</span>, <span class="st">"gefährlich"</span>, <span class="st">"risiko"</span>, <span class="st">"risiken"</span>,</span>
-<span id="cb124-31"><a href="#cb124-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unsicherheit"</span>, <span class="st">"unsicher"</span>,</span>
-<span id="cb124-32"><a href="#cb124-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gewalt"</span>, <span class="st">"gewalttätig"</span>,</span>
-<span id="cb124-33"><a href="#cb124-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"terror"</span>, <span class="st">"terroristisch"</span>, <span class="st">"terrorismus"</span>,</span>
-<span id="cb124-34"><a href="#cb124-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"extremismus"</span>, <span class="st">"extremistisch"</span>,</span>
-<span id="cb124-35"><a href="#cb124-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"radikalisierung"</span>, <span class="st">"radikalisiert"</span>,</span>
-<span id="cb124-36"><a href="#cb124-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"misstrauen"</span>, <span class="st">"misstrauisch"</span>,</span>
-<span id="cb124-37"><a href="#cb124-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vertrauensverlust"</span>, <span class="st">"glaubwürdigkeitsverlust"</span>,</span>
-<span id="cb124-38"><a href="#cb124-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"zweifel"</span>, <span class="st">"anzweifeln"</span>,</span>
-<span id="cb124-39"><a href="#cb124-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"kritik"</span>, <span class="st">"kritisch"</span>,</span>
-<span id="cb124-40"><a href="#cb124-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vorwurf"</span>, <span class="st">"vorwürfe"</span>,</span>
-<span id="cb124-41"><a href="#cb124-41" aria-hidden="true" tabindex="-1"></a>  <span class="st">"delegitimierung"</span>, <span class="st">"delegitimieren"</span>,</span>
-<span id="cb124-42"><a href="#cb124-42" aria-hidden="true" tabindex="-1"></a>  <span class="st">"systemversagen"</span>,</span>
-<span id="cb124-43"><a href="#cb124-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"machtmissbrauch"</span>,</span>
-<span id="cb124-44"><a href="#cb124-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"intransparenz"</span>,</span>
-<span id="cb124-45"><a href="#cb124-45" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lobbyismus"</span>,</span>
-<span id="cb124-46"><a href="#cb124-46" aria-hidden="true" tabindex="-1"></a>  <span class="st">"klientelpolitik"</span>,</span>
-<span id="cb124-47"><a href="#cb124-47" aria-hidden="true" tabindex="-1"></a>  <span class="st">"arbeitslosigkeit"</span>,</span>
-<span id="cb124-48"><a href="#cb124-48" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rezession"</span>,</span>
-<span id="cb124-49"><a href="#cb124-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"inflation"</span>,</span>
-<span id="cb124-50"><a href="#cb124-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">"armut"</span>,</span>
-<span id="cb124-51"><a href="#cb124-51" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ungleichheit"</span>), <span class="at">positive =</span> <span class="fu">c</span>(<span class="st">"Diese"</span>, <span class="st">"Liste"</span>, <span class="st">"ist"</span>, <span class="st">"nur"</span>, <span class="st">"zur"</span>, <span class="st">"Demonstration"</span>, <span class="st">"und"</span>, <span class="st">"hat"</span>,<span class="st">"keine"</span>,<span class="st">"inhaltliche"</span>,<span class="st">"Funktion"</span>)</span>
-<span id="cb124-52"><a href="#cb124-52" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>lexikon <span class="ot">&lt;-</span> <span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">negativ =</span> <span class="fu">c</span>(</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"schlecht"</span>, <span class="st">"schlechter"</span>, <span class="st">"schlechte"</span>, <span class="st">"schlechtes"</span>, <span class="st">"schlechten"</span>,</span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"problematisch"</span>, <span class="st">"problematische"</span>, <span class="st">"problematischen"</span>,</span>
+<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bedenklich"</span>, <span class="st">"bedenkliche"</span>, <span class="st">"bedenklichen"</span>,</span>
+<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fragwürdig"</span>, <span class="st">"fragwürdige"</span>, <span class="st">"fragwürdigen"</span>,</span>
+<span id="cb123-6"><a href="#cb123-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"inakzeptabel"</span>, <span class="st">"unakzeptabel"</span>,</span>
+<span id="cb123-7"><a href="#cb123-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"untragbar"</span>,</span>
+<span id="cb123-8"><a href="#cb123-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"verwerflich"</span>, <span class="st">"verwerfliche"</span>,</span>
+<span id="cb123-9"><a href="#cb123-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"skandal"</span>, <span class="st">"skandale"</span>, <span class="st">"skandalös"</span>, <span class="st">"skandalöse"</span>, <span class="st">"skandalösen"</span>,</span>
+<span id="cb123-10"><a href="#cb123-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"affäre"</span>, <span class="st">"affären"</span>,</span>
+<span id="cb123-11"><a href="#cb123-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"korrupt"</span>, <span class="st">"korruption"</span>, <span class="st">"korrupten"</span>, <span class="st">"korrumpiert"</span>,</span>
+<span id="cb123-12"><a href="#cb123-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"illegal"</span>, <span class="st">"illegale"</span>, <span class="st">"illegalen"</span>,</span>
+<span id="cb123-13"><a href="#cb123-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rechtswidrig"</span>, <span class="st">"rechtswidrige"</span>, <span class="st">"rechtswidrigen"</span>,</span>
+<span id="cb123-14"><a href="#cb123-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"verfassungswidrig"</span>, <span class="st">"verfassungswidrige"</span>,</span>
+<span id="cb123-15"><a href="#cb123-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"undemokratisch"</span>,</span>
+<span id="cb123-16"><a href="#cb123-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"autoritäre"</span>, <span class="st">"autoritarismus"</span>, <span class="st">"autoritären"</span>,</span>
+<span id="cb123-17"><a href="#cb123-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"konflikt"</span>, <span class="st">"konflikte"</span>, <span class="st">"konflikthaft"</span>,</span>
+<span id="cb123-18"><a href="#cb123-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"krise"</span>, <span class="st">"krisen"</span>, <span class="st">"krisenhaft"</span>,</span>
+<span id="cb123-19"><a href="#cb123-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"eskalation"</span>, <span class="st">"eskalieren"</span>, <span class="st">"eskaliert"</span>,</span>
+<span id="cb123-20"><a href="#cb123-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"spaltung"</span>, <span class="st">"spalten"</span>, <span class="st">"gespalten"</span>,</span>
+<span id="cb123-21"><a href="#cb123-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"polarisierung"</span>, <span class="st">"polarisieren"</span>, <span class="st">"polarisiert"</span>,</span>
+<span id="cb123-22"><a href="#cb123-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"scheitern"</span>, <span class="st">"scheiterte"</span>, <span class="st">"gescheitert"</span>,</span>
+<span id="cb123-23"><a href="#cb123-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"versagen"</span>, <span class="st">"versagte"</span>, <span class="st">"versagt"</span>,</span>
+<span id="cb123-24"><a href="#cb123-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fehlentscheidung"</span>, <span class="st">"fehlentscheidungen"</span>,</span>
+<span id="cb123-25"><a href="#cb123-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fehlschlag"</span>, <span class="st">"fehlschläge"</span>,</span>
+<span id="cb123-26"><a href="#cb123-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"blockade"</span>, <span class="st">"blockieren"</span>, <span class="st">"blockiert"</span>,</span>
+<span id="cb123-27"><a href="#cb123-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"stillstand"</span>,</span>
+<span id="cb123-28"><a href="#cb123-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ineffizient"</span>, <span class="st">"ineffizienz"</span>,</span>
+<span id="cb123-29"><a href="#cb123-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bedrohung"</span>, <span class="st">"bedrohlich"</span>, <span class="st">"bedrohen"</span>, <span class="st">"bedrohte"</span>,</span>
+<span id="cb123-30"><a href="#cb123-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gefahr"</span>, <span class="st">"gefährlich"</span>, <span class="st">"risiko"</span>, <span class="st">"risiken"</span>,</span>
+<span id="cb123-31"><a href="#cb123-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unsicherheit"</span>, <span class="st">"unsicher"</span>,</span>
+<span id="cb123-32"><a href="#cb123-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gewalt"</span>, <span class="st">"gewalttätig"</span>,</span>
+<span id="cb123-33"><a href="#cb123-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"terror"</span>, <span class="st">"terroristisch"</span>, <span class="st">"terrorismus"</span>,</span>
+<span id="cb123-34"><a href="#cb123-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"extremismus"</span>, <span class="st">"extremistisch"</span>,</span>
+<span id="cb123-35"><a href="#cb123-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"radikalisierung"</span>, <span class="st">"radikalisiert"</span>,</span>
+<span id="cb123-36"><a href="#cb123-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"misstrauen"</span>, <span class="st">"misstrauisch"</span>,</span>
+<span id="cb123-37"><a href="#cb123-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vertrauensverlust"</span>, <span class="st">"glaubwürdigkeitsverlust"</span>,</span>
+<span id="cb123-38"><a href="#cb123-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"zweifel"</span>, <span class="st">"anzweifeln"</span>,</span>
+<span id="cb123-39"><a href="#cb123-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"kritik"</span>, <span class="st">"kritisch"</span>,</span>
+<span id="cb123-40"><a href="#cb123-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vorwurf"</span>, <span class="st">"vorwürfe"</span>,</span>
+<span id="cb123-41"><a href="#cb123-41" aria-hidden="true" tabindex="-1"></a>  <span class="st">"delegitimierung"</span>, <span class="st">"delegitimieren"</span>,</span>
+<span id="cb123-42"><a href="#cb123-42" aria-hidden="true" tabindex="-1"></a>  <span class="st">"systemversagen"</span>,</span>
+<span id="cb123-43"><a href="#cb123-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"machtmissbrauch"</span>,</span>
+<span id="cb123-44"><a href="#cb123-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"intransparenz"</span>,</span>
+<span id="cb123-45"><a href="#cb123-45" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lobbyismus"</span>,</span>
+<span id="cb123-46"><a href="#cb123-46" aria-hidden="true" tabindex="-1"></a>  <span class="st">"klientelpolitik"</span>,</span>
+<span id="cb123-47"><a href="#cb123-47" aria-hidden="true" tabindex="-1"></a>  <span class="st">"arbeitslosigkeit"</span>,</span>
+<span id="cb123-48"><a href="#cb123-48" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rezession"</span>,</span>
+<span id="cb123-49"><a href="#cb123-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"inflation"</span>,</span>
+<span id="cb123-50"><a href="#cb123-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">"armut"</span>,</span>
+<span id="cb123-51"><a href="#cb123-51" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ungleichheit"</span>), <span class="at">positive =</span> <span class="fu">c</span>(<span class="st">"Diese"</span>, <span class="st">"Liste"</span>, <span class="st">"ist"</span>, <span class="st">"nur"</span>, <span class="st">"zur"</span>, <span class="st">"Demonstration"</span>, <span class="st">"und"</span>, <span class="st">"hat"</span>,<span class="st">"keine"</span>,<span class="st">"inhaltliche"</span>,<span class="st">"Funktion"</span>)</span>
+<span id="cb123-52"><a href="#cb123-52" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ihr listet letztlich einfach alle Wörter auf und fügt sie mit dem Befehl <code>dictionary(list())</code> als Lexikon/Dictionary hinzu. Innerhalb des Befehls <code>list()</code> könnt ihr zudem gleichzeitig mehrere Listen von Wörtern erstellen. Hier seht ihr, dass ich nur eine Liste namens “negativ” erstellt habe und am Ende auch noch eine Liste names “positiv”. Man könnte anschliessend auf die gleiche Weise noch weitere Listen erstellen; achtet nur darauf, die Klammern korrekt zu setzen. Das <code>c()</code> steht dabei übrignes für combine und ist notwendig, damit einzelne Elemente in einen Vektor zusammen gefasst werden; in dem Fall unsere lange Liste an Wörtern.</p>
 <p>Schauen wir uns das Ergebnis an.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>lexikon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>lexikon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Dictionary object with 2 key entries.
 - [negativ]:
@@ -1160,11 +1168,11 @@ docs      negative    positive
 </div>
 <p>Anschliessend können wir unser Lexikon direkt auf unsere Texte anwenden - genau wie zuvor (auch hier berechnen wir direkt die relative Anzahl)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
-<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_weight</span>(<span class="at">scheme =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> lexikon)</span>
-<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> text_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_weight</span>(<span class="at">scheme =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> lexikon)</span>
+<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 15 documents, 2 features (13.33% sparse) and 0 docvars.
        features
@@ -1181,8 +1189,8 @@ docs        negativ   positive
 <p>Was fällt uns auf?</p>
 <p>Auch hier fügen wir das Ergebnis wieder zu unseren Hauptdaten hinzu und berechnen direkt die Korrelation mit dem Ergebnis der Analyse basierend auf dem existierenden Lexikons von oben.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>eigene_negativität <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(result[, <span class="st">"negativ"</span>])</span>
-<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>relative_neg, data<span class="sc">$</span>eigene_negativität)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>eigene_negativität <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(result[, <span class="st">"negativ"</span>])</span>
+<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(data<span class="sc">$</span>relative_neg, data<span class="sc">$</span>eigene_negativität)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -1200,7 +1208,7 @@ sample estimates:
 <p>Wir haben eine positive Korrelation, die ist allerdings moderat bzw. mittelmässig. Was sagt uns das nun, welche Analyse war die richtige(re)? Auf welche Analyse würden wir uns nun verlassen?</p>
 <p>Wir müssen uns sicher sein können, dass wir eine valide Analyse durchführen, denn auf unserer Analyse fusst die ganze Interpretation der Ergebnisse. Je nach Analyse kann diese ganz unterschiedlich ausfallen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(eigene_negativität))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(outlet) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(eigene_negativität))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   outlet mean_value
@@ -1213,6 +1221,384 @@ sample estimates:
 </div>
 <p>Mit dem eigenen Lexikon ist die Tagesschau nicht mehr Spitzenreiter bei der Negativität ihrer Texte, die Texte von Zeit Online weisen nun eine höhere Negativität auf. Das ist ein recht stark anderes Ergebnis als zuvor.</p>
 </section>
+</section>
+<section id="überwachtes-maschinelles-lernen-als-ansatz-für-die-inhaltsanalyse" class="level2">
+<h2 class="anchored" data-anchor-id="überwachtes-maschinelles-lernen-als-ansatz-für-die-inhaltsanalyse">Überwachtes maschinelles Lernen als Ansatz für die Inhaltsanalyse</h2>
+<p><strong>14. Januar 2026</strong></p>
+<p>Beim überwachten maschinellen Lernen (auch supervised machine learning SML) geht es darum, das ein Algorithmus basierend auf codierten Beispieltexten statistische Muster in Texten erkennt. Dieses erlernte Wissen kann dann auf weitere Texte, die nicht codiert sind, angewandt werden. Der Kern dieses Verfahrens gleicht in weiten Teilen der klassischen manuellen Inhaltsanalyse. Relevante Teile dessen, was heute vorgestellt wird, habt ihr also bereits gemacht. Es gibt aber einen Entscheidenden unterschied: Dieses Verfahren lässt sich, ähnlich wie das lexikonbasierte Verfahren, aber im Gegensatz zur manuellen Inhaltsnalayse leicht auf mehrere Millionen Texte skalieren.</p>
+<p>Konzeptionell kann man sich das wie folgt vorstellen. Der Computer hat noch nie eine Katze gesehen. Ihr zeigt ihm nun 20 Bilder von Katzen und sagt ihm, dass es sich hierbei um eine Katze handelt. Basierend auf diesen 20 Fotos lernt der Computer nun was eine Katze ist und kann in Zukunft eingeständig Katzen erkennen. (Tatsächlich lernt der Computer nicht, was eine Katze ist, sondern lernt nur, statistische Muster in den Bildern, die häufig mit dem Label Katze zusammen auftreten).</p>
+<p>Zentral hierbei ist, dass grössere Mengen an zuverlässig codierten Beispielen existieren, die der Computer nutzen kann, um die Muster valide und reliabel zu erkennen. Da der Algorithmus auf den Beispielen quasi trainiert wird, nennt man diese Daten auch <em>Trainingsdaten</em>.</p>
+<p>Bei den Trainingsdaten handelt es sich um einen Ausschnitt aus euren Gesamtdaten. Stellt euch folgendes Szenario vor: Ihr habt mehrere Millionen Social Media Posts zu einem Thema (z.B. Politik oder zu einem Produkt) und wollt analysieren, welche davon positiv, neutral oder negativ sind. Händisch wäre das nicht leistbar. Für SML nehmen wir nun wenige Tausend dieser Social Media Posts (z.B. eine Zufallsauswahl der Gesamtstichprobe) und nutzen diese Teilmenge unserer Gesamtdaten. Um den Computer nun aber zu trainieren, müssen wir die Texte dieser Teilmenge in die gewünschten Kategorien codieren (auch: labeln). Wir müssen dem Computer schliesslich erstmal beibringen, bei welchem Text es sich um einen negativen oder einen positiven Text handelt.</p>
+<p>Wir entwickeln nun also ein Codebuch und codieren alle Texte händisch in die gewünschten Kategorien. Das haben wir schon gelernt und entspricht soweit erstmal der klassischen Inhaltsanalyse. Wenn wir jeden Text zuverlässig in negativ, neutral und positiv unterteilt haben, können wir dem Computer unsere Ergebnisse zeigen. Dieser lernt dann die Muster zwischen den Texten und ihren Labels und kann dann - idealerweise - zukünftig eigenständig und zuverlässig bei den restlichen Social Media Posts einschätzen, ob diese positiv, neutral oder negativ sind.</p>
+<p>Wichtig dabei ist auch, dass wir dem Algorithmus nicht nur zeigen was wir wollen, sondern auch zeigen, was wir nicht wollen. In unserem Katzenbeispiel wäre es z.B. sinnvoll, dem Computer auch Bilder von Hunden zu zeigen, damit er besser lernt, zwischen Hunden und Katzen zu unterscheiden; die sehen sich ja zumindest sehr ähnlich. In unserem Beispiel mit den Social Media Posts: Es könnte ja sein, dass euer Chef nur an negativen Kommentaren zu eurem Produkt interessiert ist, er will schliesslich wissen, was er besser machen kann. Es wäre jetzt allerdings nicht sinnvoll, dem Algorithmus nur negative Kommentare zu zeigen. Vielmehr wäre die Präzision zur Erkennung von negativen Kommentaren viel höher, wenn ihr ihm auch neutrale und positive Kommentare beibringt.</p>
+<p>Wir könnten dafür auch ein lexikonbasiertes Verfahren nutzen. Allerdings hatten wir ja gelernt, dass diese Verfahren recht eingeschränkte Validität besitzen. SML erzielt hier häufig bessere Ergebnisse, da das Verfahren des “Lernens” auch komplexere Muster erkennen kann, die ein Lexikon an und über seine Grenzen bringt.</p>
+<p>Aber auch SML kommt mit Nachteilen. Zum einen erfordert es oft eine grossere Menge manuell codierter Trainingsdaten. Genau wie das Erstellen eines guten Lexikons kann das sehr zeitaufwendig sein. Zum anderen ist das Modell immer maximal so gut wie die menschlische Codierung der Trainingsdaten, auf denen das Modell/der Algorithmus beruht. Wenn die Trainingsdaten eine geringe Qualität haben, also z.B. sehr unzuverlässig codiert wurden, kann der Algorithmus keine klaren Muster erlernen und hat dann (ebenso) nur eine geringe Validität. Genauso kann es sein, dass die Anzahl an Trainingstexten noch nicht ausreicht, dass der Algorithmus die Muster zuverlässig gelernt hat. Zuletzt kann es aber auch sein, dass der Algorithmus auch bei perfekten Trainingsdaten noch (zu) viele Fehler macht. Um das zu prüfen, muss der Algorithmus stets auf seine Validität getestet werden. Wie immer ist das ein sehr zentraler Punkt, wir gehen am Ende auf ihn ein.</p>
+<p><strong>Wichtig Vorweg, um Entäuschungen zu vermeiden</strong>. Für ein robustes, d.h. gut funktionierendes SML braucht man meist mindestens mehrere hundert, oft tausend Texte als Trainingsbasis. In euren Daten habt ihr dafür nicht genug. In aller Regel wird die Analyse daher bei euch nicht gut funktionieren. Da wir hier in einem Lernsetting sind, ist das für eure Seminararbeit gar kein Problem! Ihr sollt nur wissen, wie ihr das Verfahren prinzipiell anwendet. Das ist aber der Grund, warum ich SML für euch und eure Seminararbeit nicht empfehle. Es reicht aus, wenn ihr ein Lexikonbasierten Ansatz nutzt.</p>
+<p>Hier will ich es euch allerdings gerne “richtig” zeigen und dafür nutzen wir einen grossen Datensatz. Wir arbeiten also nicht mit dem bisherigen Datensatz, der ja auch nur aus 15 Texten bestand, sondern nutzen Daten, die schon verfügbar sind. <a href="https://www.cs.cornell.edu/people/pabo/movie-review-data/">Konkret nutzen wir einen Datensatz, in dem 2000 Film-Bewertungen gesammelt sind.</a> Dieser Datensatz ist bei Quanteda schon integriert, bzw. in einem Schwester-Paket von quanteda, das wir zunächst auf die bekannte Art laden müssen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("quanteda.textmodels")</span></span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textmodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'quanteda.textmodels' wurde unter R Version 4.5.2 erstellt</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Jetzt können wir den gewünschten Datensatz einlesen. Dieser heisst <code>data_corpus_moviereviews</code> und wir weisen ihn dem Object <code>data_movie</code> zu, welches rechts in unserem environment dann auftaucht.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>data_movie <span class="ot">&lt;-</span> data_corpus_moviereviews</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Per <code>data(package = "quanteda")</code> oder <code>data(package = "quanteda.textmodels")</code> können wir übrigens sehen, welche sonstigen Daten in den beiden Paketen enthalten sind.</p>
+<p>Wenn wir uns als nächstes unsere Daten anschauen, sehen wir, dass das Format etwas komisch bzw. ungewohnt ist. Es liegt nicht als gewohnte Tabelle vor. Wenn wir <code>summary()</code> nutzen, bekommen wir trotzdem einen Überblick. Wir sehen jetzt, dass die Texte in einzelnen Dateien liegen, ansonsten sieht es schon recht vertraut aus. Mit einem einfachen Befehl, bekommen wir bei quanteda die Texte aber auch wieder direkt in die Tabelle, wie wir es bereits aus unserem kleinen Beispieldatensatz kennen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>data_movie</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 2,000 documents and 3 docvars.
+cv000_29416.txt :
+"plot : two teen couples go to a church party , drink and the..."
+
+cv001_19502.txt :
+"the happy bastard's quick movie review  damn that y2k bug . ..."
+
+cv002_17424.txt :
+"it is movies like these that make a jaded movie viewer thank..."
+
+cv003_12683.txt :
+" " quest for camelot " is warner bros . ' first feature-leng..."
+
+cv004_12641.txt :
+"synopsis : a mentally unstable man undergoing psychotherapy ..."
+
+cv005_29357.txt :
+"capsule : in 2176 on the planet mars police taking into cust..."
+
+[ reached max_ndoc ... 1,994 more documents ]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_movie)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,] <span class="co">#zeigt nur die ersten 5 Zeilen an</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Text Types Tokens Sentences sentiment   id1   id2
+1 cv000_29416.txt   354    841         9       neg cv000 29416
+2 cv001_19502.txt   156    278         1       neg cv001 19502
+3 cv002_17424.txt   276    553         3       neg cv002 17424
+4 cv003_12683.txt   314    558         2       neg cv003 12683
+5 cv004_12641.txt   380    841         2       neg cv004 12641</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">convert</span>(data_movie, <span class="at">to =</span> <span class="st">"data.frame"</span>) </span>
+<span id="cb140-2"><a href="#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Wir sehen hier jetzt die Texte in der entsprechenden Spalte und das zugeordnete Sentiment, entweder pos oder neg in der nächsten Spalte. Die Spalten “doc_id” und “id1” sowie “id2” sind lediglich Zeilen zur Identfikation und für uns nicht zentral.</p>
+<p>Wichtig ist, dass wir nun davon ausgehen, dass die angebenen Sentiments das finale Urteil von menschlichen Codierern sind. Das heisst, wir befinden uns jetzt bereits an einem Zeitpunkt, wo das Codebuch und die Codierung der Texte durch mehrere Menschen bereits stattgefunden hat. Zudem wurde die Intercoder-Reliabilität bestimmt (und für gut befunden) und - falls es Widersprüche in den Wertungen der einzelnen Codierer gab - die finale Wertung für jeden Text festgelegt. Diese finale Wertung ist in der Spalte “sentiment” als “pos” or “neg” festgehalten. 1000 Texte haben das Sentiment “pos” und 1000 das Sentiment “neg”. Diese Wertungen sind unser <strong>Gold-Standard</strong>, der Massstab, anhand dessen wir den Computer und dessen automatische Kategorisierungen messen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data<span class="sc">$</span>sentiment) <span class="co">#wir sehen, es sind tatsächlich je 1000 Texte</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ neg  pos 
+1000 1000 </code></pre>
+</div>
+</div>
+<p>Ausserdem ist wichtig zu verstehen, dass die 2000 codierten Texte die jetzt in diesem Datensatz sind in der Realität nicht alle unsere Daten sind. Das sind nur die Daten, die wir händisch codiert haben und dafür nutzen, einen Algorithmus zu trainieren, der dann für alle ähnlichen Probleme nutzbar ist. Das heisst, wir nutzen diese 2000 Texte um damit in Zukunft viel viel grössere Datensätze zu klassifizieren. Hier sind es ja beispielsweise Rezensionen zu Filmen. Wenn wir aber wieder in unserem Beispiel mit den Social Media Posts sind, ist gut vorstellbar, dass eine Firma viele tausende Kommentare erhalten hat. Auch in diesem Fall würdet ihr euren Algorithmus auf einer verhältnismässig kleinen Menge an Texten trainieren, die ihr vorher händisch codiert habt. Wenn das passiert ist und gut funktioniert hat, könnt ihr dann in der Folge kinderleicht alle anderen tausende Posts klassifizieren; das müsst ihr dann nicht mehr per Hand machen und genau dafür ist automatisierte Inhaltsanalyse da. Sie erlaubt es gigantische Textmengen analysieren zu können.</p>
+<section id="train-test-split" class="level6">
+<h6 class="anchored" data-anchor-id="train-test-split"><strong>Train / Test-Split</strong></h6>
+<p>Damit das passiert, also der Computer die Texte automatisiert (in diesem Beispiel) in negativ und positiv einordnen kann, müssen wir ihn trainieren. Während des Trainings lernt er was er machen soll, für welche Zuordnungen er in den Texten Muster erkennen soll. Hierfür verwenden wir allerdings nicht alle Texte. Ein paar Texte behalten wir aussen vor, damit wir nach den Computer nach dem Training auch richtig testen können. Wenn wir ihm alle Texte zum Training geben, hat er auch die Testfälle schon gesehen und kennt die Lösung schon. Das wäre in etwa so, wie wenn ihr beim Lernen für eine Matheklausur nicht nur Altklausuren bekommt, sondern auch die tatsächliche neue Klausur bereits mit erhaltet. Das würde natürlich das Ergebnis bei der Klausur dann massiv verfälschen. Gelernt wird also auf einem Großteil der Daten, meist 70% oder 80%. Die restlichen Daten werden zum Testen zurück gehalten, wir brauchen sie später nochmal.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) <span class="co">#googelt mal, wenn euch interessiert, was dieser Befehl bewirkt und warum wir ihn nutzen</span></span>
+<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#für die folgenden zwei Befehle, benötigen wir dieses Paket</span></span>
+<span id="cb143-4"><a href="#cb143-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-5"><a href="#cb143-5" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb143-6"><a href="#cb143-6" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">anti_join</span>(data, train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(doc_id, text, sentiment, id1, id2)`</code></pre>
+</div>
+</div>
+<p>Wir haben nur 80% der Texte aus <code>data</code> randomisiert dem Objekt <code>train</code> zugewiesen. In der letzten Zeile haben wir alle übrigens Texte dem Objekt <code>test</code> zugewiesen.</p>
+</section>
+<section id="preprocessing" class="level6">
+<h6 class="anchored" data-anchor-id="preprocessing"><strong>Preprocessing</strong></h6>
+<p>Jetzt wollen wir die Texte vorbearbeiten (meist preprocessing genannt). Diesen Schritt kennen wir bereits in Grundzügen. Hier können Stopwords entfernt werden, Punkte und andere Dinge, die uns in der Regel nicht interessieren. Hier ist diese Vorbearbeitung aus zwei Gründen wichtiger als bisher. Da die Abläufe komplexer sind und es daher bei vielen Texten teilweise recht lange dauern kann, sparen wir Zeit, wenn wir unnötige Informationen entfernen. Zudem wird die Qualität und Güte der Klassifikation oft (aber nicht immer) gesteigert, wenn die Daten vereinfacht bzw. auf das Wesentliche reduziert sind.</p>
+<p>Die Code in R hierfür ist wie recht weit am Anfang in diesem Tutorial.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a>toks_train <span class="ot">&lt;-</span> <span class="fu">tokens</span>(</span>
+<span id="cb145-2"><a href="#cb145-2" aria-hidden="true" tabindex="-1"></a>  train<span class="sc">$</span>text,</span>
+<span id="cb145-3"><a href="#cb145-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb145-4"><a href="#cb145-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">remove_numbers =</span> <span class="cn">TRUE</span></span>
+<span id="cb145-5"><a href="#cb145-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb145-6"><a href="#cb145-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_tolower</span>() <span class="sc">|&gt;</span></span>
+<span id="cb145-7"><a href="#cb145-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">stopwords</span>(<span class="st">"en"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Wir haben hier fünf Dinge gemacht. Wir haben alle Punktierungen entfernt, wir haben alle Zahlen entfernt, wir haben alle Wörter klein geschrieben und wir haben alle Stopwords entfernt. Da die Texte auf Englisch sind, haben wir hier natürlich auch die englischen Stopwords entfernt. Ausserdem haben wir ganz generell die Texte in einzelne Wörter, Tokens, ausgesplittet. Diese Wörter oder Tokens sind die Arbeitsgrundlage. Auch das wissen wir bereits von früheren Einheiten.</p>
+<p><strong>Wichtig</strong> Damit die Validierung später korrekt stattfinden kann, d.h. ob das Training gut funktioniert hat, müssen die Testdaten in identischer Weise vorbereitet werden wie die Trainingsdaten.Sonst ist der Vergleich nicht mehr gegeben. Wir machen daher genau das gleiche nochmal für die Testdaten.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>toks_test <span class="ot">&lt;-</span> <span class="fu">tokens</span>(</span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>  test<span class="sc">$</span>text,</span>
+<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">remove_numbers =</span> <span class="cn">TRUE</span></span>
+<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb146-6"><a href="#cb146-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_tolower</span>() <span class="sc">|&gt;</span></span>
+<span id="cb146-7"><a href="#cb146-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">stopwords</span>(<span class="st">"en"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Als nächstes werden diese Daten (wieder sowohl train als auch test) nun in ein effizientes Format gebracht, mit dem der Computer gut rechnen kann: Matrizen. Auch das kennen wir bereits. Tokens (also meist Wörter) werden hier Features genannt.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>dfm_train <span class="ot">&lt;-</span> <span class="fu">dfm</span>(toks_train)</span>
+<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>dfm_test  <span class="ot">&lt;-</span> <span class="fu">dfm</span>(toks_test)</span>
+<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>dfm_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 400 documents, 22,062 features (98.77% sparse) and 0 docvars.
+       features
+docs    happy bastard's quick movie review damn y2k bug got head
+  text1     1         1     1     5      1    1   1   1   1    1
+  text2     0         0     1     2      0    0   0   0   0    0
+  text3     0         0     0     0      0    0   0   0   0    0
+  text4     0         0     0     2      0    0   0   0   0    0
+  text5     0         0     0     7      0    0   0   0   1    0
+  text6     1         0     0     2      0    0   0   0   0    0
+[ reached max_ndoc ... 394 more documents, reached max_nfeat ... 22,052 more features ]</code></pre>
+</div>
+</div>
+<p>Nun wird nochmal weiter versucht, unnötige Informationen zu entfernen, um den anschliessenden Trainingsprozess effizienter und idealerweise besser zu gestalten. Hier können wir z.B. Wörter entfernen, die nur in wenigen oder in fast allen Texten vorkommen (diese Wörter sind dann nicht sehr informativ). Als Erinnerung: Wir versuchen ja Texte in positives und in negatives Sentiment zu unterscheiden. Genau wie “und”, das vermutlich in beiden Klassen vorkommt, sind sehr selten und sehr häufige Wörter nicht informativ um uns bei der Unterscheidung zu helfen.</p>
+<p>Ein weiteres, sehr beliebtes, Verfahren ist auch die Gewichtung von Features. Hier ist TF-IDF (Term Frequency - Inverse Document Frequency) ein bekanntes Verfahren. TF–IDF gewichtet Wörter so, dass häufige, aber wenig informative Wörter abgewertet und seltene, für einzelne Dokumente charakteristische Wörter aufgewertet werden. Je nach Algorithmus, erhöht das sehr oft die Güte eines Klassifikationsmodells. Trimming entfernt Wörter, TF-IDF gewichtet Wörter.</p>
+<p>Abschliessend wird der Feature-Raum der Test-Daten noch auf den Feature-Raum der Trainingsdaten limitiert. Da das Modell nur die Wörter (d.h. Features) aus den Trainingsdaten kennt, sind weitere andere Features ohne Mehrwert.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>dfm_train <span class="ot">&lt;-</span> <span class="fu">dfm_trim</span>(dfm_train, <span class="at">min_docfreq =</span> <span class="dv">5</span>) <span class="co">#Wir behalten nur Wörter, die in mind. 5 Texten vorkommen</span></span>
+<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>dfm_train <span class="ot">&lt;-</span> <span class="fu">dfm_tfidf</span>(dfm_train) <span class="co">#tfidf anwenden</span></span>
+<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-4"><a href="#cb149-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-5"><a href="#cb149-5" aria-hidden="true" tabindex="-1"></a>dfm_test <span class="ot">&lt;-</span> <span class="fu">dfm_match</span>(dfm_test, <span class="fu">featnames</span>(dfm_train))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modellwahl-und-analyse" class="level6">
+<h6 class="anchored" data-anchor-id="modellwahl-und-analyse"><strong>Modellwahl und Analyse</strong></h6>
+<p>Jetzt sind die Vorbereitungen abgeschlossen und wir können mit dem tatsächlichen Training beginnen. Zunächst muss dafür ein Modell gewählt werden. Es gibt viele verschiedene Algorithmen, die auf unterschiedlichen mathematischen Verfahren basieren und entsprechend verschiedene Anwendungsfälle und Vor- und Nachteile haben. Also Sozialwissenschaftlerinnen reicht oft ein grobes Verständnis, sich an der Literatur zu orientieren und/oder verschiedene Modelle auszuprobieren, und zu schauen, welche die besten Resultate erbringen. Wir fokussieren uns auf drei Verfahren:</p>
+<ul>
+<li>Naive Bayes</li>
+<li>Logistische Regression</li>
+<li>Lineare Support Vector Machines (SVM)</li>
+</ul>
+<p>Die ersten beiden Modelle sind in dem Paket quanteda.textmodels enthalten, das haben wir bereits geladen. Für SVM müssen wir ein weiteres Paket laden. Wie so oft geht der Kern des Verfahrens, in dem Fall das Training, sehr schnell bzw. benötigt sehr wenige Zeilen Code. Die folgenden Code Zeilen laden die benötigten Pakete und trainigen die jeweiligen Algorithmen basierend auf den Trainingsdaten.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("e1071")</span></span>
+<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'e1071' wurde unter R Version 4.5.2 erstellt</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Naive Bayes</span></span>
+<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a>model_nb <span class="ot">&lt;-</span> <span class="fu">textmodel_nb</span>(dfm_train, train<span class="sc">$</span>sentiment)</span>
+<span id="cb152-3"><a href="#cb152-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-4"><a href="#cb152-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Logistische Regression</span></span>
+<span id="cb152-5"><a href="#cb152-5" aria-hidden="true" tabindex="-1"></a>model_lr <span class="ot">&lt;-</span> <span class="fu">textmodel_lr</span>(</span>
+<span id="cb152-6"><a href="#cb152-6" aria-hidden="true" tabindex="-1"></a>  dfm_train,</span>
+<span id="cb152-7"><a href="#cb152-7" aria-hidden="true" tabindex="-1"></a>  train<span class="sc">$</span>sentiment)</span>
+<span id="cb152-8"><a href="#cb152-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-9"><a href="#cb152-9" aria-hidden="true" tabindex="-1"></a><span class="co">#SVM </span></span>
+<span id="cb152-10"><a href="#cb152-10" aria-hidden="true" tabindex="-1"></a>x_train <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(dfm_train) <span class="co">#SVM braucht Daten nochmal in einem anderen Format</span></span>
+<span id="cb152-11"><a href="#cb152-11" aria-hidden="true" tabindex="-1"></a>x_test  <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(dfm_test)</span>
+<span id="cb152-12"><a href="#cb152-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-13"><a href="#cb152-13" aria-hidden="true" tabindex="-1"></a>model_svm <span class="ot">&lt;-</span> <span class="fu">svm</span>( <span class="co">#dieser Prozess dauert einige Sekunden</span></span>
+<span id="cb152-14"><a href="#cb152-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> x_train,</span>
+<span id="cb152-15"><a href="#cb152-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> train<span class="sc">$</span>sentiment,</span>
+<span id="cb152-16"><a href="#cb152-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">kernel =</span> <span class="st">"linear"</span>,</span>
+<span id="cb152-17"><a href="#cb152-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">cost =</span> <span class="dv">1</span>,</span>
+<span id="cb152-18"><a href="#cb152-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="cn">FALSE</span></span>
+<span id="cb152-19"><a href="#cb152-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Jetzt haben wir mit wenig Code bereits drei ganz unterschiedliche Modelle trainiert. Dabei wurden jeweils nur die Trainingsdaten verwendet. Als nächstes wollen wir testen, wie gut das Training funktioniert hat. Dazu wenden wir unsere trainierten Modelle auf unsere Testdaten an, die dafür zurück gehalten wurden.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Naive Bayes</span></span>
+<span id="cb153-2"><a href="#cb153-2" aria-hidden="true" tabindex="-1"></a>pred_nb  <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_nb, dfm_test)</span>
+<span id="cb153-3"><a href="#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Logistische Regression</span></span>
+<span id="cb153-4"><a href="#cb153-4" aria-hidden="true" tabindex="-1"></a>pred_lr <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_lr, dfm_test)</span>
+<span id="cb153-5"><a href="#cb153-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SVM</span></span>
+<span id="cb153-6"><a href="#cb153-6" aria-hidden="true" tabindex="-1"></a>pred_svm <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_svm, x_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="evaluation" class="level6">
+<h6 class="anchored" data-anchor-id="evaluation"><strong>Evaluation</strong></h6>
+<p>Im letzten Schritt wollen wir nun schauen, wie die jeweiligen Modelle abgeschnitten haben. Hierfür ist nochmal wichtig, sich klar zu machen, was eigentlich unser Ziel ist. Wir haben Texte, die wir in “positives” und “negatives” Sentiment unterscheiden wollen. Es gibt daher vier Fälle wie eine Klassifikation ausfallen kann. Sie kann auf zwei Arten richtig sein und auf zwei Arten falsch. Die richtigen beiden Fälle wären, wenn das Modell “positive” Texte korrekt als solche identifiziert und genauso “negative” Texte korrekt aus negative. Die umgekehrte Logik gilt für die fehlerhaften Klassifizierungen: falsch ist, wenn “positive” Texte als negativ und “negative” Texte als positiv klassifiziert werden. Wir können uns das einmal anschauen, wie die Ergebnisse für das erste Modell aussehen. Das geht wie folgt:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>cm_nb <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Klassifikation =</span> pred_nb, Tatsächlich <span class="ot">=</span> test<span class="sc">$</span>sentiment)</span>
+<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>cm_nb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Tatsächlich
+Klassifikation neg pos
+           neg 169  49
+           pos  23 159</code></pre>
+</div>
+</div>
+<p>Wir sehen hier eine sogenannte Confusion-Matrix (Kontingenztafel). In ihr wird angezeigt, wie die tatsächlichen Werte von dem Algorithmus klassifiziert wurden. Wir sehen dass in 169 Fällen Texte, die tatsächlich (also gemäss unserem manuell codierten Gold-Standard) negativ sind, von dem Modell auch korrekt als negativ eingestuft wurden. Bei 23 anderen Texten, die eigentlich tatsächlich auch negativ sind, hat das Modell fälschlicherweise eine Einstufung als positiv gemacht. Für die Fälle, die tatsächlich positiv sind, hat das Modell für 159 Texte korrekt entschieden, dass sie positiv sind. In 49 Fällen hat es hier einen Fehler gemacht und die eigentlich positiven Texte als negativ klassifiziert. Für die Texte, die tatsächlich positiv sind, werden also mehr Fehler gemacht. Oder anders rum, das Modell hat eine Tendenz, Texte als negativ zu klassifizieren.</p>
+<p>Schauen wir uns an, wie die beiden anderen Modelle abgeschnitten haben.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>cm_lr <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Klassifikation =</span> pred_lr, Tatsächlich <span class="ot">=</span> test<span class="sc">$</span>sentiment)</span>
+<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a>cm_lr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Tatsächlich
+Klassifikation neg pos
+           neg 150  29
+           pos  42 179</code></pre>
+</div>
+</div>
+<p>Hier erkennen wir dass das Modell etwas mehr Fehler bei den Texten macht, die tatsächlich negativ sind. Oder auch wieder anders ausgedrückt, das Modell hat eine Tendenz, Texte als positiv zu klassifizieren. Zuletzt schauen wir uns die Ergebnisse von SVM an.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>cm_svm <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Klassifikation =</span> pred_svm, Tatsächlich <span class="ot">=</span> test<span class="sc">$</span>sentiment)</span>
+<span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a>cm_svm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Tatsächlich
+Klassifikation neg pos
+           neg 166  32
+           pos  26 176</code></pre>
+</div>
+</div>
+<p>Hier sehen wir insgesamt weniger Fehler und das Fehlerbild ist auch ausgeglichener. Um die Leistung der jeweiligen Modelle einfacher vergleichen zu können, gibt es verschiedene Metriken. Eine sehr einfache ist die Accuracy (Genauigkeit). Hier rechnet man schlicht: Anzahl der korrekten Vorhersagen / alle Vorhersagen. Also zum beispiel händisch für die unterste Confusion Matrix: (166+176)/400 = 0.855. Das geht auch per Code für alle drei Modelle:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Naive Bayes</span></span>
+<span id="cb160-2"><a href="#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">diag</span>(cm_nb)<span class="sc">/</span><span class="fu">sum</span>(cm_nb))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.82</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Logistic Regression</span></span>
+<span id="cb162-2"><a href="#cb162-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">diag</span>(cm_lr)<span class="sc">/</span><span class="fu">sum</span>(cm_lr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8225</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SVM</span></span>
+<span id="cb164-2"><a href="#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">diag</span>(cm_svm)<span class="sc">/</span><span class="fu">sum</span>(cm_svm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.855</code></pre>
+</div>
+</div>
+<p>Accuracy ist aber oft kein guter Wert um die Leistung und Güte von Modellklassifikationen anzugeben. Wenn die Klassen gleich verteilt sind, hätte auch ein sehr sehr dummes Modell, dass immer die gleiche Antwort gibt, eine Accuracy von 50%. Wenn die Klassen nicht gleich verteilt sind, kann die Accuracy sogar deutlich höher liegen, obwohl das Modell quasi komplett unfähig ist. Denkt an die Erkennung von Spamemails. Es ist schon lange so, dass die meisten Emails Spam sind und von Spamfiltern ausgefiltert werden. Nehmen wir an, dass 90% aller Emails Spam sind und 10% echte und wichtige Emails. Wenn der Spamfilter ALLE Emails als Spam klassifizieren würde, hätte er eine Accuracy von 90%, was ja recht gut klingt, würde aber faktisch komplett nutzlos sein. Die richtige Wahl der Evaluationsmetrik ist daher sehr wichtig, da sie je nach Kontext komplett nichtssagend und irreführend sein könnte. Hier muss man genau aufpassen.</p>
+<p>Auch die Unterscheidung der Fehler ist je nach Anwendungsfall sehr wichtig, da die beiden Fehler unterschiedlich relevant sein können. Stellt euch einen medizinischen Anwendungsfall vor, den ihr vermutlich gut kennt: Basierend auf einem Covid-Test entscheidet sich, ob jemand in Quarantäne muss. Wenn der Patient tatsächlich Covid hat, wollen wir das unbedingt wissen, damit der Patient isoliert werden kann und niemanden ansteckt. Hingegen ist es nicht sooo schlimm, wenn der andere Fehler unterläuft: Wenn jemand eigentlich kein Covid hat aber doch in Quarantäne muss. Das ist zwar unangenehm und nervig, im Zweifel aber nicht lebensbedrohlich. Das heisst, hier wäre es gut, wenn das Modell sehr sensitiv ist, das heisst, die Fälle die uns interessieren (in dem Fall Covid) auch zuverlässig erkennt. Je nach Anwendungsfall müsst ihr überlegen welche Fehler für euch gewichtiger sind und welche Metrik dann am relevantesten ist. Für viele binäre Klassifikationsprobleme sind Precision und Recall, beziehungsweise F1, das harmonische Mittel aus Precision und Recall, relevante Metriken. Mehr Informationen zu Grundlagen hierzu findet ihr <a href="https://de.wikipedia.org/wiki/Beurteilung_eines_bin%C3%A4ren_Klassifikators">hier</a>. F1 Werte ab 0.8 gelten als brauchbar. Es gibt auch Pakete in R mit denen ihr eine ganze Reihe von Metriken direkt ausrechnen. Zum Beispiel:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("caret")</span></span>
+<span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'caret' wurde unter R Version 4.5.2 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: lattice</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>cm_svm  <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_svm, test<span class="sc">$</span>sentiment)</span>
+<span id="cb170-2"><a href="#cb170-2" aria-hidden="true" tabindex="-1"></a>cm_svm <span class="co">#gibt verschiedene Metriken</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction neg pos
+       neg 166  32
+       pos  26 176
+                                         
+               Accuracy : 0.855          
+                 95% CI : (0.8166, 0.888)
+    No Information Rate : 0.52           
+    P-Value [Acc &gt; NIR] : &lt;2e-16         
+                                         
+                  Kappa : 0.7099         
+                                         
+ Mcnemar's Test P-Value : 0.5115         
+                                         
+            Sensitivity : 0.8646         
+            Specificity : 0.8462         
+         Pos Pred Value : 0.8384         
+         Neg Pred Value : 0.8713         
+             Prevalence : 0.4800         
+         Detection Rate : 0.4150         
+   Detection Prevalence : 0.4950         
+      Balanced Accuracy : 0.8554         
+                                         
+       'Positive' Class : neg            
+                                         </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a>cm_svm<span class="sc">$</span>byClass[<span class="st">"F1"</span>] <span class="co">#gibt F1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       F1 
+0.8512821 </code></pre>
+</div>
+</div>
+<p>Damit sind wir am Ende der Analyse. Wie wir sehen, haben wir ein gutes Ergebnis erzielt und könnten das Modell bzw. den Algorithmus, den wir trainiert nun auch auf Filmrezensionen anwenden, um diese in positives oder negatives Sentiment zu klassifizieren.</p>
+</section>
+<section id="anwendung-auf-neue-daten" class="level6">
+<h6 class="anchored" data-anchor-id="anwendung-auf-neue-daten"><strong>Anwendung auf neue Daten</strong></h6>
+<p>Neue Texte, die durch den trainierten Algorithmus klassifiziert werden sollen, müssen in gleicher Weise vorverarbeitet werden wie die Trainings- und Testdaten. Dazu gehören Tokenisierung, Entfernung von Satzzeichen und ggf. Stoppwörtern, die Darstellung als Dokument-Feature-Matrix sowie – falls verwendet – Trimming und die Projektion auf den durch die Trainingsdaten definierten Feature-Raum. Anschließend kann das trainierte Modell auf diese Daten angewandt werden, z.B. <code>pred_new &lt;- predict(model_nb, dfm_neue_texte)</code> In pred_new sind dann die Klassifikationen gemäss dem Modell enthalten.</p>
+</section>
+<section id="wichtige-anmerkungen" class="level6">
+<h6 class="anchored" data-anchor-id="wichtige-anmerkungen"><strong>Wichtige Anmerkungen</strong></h6>
+<p>Das Verfahren, das ich euch heute vorgestellt habe, ist eine sehr vereinfachte Darstellung des Ganzen. Hier noch ein paar kurze und rein konzeptionelle Anmerkungen die wichtig sind, um das ganze korrekt einordnen und verstehen zu können.</p>
+<p><strong>Wichtig:</strong> Im Zusammenhang von Klassifikationsaufgaben wird in Bezug auf die Resultate oft von True-Positives und False-Positives sowie True-Negatives und False-Negatives gesprochen. Eine Klasse, meist die, die uns mehr interessiert, wird dabei als positive bezeichnet. Das ist letztlich Definitionssache und kommt auf die Perspektive an. Bei der Spam-Erkennung wären die Spam-Emails unsere Positives, da wir diese entdecken und rausfiltern wollen. Bei der Covid-Analyse wäre der Fall “jemand hat Covid” der Positive Fall. (Achtung: Bei unserer Sentimentanalyse verwenden wir die Kategorien “positiv” und “negativ”. Das hat in dem Fall nichts miteinander zu tun uns ist sprachlicher Zufall. Wir könnten unsere zwei Kategorien auch “Äpfel” und “alles andere” nennen. In dem Fall wären unsere Äpfel die Klasse, die uns interessiert. Wenn ein Modell korrekt einen Apfel als Apfel identifiziert, würden wir von einem True-Positive sprechen).</p>
+<p><strong>Wichtig:</strong> Der motivierte Mensch könnte nun interessiert sein, die Performance der Modelle noch weiter zu erhöhen, was durchaus möglich ist. So könnte es sein, dass die Modelle besser funktionieren, wenn wir Stopwords nicht entfernen, oder wenn wir beim Trimming anders vorgehen und viele andere Möglichkeiten (siehe auch: Finetuning und n-grams). Allerdings können wir die Performance solcher nachträglich angepasster Modelle nicht mehr valide evaluieren, da keine unabhängigen Testdaten mehr zur Verfügung stehen. Würden wir das neue Modell auf den gleichen Testdaten validieren, würden wir sog. Overfitting riskieren. Das bedeutet, dass wir damit Gefahr laufen, das Training so lange zu optimieren, bis es ganz genau auf die zufälligen Besonderheiten unserer Testdaten passt, ohne dass damit aber eine Generalisierbarkeit des Modells gegeben ist. Das heisst, andere Daten könnten wir womöglich damit tatsächlich sogar schlechter vorhersagen als zuvor. Das würde die Validität unserer Analyse stark kompromittieren. Stellt euch auch hier wieder eine Klausurensituation vor. Wenn ihr die Lösungen nur auswendig lernt, seid ihr bei dieser spezifischen Klausur vermutlich wahnsinnig gut. Aber tatsächlich habt ihr kein wirkliches Verständnis erlernt und würdet bereits bei einer kleinen Variation oder einer anderen Klausur vermutlich sehr schlecht abschneiden. Es gibt allerdings Wege, dennoch mehr Spielraum zu haben um zu schauen, welche Spezifikationen und Preprocessing am geeignetesten ist. Das Stichwort hierfür ist Cross-Validation.</p>
+</section>
+</section>
+<section id="vergleich-lexikon-vs.-sml" class="level2">
+<h2 class="anchored" data-anchor-id="vergleich-lexikon-vs.-sml">Vergleich: Lexikon vs.&nbsp;SML</h2>
+<p>Wir wollen nun schauen, wie die beiden bereits behandelten Verfahren im Vergleich abschneiden. Die Performance des überwachten maschinellen Lernens haben wir ja eben ausgerechnet. Fehlt noch, wie das lexikonbasierte Verfahren einer Sentimentanalyse bei diesen Daten abschneidet.</p>
+<p>Wir verwenden erneut das Sentiment-Lexikon, das bereits in Quanteda enthalten ist und wenden es auf unsere Testdaten an (da wir im lexikonbasierten Verfahren keine Trainingsdaten brauchen, könnten wir das Lexikon auch auf alle Texte anweden. Das würde aber die Vergleichbarkeit zu oben einschränken):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>dfm_lex <span class="ot">&lt;-</span> <span class="fu">dfm</span>(toks_test) <span class="sc">|&gt;</span></span>
+<span id="cb174-2"><a href="#cb174-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_lookup</span>(data_dictionary_LSD2015)</span>
+<span id="cb174-3"><a href="#cb174-3" aria-hidden="true" tabindex="-1"></a>dfm_lex</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 400 documents, 4 features (50.06% sparse) and 0 docvars.
+       features
+docs    negative positive neg_positive neg_negative
+  text1       13        7            0            0
+  text2       17       18            0            0
+  text3       35       21            0            0
+  text4       65       23            0            0
+  text5       37       25            0            0
+  text6       20       26            0            0
+[ reached max_ndoc ... 394 more documents ]</code></pre>
+</div>
+</div>
+<p>Was fällt uns auf, im Vergleich zur Klassifikation?</p>
+<p>Bei der Klassifikation hatten wir direkt ein binäres Ergebnis: Ein Text war entweder “positive” oder “negative” vom Sentiment. Nun haben wir zwei Ergebnisspalten (bzw. vier, wenn man die Negationen mitberücksichtigt) und müssen das Ergebnis erstmal interpretieren bzw. abstrahieren, wenn wir es auf nur zwei Kategorien runterbrechen wollen.</p>
+<p><strong>Wichtig</strong>: das bedeutet nicht, dass das eine besser oder schlechter ist. Es sind unterschiedliche Verfahren, die unterschiedliches leisten; mit unterschiedlichen Stärken und Schwächen sowie Anwendungsgebieten.</p>
+<p>Eine Möglichkeit wäre, die Texte als positiv zu klassifizieren, wenn die Anzahl der positiven Treffer, die der negativen übersteigt. Das ist aber nicht gottgegeben, sondern eine Entscheidung, die auch kritisiert werden kann. Andere Entscheidungen würden zu anderen Ergebnissen führen. Ausserdem, was passiert, wenn positive und negativ gleich ausgeprägt sind. Eine “neutral” Kategorie existiert in diesem Szenario nicht. (Beachtet ausserdem, dass ich die Negationen hier komplett missachte)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb176"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a>sentiment_score <span class="ot">&lt;-</span> dfm_lex[, <span class="st">"positive"</span>] <span class="sc">-</span> dfm_lex[, <span class="st">"negative"</span>]</span>
+<span id="cb176-2"><a href="#cb176-2" aria-hidden="true" tabindex="-1"></a>sentiment_lex <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sentiment_score <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"pos"</span>, <span class="st">"neg"</span>)</span>
+<span id="cb176-3"><a href="#cb176-3" aria-hidden="true" tabindex="-1"></a>sentiment_lex <span class="ot">&lt;-</span> <span class="fu">factor</span>(sentiment_lex, <span class="at">levels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>sentiment)) <span class="co">#diese Zeile ist nur notwendig, damit die Daten für den nächsten Befehl im richtigen Format sind </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Hier habe ich jetzt festgelegt, dass Texte, die ausgeglichen sind, als “negative” gewertet werden. Das ist in dem Fall eine beliebige Entscheidung und wird die Ergebnisse wahrscheinlich beeinflussen (zumindest wenn es viele davon gibt). In so einem Fall sollte man in den Limitationen darauf hinweisen oder noch besser, auch die Alternative berechenn und schauen, ob sich die Endergebnisse stark unterscheiden.</p>
+<p>In jedem Fall können wir nun aber auch hier eine Confusion-Matrix ausgeben lassen und gewünschte Metriken berechnen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a>cm_lexikon <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(sentiment_lex, test<span class="sc">$</span>sentiment)</span>
+<span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a>cm_lexikon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction neg pos
+       neg 127  58
+       pos  65 150
+                                          
+               Accuracy : 0.6925          
+                 95% CI : (0.6447, 0.7374)
+    No Information Rate : 0.52            
+    P-Value [Acc &gt; NIR] : 1.734e-12       
+                                          
+                  Kappa : 0.3831          
+                                          
+ Mcnemar's Test P-Value : 0.5885          
+                                          
+            Sensitivity : 0.6615          
+            Specificity : 0.7212          
+         Pos Pred Value : 0.6865          
+         Neg Pred Value : 0.6977          
+             Prevalence : 0.4800          
+         Detection Rate : 0.3175          
+   Detection Prevalence : 0.4625          
+      Balanced Accuracy : 0.6913          
+                                          
+       'Positive' Class : neg             
+                                          </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a>cm_lexikon<span class="sc">$</span>byClass[<span class="st">"F1"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       F1 
+0.6737401 </code></pre>
+</div>
+</div>
+<p>Wir sehen, dass unser lexikonbasierter Ansatz (mit den Schritten die wir danach gewählt haben) eine geringere Accuracy und auch einen geringeren F1 Score haben, als die Resultate, die auf unseren supervise machine learning Modellen basieren.</p>
 </section>
 
 </main>

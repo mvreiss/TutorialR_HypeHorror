@@ -13,7 +13,7 @@ title-block-banner-color: "white"
 editor: visual
 css: styles.css
 author: "Michael V. Reiss"
-date: "January 07, 2026"
+date: "January 14, 2026"
 ---
 
 <br>
@@ -772,7 +772,7 @@ result
 
 Wir bekommen sowohl für das positive, als auch für das negative Lexikon jeweils Treffer. Wie kann das sein? Nun, erneut enthalten die Listen viele Wörter und teils überschneiden sich deutsche und englische Wörter schlicht. Die englische Form "abstrus" existiert beispielsweise auch im deutschen. Manchmal ist die Bedeutung ähnlich oder gleich, wie z.B. bei "abstrus", teils aber auch sehr unterschiedlich (Stichwort False Friends), wie z.B. bei "fatal" oder "liberal". Die Ergebnisse dieser Analyse sind also nicht glaubhaft und haben eine äusserst geringe Validität. Nur weil wir ein Ergebnis haben, ist es nicht automatisch richtig oder das Verfahren korrekt durchgeführt.
 
-###### **Eigenes Dictionary erstellen** 
+###### **Eigenes Dictionary erstellen**
 
 Nun wollen wir statt einem bereits existierenden Lexikon ein eigenes erstellen. Die Grundlogik, was R betrifft, ist sehr ähnlich. Der Hauptunterschied ist, logischerweise, dass wir anstatt ein bestehendes zu nutzen, nun ein eigenes erstellen. Das ist theoretisch anspruchsvoll und bedarf grosser Sorgfalt. Ihr solltet genau überlegen ob die Wörter relevant und gut gewählt sind und ob ihr alle Nuancen bedacht habt. Idealerweise prüft ihr das auch nochmals (Validierung im Team, mit Freunden, etc.). Was die Erstellung in R angeht, ist es denkbar einfach:
 
@@ -869,3 +869,274 @@ data %>% group_by(outlet) %>% summarise(mean_value = mean(eigene_negativität))
 ```
 
 Mit dem eigenen Lexikon ist die Tagesschau nicht mehr Spitzenreiter bei der Negativität ihrer Texte, die Texte von Zeit Online weisen nun eine höhere Negativität auf. Das ist ein recht stark anderes Ergebnis als zuvor.
+
+## Überwachtes maschinelles Lernen als Ansatz für die Inhaltsanalyse
+
+**14. Januar 2026**
+
+Beim überwachten maschinellen Lernen (auch supervised machine learning SML) geht es darum, das ein Algorithmus basierend auf codierten Beispieltexten statistische Muster in Texten erkennt. Dieses erlernte Wissen kann dann auf weitere Texte, die nicht codiert sind, angewandt werden. Der Kern dieses Verfahrens gleicht in weiten Teilen der klassischen manuellen Inhaltsanalyse. Relevante Teile dessen, was heute vorgestellt wird, habt ihr also bereits gemacht. Es gibt aber einen Entscheidenden unterschied: Dieses Verfahren lässt sich, ähnlich wie das lexikonbasierte Verfahren, aber im Gegensatz zur manuellen Inhaltsnalayse leicht auf mehrere Millionen Texte skalieren.
+
+Konzeptionell kann man sich das wie folgt vorstellen. Der Computer hat noch nie eine Katze gesehen. Ihr zeigt ihm nun 20 Bilder von Katzen und sagt ihm, dass es sich hierbei um eine Katze handelt. Basierend auf diesen 20 Fotos lernt der Computer nun was eine Katze ist und kann in Zukunft eingeständig Katzen erkennen. (Tatsächlich lernt der Computer nicht, was eine Katze ist, sondern lernt nur, statistische Muster in den Bildern, die häufig mit dem Label Katze zusammen auftreten).
+
+Zentral hierbei ist, dass grössere Mengen an zuverlässig codierten Beispielen existieren, die der Computer nutzen kann, um die Muster valide und reliabel zu erkennen. Da der Algorithmus auf den Beispielen quasi trainiert wird, nennt man diese Daten auch *Trainingsdaten*.
+
+Bei den Trainingsdaten handelt es sich um einen Ausschnitt aus euren Gesamtdaten. Stellt euch folgendes Szenario vor: Ihr habt mehrere Millionen Social Media Posts zu einem Thema (z.B. Politik oder zu einem Produkt) und wollt analysieren, welche davon positiv, neutral oder negativ sind. Händisch wäre das nicht leistbar. Für SML nehmen wir nun wenige Tausend dieser Social Media Posts (z.B. eine Zufallsauswahl der Gesamtstichprobe) und nutzen diese Teilmenge unserer Gesamtdaten. Um den Computer nun aber zu trainieren, müssen wir die Texte dieser Teilmenge in die gewünschten Kategorien codieren (auch: labeln). Wir müssen dem Computer schliesslich erstmal beibringen, bei welchem Text es sich um einen negativen oder einen positiven Text handelt.
+
+Wir entwickeln nun also ein Codebuch und codieren alle Texte händisch in die gewünschten Kategorien. Das haben wir schon gelernt und entspricht soweit erstmal der klassischen Inhaltsanalyse. Wenn wir jeden Text zuverlässig in negativ, neutral und positiv unterteilt haben, können wir dem Computer unsere Ergebnisse zeigen. Dieser lernt dann die Muster zwischen den Texten und ihren Labels und kann dann - idealerweise - zukünftig eigenständig und zuverlässig bei den restlichen Social Media Posts einschätzen, ob diese positiv, neutral oder negativ sind.
+
+Wichtig dabei ist auch, dass wir dem Algorithmus nicht nur zeigen was wir wollen, sondern auch zeigen, was wir nicht wollen. In unserem Katzenbeispiel wäre es z.B. sinnvoll, dem Computer auch Bilder von Hunden zu zeigen, damit er besser lernt, zwischen Hunden und Katzen zu unterscheiden; die sehen sich ja zumindest sehr ähnlich. In unserem Beispiel mit den Social Media Posts: Es könnte ja sein, dass euer Chef nur an negativen Kommentaren zu eurem Produkt interessiert ist, er will schliesslich wissen, was er besser machen kann. Es wäre jetzt allerdings nicht sinnvoll, dem Algorithmus nur negative Kommentare zu zeigen. Vielmehr wäre die Präzision zur Erkennung von negativen Kommentaren viel höher, wenn ihr ihm auch neutrale und positive Kommentare beibringt.
+
+Wir könnten dafür auch ein lexikonbasiertes Verfahren nutzen. Allerdings hatten wir ja gelernt, dass diese Verfahren recht eingeschränkte Validität besitzen. SML erzielt hier häufig bessere Ergebnisse, da das Verfahren des "Lernens" auch komplexere Muster erkennen kann, die ein Lexikon an und über seine Grenzen bringt.
+
+Aber auch SML kommt mit Nachteilen. Zum einen erfordert es oft eine grossere Menge manuell codierter Trainingsdaten. Genau wie das Erstellen eines guten Lexikons kann das sehr zeitaufwendig sein. Zum anderen ist das Modell immer maximal so gut wie die menschlische Codierung der Trainingsdaten, auf denen das Modell/der Algorithmus beruht. Wenn die Trainingsdaten eine geringe Qualität haben, also z.B. sehr unzuverlässig codiert wurden, kann der Algorithmus keine klaren Muster erlernen und hat dann (ebenso) nur eine geringe Validität. Genauso kann es sein, dass die Anzahl an Trainingstexten noch nicht ausreicht, dass der Algorithmus die Muster zuverlässig gelernt hat. Zuletzt kann es aber auch sein, dass der Algorithmus auch bei perfekten Trainingsdaten noch (zu) viele Fehler macht. Um das zu prüfen, muss der Algorithmus stets auf seine Validität getestet werden. Wie immer ist das ein sehr zentraler Punkt, wir gehen am Ende auf ihn ein.
+
+**Wichtig Vorweg, um Entäuschungen zu vermeiden**. Für ein robustes, d.h. gut funktionierendes SML braucht man meist mindestens mehrere hundert, oft tausend Texte als Trainingsbasis. In euren Daten habt ihr dafür nicht genug. In aller Regel wird die Analyse daher bei euch nicht gut funktionieren. Da wir hier in einem Lernsetting sind, ist das für eure Seminararbeit gar kein Problem! Ihr sollt nur wissen, wie ihr das Verfahren prinzipiell anwendet. Das ist aber der Grund, warum ich SML für euch und eure Seminararbeit nicht empfehle. Es reicht aus, wenn ihr ein Lexikonbasierten Ansatz nutzt.
+
+Hier will ich es euch allerdings gerne "richtig" zeigen und dafür nutzen wir einen grossen Datensatz. Wir arbeiten also nicht mit dem bisherigen Datensatz, der ja auch nur aus 15 Texten bestand, sondern nutzen Daten, die schon verfügbar sind. [Konkret nutzen wir einen Datensatz, in dem 2000 Film-Bewertungen gesammelt sind.](https://www.cs.cornell.edu/people/pabo/movie-review-data/) Dieser Datensatz ist bei Quanteda schon integriert, bzw. in einem Schwester-Paket von quanteda, das wir zunächst auf die bekannte Art laden müssen.
+
+```{r}
+#install.packages("quanteda.textmodels")
+library(quanteda.textmodels)
+library(quanteda)
+```
+
+Jetzt können wir den gewünschten Datensatz einlesen. Dieser heisst `data_corpus_moviereviews` und wir weisen ihn dem Object `data_movie` zu, welches rechts in unserem environment dann auftaucht.
+
+```{r}
+data_movie <- data_corpus_moviereviews
+```
+
+Per `data(package = "quanteda")` oder `data(package = "quanteda.textmodels")` können wir übrigens sehen, welche sonstigen Daten in den beiden Paketen enthalten sind.
+
+Wenn wir uns als nächstes unsere Daten anschauen, sehen wir, dass das Format etwas komisch bzw. ungewohnt ist. Es liegt nicht als gewohnte Tabelle vor. Wenn wir `summary()` nutzen, bekommen wir trotzdem einen Überblick. Wir sehen jetzt, dass die Texte in einzelnen Dateien liegen, ansonsten sieht es schon recht vertraut aus. Mit einem einfachen Befehl, bekommen wir bei quanteda die Texte aber auch wieder direkt in die Tabelle, wie wir es bereits aus unserem kleinen Beispieldatensatz kennen.
+
+```{r}
+data_movie
+summary(data_movie)[1:5,] #zeigt nur die ersten 5 Zeilen an
+data <- convert(data_movie, to = "data.frame") 
+View(data)
+```
+
+Wir sehen hier jetzt die Texte in der entsprechenden Spalte und das zugeordnete Sentiment, entweder pos oder neg in der nächsten Spalte. Die Spalten "doc_id" und "id1" sowie "id2" sind lediglich Zeilen zur Identfikation und für uns nicht zentral.
+
+Wichtig ist, dass wir nun davon ausgehen, dass die angebenen Sentiments das finale Urteil von menschlichen Codierern sind. Das heisst, wir befinden uns jetzt bereits an einem Zeitpunkt, wo das Codebuch und die Codierung der Texte durch mehrere Menschen bereits stattgefunden hat. Zudem wurde die Intercoder-Reliabilität bestimmt (und für gut befunden) und - falls es Widersprüche in den Wertungen der einzelnen Codierer gab - die finale Wertung für jeden Text festgelegt. Diese finale Wertung ist in der Spalte "sentiment" als "pos" or "neg" festgehalten. 1000 Texte haben das Sentiment "pos" und 1000 das Sentiment "neg". Diese Wertungen sind unser **Gold-Standard**, der Massstab, anhand dessen wir den Computer und dessen automatische Kategorisierungen messen.
+
+```{r}
+table(data$sentiment) #wir sehen, es sind tatsächlich je 1000 Texte
+```
+
+Ausserdem ist wichtig zu verstehen, dass die 2000 codierten Texte die jetzt in diesem Datensatz sind in der Realität nicht alle unsere Daten sind. Das sind nur die Daten, die wir händisch codiert haben und dafür nutzen, einen Algorithmus zu trainieren, der dann für alle ähnlichen Probleme nutzbar ist. Das heisst, wir nutzen diese 2000 Texte um damit in Zukunft viel viel grössere Datensätze zu klassifizieren. Hier sind es ja beispielsweise Rezensionen zu Filmen. Wenn wir aber wieder in unserem Beispiel mit den Social Media Posts sind, ist gut vorstellbar, dass eine Firma viele tausende Kommentare erhalten hat. Auch in diesem Fall würdet ihr euren Algorithmus auf einer verhältnismässig kleinen Menge an Texten trainieren, die ihr vorher händisch codiert habt. Wenn das passiert ist und gut funktioniert hat, könnt ihr dann in der Folge kinderleicht alle anderen tausende Posts klassifizieren; das müsst ihr dann nicht mehr per Hand machen und genau dafür ist automatisierte Inhaltsanalyse da. Sie erlaubt es gigantische Textmengen analysieren zu können.
+
+###### **Train / Test-Split**
+
+Damit das passiert, also der Computer die Texte automatisiert (in diesem Beispiel) in negativ und positiv einordnen kann, müssen wir ihn trainieren. Während des Trainings lernt er was er machen soll, für welche Zuordnungen er in den Texten Muster erkennen soll. Hierfür verwenden wir allerdings nicht alle Texte. Ein paar Texte behalten wir aussen vor, damit wir nach den Computer nach dem Training auch richtig testen können. Wenn wir ihm alle Texte zum Training geben, hat er auch die Testfälle schon gesehen und kennt die Lösung schon. Das wäre in etwa so, wie wenn ihr beim Lernen für eine Matheklausur nicht nur Altklausuren bekommt, sondern auch die tatsächliche neue Klausur bereits mit erhaltet. Das würde natürlich das Ergebnis bei der Klausur dann massiv verfälschen. Gelernt wird also auf einem Großteil der Daten, meist 70% oder 80%. Die restlichen Daten werden zum Testen zurück gehalten, wir brauchen sie später nochmal.
+
+```{r}
+set.seed(1) #googelt mal, wenn euch interessiert, was dieser Befehl bewirkt und warum wir ihn nutzen
+
+library(dplyr) #für die folgenden zwei Befehle, benötigen wir dieses Paket
+
+train <- data %>% slice_sample(prop = 0.8)
+test <- anti_join(data, train)
+```
+
+Wir haben nur 80% der Texte aus `data` randomisiert dem Objekt `train` zugewiesen. In der letzten Zeile haben wir alle übrigens Texte dem Objekt `test` zugewiesen.
+
+###### **Preprocessing**
+
+Jetzt wollen wir die Texte vorbearbeiten (meist preprocessing genannt). Diesen Schritt kennen wir bereits in Grundzügen. Hier können Stopwords entfernt werden, Punkte und andere Dinge, die uns in der Regel nicht interessieren. Hier ist diese Vorbearbeitung aus zwei Gründen wichtiger als bisher. Da die Abläufe komplexer sind und es daher bei vielen Texten teilweise recht lange dauern kann, sparen wir Zeit, wenn wir unnötige Informationen entfernen. Zudem wird die Qualität und Güte der Klassifikation oft (aber nicht immer) gesteigert, wenn die Daten vereinfacht bzw. auf das Wesentliche reduziert sind.
+
+Die Code in R hierfür ist wie recht weit am Anfang in diesem Tutorial.
+
+```{r}
+toks_train <- tokens(
+  train$text,
+  remove_punct = TRUE,
+  remove_numbers = TRUE
+) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("en"))
+```
+
+Wir haben hier fünf Dinge gemacht. Wir haben alle Punktierungen entfernt, wir haben alle Zahlen entfernt, wir haben alle Wörter klein geschrieben und wir haben alle Stopwords entfernt. Da die Texte auf Englisch sind, haben wir hier natürlich auch die englischen Stopwords entfernt. Ausserdem haben wir ganz generell die Texte in einzelne Wörter, Tokens, ausgesplittet. Diese Wörter oder Tokens sind die Arbeitsgrundlage. Auch das wissen wir bereits von früheren Einheiten.
+
+**Wichtig** Damit die Validierung später korrekt stattfinden kann, d.h. ob das Training gut funktioniert hat, müssen die Testdaten in identischer Weise vorbereitet werden wie die Trainingsdaten.Sonst ist der Vergleich nicht mehr gegeben. Wir machen daher genau das gleiche nochmal für die Testdaten.
+
+```{r}
+toks_test <- tokens(
+  test$text,
+  remove_punct = TRUE,
+  remove_numbers = TRUE
+) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("en"))
+```
+
+Als nächstes werden diese Daten (wieder sowohl train als auch test) nun in ein effizientes Format gebracht, mit dem der Computer gut rechnen kann: Matrizen. Auch das kennen wir bereits. Tokens (also meist Wörter) werden hier Features genannt.
+
+```{r}
+dfm_train <- dfm(toks_train)
+dfm_test  <- dfm(toks_test)
+dfm_test
+```
+
+Nun wird nochmal weiter versucht, unnötige Informationen zu entfernen, um den anschliessenden Trainingsprozess effizienter und idealerweise besser zu gestalten. Hier können wir z.B. Wörter entfernen, die nur in wenigen oder in fast allen Texten vorkommen (diese Wörter sind dann nicht sehr informativ). Als Erinnerung: Wir versuchen ja Texte in positives und in negatives Sentiment zu unterscheiden. Genau wie "und", das vermutlich in beiden Klassen vorkommt, sind sehr selten und sehr häufige Wörter nicht informativ um uns bei der Unterscheidung zu helfen.
+
+Ein weiteres, sehr beliebtes, Verfahren ist auch die Gewichtung von Features. Hier ist TF-IDF (Term Frequency - Inverse Document Frequency) ein bekanntes Verfahren. TF–IDF gewichtet Wörter so, dass häufige, aber wenig informative Wörter abgewertet und seltene, für einzelne Dokumente charakteristische Wörter aufgewertet werden. Je nach Algorithmus, erhöht das sehr oft die Güte eines Klassifikationsmodells. Trimming entfernt Wörter, TF-IDF gewichtet Wörter.
+
+Abschliessend wird der Feature-Raum der Test-Daten noch auf den Feature-Raum der Trainingsdaten limitiert. Da das Modell nur die Wörter (d.h. Features) aus den Trainingsdaten kennt, sind weitere andere Features ohne Mehrwert.
+
+```{r}
+dfm_train <- dfm_trim(dfm_train, min_docfreq = 5) #Wir behalten nur Wörter, die in mind. 5 Texten vorkommen
+dfm_train <- dfm_tfidf(dfm_train) #tfidf anwenden
+
+
+dfm_test <- dfm_match(dfm_test, featnames(dfm_train))
+```
+
+###### **Modellwahl und Analyse**
+
+Jetzt sind die Vorbereitungen abgeschlossen und wir können mit dem tatsächlichen Training beginnen. Zunächst muss dafür ein Modell gewählt werden. Es gibt viele verschiedene Algorithmen, die auf unterschiedlichen mathematischen Verfahren basieren und entsprechend verschiedene Anwendungsfälle und Vor- und Nachteile haben. Also Sozialwissenschaftlerinnen reicht oft ein grobes Verständnis, sich an der Literatur zu orientieren und/oder verschiedene Modelle auszuprobieren, und zu schauen, welche die besten Resultate erbringen. Wir fokussieren uns auf drei Verfahren:
+
+-   Naive Bayes
+-   Logistische Regression
+-   Lineare Support Vector Machines (SVM)
+
+Die ersten beiden Modelle sind in dem Paket quanteda.textmodels enthalten, das haben wir bereits geladen. Für SVM müssen wir ein weiteres Paket laden. Wie so oft geht der Kern des Verfahrens, in dem Fall das Training, sehr schnell bzw. benötigt sehr wenige Zeilen Code. Die folgenden Code Zeilen laden die benötigten Pakete und trainigen die jeweiligen Algorithmen basierend auf den Trainingsdaten.
+
+```{r}
+#install.packages("e1071")
+library(e1071)
+
+#Naive Bayes
+model_nb <- textmodel_nb(dfm_train, train$sentiment)
+
+#Logistische Regression
+model_lr <- textmodel_lr(
+  dfm_train,
+  train$sentiment)
+
+#SVM 
+x_train <- as.matrix(dfm_train) #SVM braucht Daten nochmal in einem anderen Format
+x_test  <- as.matrix(dfm_test)
+
+model_svm <- svm( #dieser Prozess dauert einige Sekunden
+  x = x_train,
+  y = train$sentiment,
+  kernel = "linear",
+  cost = 1,
+  scale = FALSE
+)
+```
+
+Jetzt haben wir mit wenig Code bereits drei ganz unterschiedliche Modelle trainiert. Dabei wurden jeweils nur die Trainingsdaten verwendet. Als nächstes wollen wir testen, wie gut das Training funktioniert hat. Dazu wenden wir unsere trainierten Modelle auf unsere Testdaten an, die dafür zurück gehalten wurden.
+
+```{r}
+#Naive Bayes
+pred_nb  <- predict(model_nb, dfm_test)
+#Logistische Regression
+pred_lr <- predict(model_lr, dfm_test)
+#SVM
+pred_svm <- predict(model_svm, x_test)
+```
+
+###### **Evaluation**
+
+Im letzten Schritt wollen wir nun schauen, wie die jeweiligen Modelle abgeschnitten haben. Hierfür ist nochmal wichtig, sich klar zu machen, was eigentlich unser Ziel ist. Wir haben Texte, die wir in "positives" und "negatives" Sentiment unterscheiden wollen. Es gibt daher vier Fälle wie eine Klassifikation ausfallen kann. Sie kann auf zwei Arten richtig sein und auf zwei Arten falsch. Die richtigen beiden Fälle wären, wenn das Modell "positive" Texte korrekt als solche identifiziert und genauso "negative" Texte korrekt aus negative. Die umgekehrte Logik gilt für die fehlerhaften Klassifizierungen: falsch ist, wenn "positive" Texte als negativ und "negative" Texte als positiv klassifiziert werden. Wir können uns das einmal anschauen, wie die Ergebnisse für das erste Modell aussehen. Das geht wie folgt:
+
+```{r}
+cm_nb <- table(Klassifikation = pred_nb, Tatsächlich = test$sentiment)
+cm_nb
+```
+
+Wir sehen hier eine sogenannte Confusion-Matrix (Kontingenztafel). In ihr wird angezeigt, wie die tatsächlichen Werte von dem Algorithmus klassifiziert wurden. Wir sehen dass in 169 Fällen Texte, die tatsächlich (also gemäss unserem manuell codierten Gold-Standard) negativ sind, von dem Modell auch korrekt als negativ eingestuft wurden. Bei 23 anderen Texten, die eigentlich tatsächlich auch negativ sind, hat das Modell fälschlicherweise eine Einstufung als positiv gemacht. Für die Fälle, die tatsächlich positiv sind, hat das Modell für 159 Texte korrekt entschieden, dass sie positiv sind. In 49 Fällen hat es hier einen Fehler gemacht und die eigentlich positiven Texte als negativ klassifiziert. Für die Texte, die tatsächlich positiv sind, werden also mehr Fehler gemacht. Oder anders rum, das Modell hat eine Tendenz, Texte als negativ zu klassifizieren.
+
+Schauen wir uns an, wie die beiden anderen Modelle abgeschnitten haben.
+
+```{r}
+cm_lr <- table(Klassifikation = pred_lr, Tatsächlich = test$sentiment)
+cm_lr
+```
+
+Hier erkennen wir dass das Modell etwas mehr Fehler bei den Texten macht, die tatsächlich negativ sind. Oder auch wieder anders ausgedrückt, das Modell hat eine Tendenz, Texte als positiv zu klassifizieren. Zuletzt schauen wir uns die Ergebnisse von SVM an.
+
+```{r}
+cm_svm <- table(Klassifikation = pred_svm, Tatsächlich = test$sentiment)
+cm_svm
+```
+
+Hier sehen wir insgesamt weniger Fehler und das Fehlerbild ist auch ausgeglichener. Um die Leistung der jeweiligen Modelle einfacher vergleichen zu können, gibt es verschiedene Metriken. Eine sehr einfache ist die Accuracy (Genauigkeit). Hier rechnet man schlicht: Anzahl der korrekten Vorhersagen / alle Vorhersagen. Also zum beispiel händisch für die unterste Confusion Matrix: (166+176)/400 = 0.855. Das geht auch per Code für alle drei Modelle:
+
+```{r}
+#Naive Bayes
+sum(diag(cm_nb)/sum(cm_nb))
+#Logistic Regression
+sum(diag(cm_lr)/sum(cm_lr))
+#SVM
+sum(diag(cm_svm)/sum(cm_svm))
+```
+
+Accuracy ist aber oft kein guter Wert um die Leistung und Güte von Modellklassifikationen anzugeben. Wenn die Klassen gleich verteilt sind, hätte auch ein sehr sehr dummes Modell, dass immer die gleiche Antwort gibt, eine Accuracy von 50%. Wenn die Klassen nicht gleich verteilt sind, kann die Accuracy sogar deutlich höher liegen, obwohl das Modell quasi komplett unfähig ist. Denkt an die Erkennung von Spamemails. Es ist schon lange so, dass die meisten Emails Spam sind und von Spamfiltern ausgefiltert werden. Nehmen wir an, dass 90% aller Emails Spam sind und 10% echte und wichtige Emails. Wenn der Spamfilter ALLE Emails als Spam klassifizieren würde, hätte er eine Accuracy von 90%, was ja recht gut klingt, würde aber faktisch komplett nutzlos sein. Die richtige Wahl der Evaluationsmetrik ist daher sehr wichtig, da sie je nach Kontext komplett nichtssagend und irreführend sein könnte. Hier muss man genau aufpassen.
+
+Auch die Unterscheidung der Fehler ist je nach Anwendungsfall sehr wichtig, da die beiden Fehler unterschiedlich relevant sein können. Stellt euch einen medizinischen Anwendungsfall vor, den ihr vermutlich gut kennt: Basierend auf einem Covid-Test entscheidet sich, ob jemand in Quarantäne muss. Wenn der Patient tatsächlich Covid hat, wollen wir das unbedingt wissen, damit der Patient isoliert werden kann und niemanden ansteckt. Hingegen ist es nicht sooo schlimm, wenn der andere Fehler unterläuft: Wenn jemand eigentlich kein Covid hat aber doch in Quarantäne muss. Das ist zwar unangenehm und nervig, im Zweifel aber nicht lebensbedrohlich. Das heisst, hier wäre es gut, wenn das Modell sehr sensitiv ist, das heisst, die Fälle die uns interessieren (in dem Fall Covid) auch zuverlässig erkennt. Je nach Anwendungsfall müsst ihr überlegen welche Fehler für euch gewichtiger sind und welche Metrik dann am relevantesten ist. Für viele binäre Klassifikationsprobleme sind Precision und Recall, beziehungsweise F1, das harmonische Mittel aus Precision und Recall, relevante Metriken. Mehr Informationen zu Grundlagen hierzu findet ihr [hier](https://de.wikipedia.org/wiki/Beurteilung_eines_bin%C3%A4ren_Klassifikators). F1 Werte ab 0.8 gelten als brauchbar. Es gibt auch Pakete in R mit denen ihr eine ganze Reihe von Metriken direkt ausrechnen. Zum Beispiel:
+
+```{r}
+#install.packages("caret")
+library(caret)
+
+cm_svm  <- confusionMatrix(pred_svm, test$sentiment)
+cm_svm #gibt verschiedene Metriken
+cm_svm$byClass["F1"] #gibt F1
+```
+
+Damit sind wir am Ende der Analyse. Wie wir sehen, haben wir ein gutes Ergebnis erzielt und könnten das Modell bzw. den Algorithmus, den wir trainiert nun auch auf Filmrezensionen anwenden, um diese in positives oder negatives Sentiment zu klassifizieren.
+
+###### **Anwendung auf neue Daten**
+
+Neue Texte, die durch den trainierten Algorithmus klassifiziert werden sollen, müssen in gleicher Weise vorverarbeitet werden wie die Trainings- und Testdaten. Dazu gehören Tokenisierung, Entfernung von Satzzeichen und ggf. Stoppwörtern, die Darstellung als Dokument-Feature-Matrix sowie – falls verwendet – Trimming und die Projektion auf den durch die Trainingsdaten definierten Feature-Raum. Anschließend kann das trainierte Modell auf diese Daten angewandt werden, z.B. `pred_new <- predict(model_nb, dfm_neue_texte)` In pred_new sind dann die Klassifikationen gemäss dem Modell enthalten.
+
+###### **Wichtige Anmerkungen**
+
+Das Verfahren, das ich euch heute vorgestellt habe, ist eine sehr vereinfachte Darstellung des Ganzen. Hier noch ein paar kurze und rein konzeptionelle Anmerkungen die wichtig sind, um das ganze korrekt einordnen und verstehen zu können.
+
+**Wichtig:** Im Zusammenhang von Klassifikationsaufgaben wird in Bezug auf die Resultate oft von True-Positives und False-Positives sowie True-Negatives und False-Negatives gesprochen. Eine Klasse, meist die, die uns mehr interessiert, wird dabei als positive bezeichnet. Das ist letztlich Definitionssache und kommt auf die Perspektive an. Bei der Spam-Erkennung wären die Spam-Emails unsere Positives, da wir diese entdecken und rausfiltern wollen. Bei der Covid-Analyse wäre der Fall "jemand hat Covid" der Positive Fall. (Achtung: Bei unserer Sentimentanalyse verwenden wir die Kategorien "positiv" und "negativ". Das hat in dem Fall nichts miteinander zu tun uns ist sprachlicher Zufall. Wir könnten unsere zwei Kategorien auch "Äpfel" und "alles andere" nennen. In dem Fall wären unsere Äpfel die Klasse, die uns interessiert. Wenn ein Modell korrekt einen Apfel als Apfel identifiziert, würden wir von einem True-Positive sprechen).
+
+**Wichtig:** Der motivierte Mensch könnte nun interessiert sein, die Performance der Modelle noch weiter zu erhöhen, was durchaus möglich ist. So könnte es sein, dass die Modelle besser funktionieren, wenn wir Stopwords nicht entfernen, oder wenn wir beim Trimming anders vorgehen und viele andere Möglichkeiten (siehe auch: Finetuning und n-grams). Allerdings können wir die Performance solcher nachträglich angepasster Modelle nicht mehr valide evaluieren, da keine unabhängigen Testdaten mehr zur Verfügung stehen. Würden wir das neue Modell auf den gleichen Testdaten validieren, würden wir sog. Overfitting riskieren. Das bedeutet, dass wir damit Gefahr laufen, das Training so lange zu optimieren, bis es ganz genau auf die zufälligen Besonderheiten unserer Testdaten passt, ohne dass damit aber eine Generalisierbarkeit des Modells gegeben ist. Das heisst, andere Daten könnten wir womöglich damit tatsächlich sogar schlechter vorhersagen als zuvor. Das würde die Validität unserer Analyse stark kompromittieren. Stellt euch auch hier wieder eine Klausurensituation vor. Wenn ihr die Lösungen nur auswendig lernt, seid ihr bei dieser spezifischen Klausur vermutlich wahnsinnig gut. Aber tatsächlich habt ihr kein wirkliches Verständnis erlernt und würdet bereits bei einer kleinen Variation oder einer anderen Klausur vermutlich sehr schlecht abschneiden. Es gibt allerdings Wege, dennoch mehr Spielraum zu haben um zu schauen, welche Spezifikationen und Preprocessing am geeignetesten ist. Das Stichwort hierfür ist Cross-Validation.
+
+## Vergleich: Lexikon vs. SML
+
+Wir wollen nun schauen, wie die beiden bereits behandelten Verfahren im Vergleich abschneiden. Die Performance des überwachten maschinellen Lernens haben wir ja eben ausgerechnet. Fehlt noch, wie das lexikonbasierte Verfahren einer Sentimentanalyse bei diesen Daten abschneidet.
+
+Wir verwenden erneut das Sentiment-Lexikon, das bereits in Quanteda enthalten ist und wenden es auf unsere Testdaten an (da wir im lexikonbasierten Verfahren keine Trainingsdaten brauchen, könnten wir das Lexikon auch auf alle Texte anweden. Das würde aber die Vergleichbarkeit zu oben einschränken):
+
+```{r}
+dfm_lex <- dfm(toks_test) |>
+  dfm_lookup(data_dictionary_LSD2015)
+dfm_lex
+```
+
+Was fällt uns auf, im Vergleich zur Klassifikation?
+
+Bei der Klassifikation hatten wir direkt ein binäres Ergebnis: Ein Text war entweder "positive" oder "negative" vom Sentiment. Nun haben wir zwei Ergebnisspalten (bzw. vier, wenn man die Negationen mitberücksichtigt) und müssen das Ergebnis erstmal interpretieren bzw. abstrahieren, wenn wir es auf nur zwei Kategorien runterbrechen wollen.
+
+**Wichtig**: das bedeutet nicht, dass das eine besser oder schlechter ist. Es sind unterschiedliche Verfahren, die unterschiedliches leisten; mit unterschiedlichen Stärken und Schwächen sowie Anwendungsgebieten.
+
+Eine Möglichkeit wäre, die Texte als positiv zu klassifizieren, wenn die Anzahl der positiven Treffer, die der negativen übersteigt. Das ist aber nicht gottgegeben, sondern eine Entscheidung, die auch kritisiert werden kann. Andere Entscheidungen würden zu anderen Ergebnissen führen. Ausserdem, was passiert, wenn positive und negativ gleich ausgeprägt sind. Eine "neutral" Kategorie existiert in diesem Szenario nicht. (Beachtet ausserdem, dass ich die Negationen hier komplett missachte)
+
+```{r}
+sentiment_score <- dfm_lex[, "positive"] - dfm_lex[, "negative"]
+sentiment_lex <- ifelse(sentiment_score > 0, "pos", "neg")
+sentiment_lex <- factor(sentiment_lex, levels = levels(test$sentiment)) #diese Zeile ist nur notwendig, damit die Daten für den nächsten Befehl im richtigen Format sind 
+```
+
+Hier habe ich jetzt festgelegt, dass Texte, die ausgeglichen sind, als "negative" gewertet werden. Das ist in dem Fall eine beliebige Entscheidung und wird die Ergebnisse wahrscheinlich beeinflussen (zumindest wenn es viele davon gibt). In so einem Fall sollte man in den Limitationen darauf hinweisen oder noch besser, auch die Alternative berechenn und schauen, ob sich die Endergebnisse stark unterscheiden.
+
+In jedem Fall können wir nun aber auch hier eine Confusion-Matrix ausgeben lassen und gewünschte Metriken berechnen.
+
+```{r}
+cm_lexikon <- confusionMatrix(sentiment_lex, test$sentiment)
+cm_lexikon
+cm_lexikon$byClass["F1"]
+```
+
+Wir sehen, dass unser lexikonbasierter Ansatz (mit den Schritten die wir danach gewählt haben) eine geringere Accuracy und auch einen geringeren F1 Score haben, als die Resultate, die auf unseren supervise machine learning Modellen basieren.
