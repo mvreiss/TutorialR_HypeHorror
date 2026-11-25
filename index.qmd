@@ -1,0 +1,170 @@
+---
+title: "Begleitung in R"
+subtitle: "<br> Methodenseminar \"Zwischen Hype und Horror: Darstellungen und Berichterstattung zu generativer KI in den Medien\"<br> <br> LMU München, Wintersemester 2026/2027"
+author: "Michael V. Reiss"
+date: "November 25, 2026"
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include _setup.qmd >}}
+
+<br>
+
+Dieses Tutorial dient als Dokumentation und Erweiterung zu dem, was in den Sitzungen in Bezug auf R erläutert wurde. Es soll dazu dienen, dass Sie die Inhalte nochmal in eigener Geschwindigkeit nacharbeiten können, zum Beispiel wenn es Ihnen in der Sitzung zu schnell ging.
+
+Am wichtigsten beim Programmieren-lernen und auch in der alltäglichen Anwendung ist, dass Sie es einfach mal ausprobieren und ein wenig experimentieren - Sie können nichts kaputt machen\*. Bitte nutzen Sie die hier angegeben Infos dann auch nur als Ausgangspunkt und informieren Sie sich darüber hinaus gerne selbst. Eine riesige Stärke von R ist, dass es eine sehr grosse Community von Nutzerinnen und Nutzern gibt und Sie online zu allem und in allerlei Form Hilfe finden (Tutorials, Videos, etc.). Auch ChatGPT kann eine sehr grosse Hilfe sein. Wenn Sie allerdings alles einfach von einer KI lösen lassen, haben Sie selbst nichts gelernt. Kurzfristig möglicherweise attraktiv, mittel- und langfristig ein Schuss ins eigene Bein. Entscheiden Sie gerne selbst, welche Informationen Ihnen persönlich am meisten helfen.
+
+\*Ihre Rohdaten sollten Sie trotzdem immer nochmal an einem zweiten Ort gespeichert haben. Und wenn Sie blind Code einer KI ausführen, können in seltenen Fällen doch auch schlimmere Dinge passieren.
+
+::: callout-tip
+## Code direkt im Browser ausführen
+
+Die meisten Codeblöcke auf dieser Seite sind interaktiv: R läuft direkt in Ihrem Browser, ohne dass Sie etwas installieren müssen. Sie können den Code in den Blöcken verändern und mit **Run Code** erneut ausführen. Mit **Start Over** setzen Sie einen Block auf den ursprünglichen Code zurück.
+
+Ein paar Dinge sind dabei gut zu wissen:
+
+- Beim ersten Öffnen der Seite lädt R im Hintergrund. Das kann einige Sekunden dauern, bis alle Ergebnisse erscheinen.
+- Die Blöcke einer Seite bauen aufeinander auf, genau wie die Zeilen in einem R-Script. Wenn Sie z.B. den Datensatz `data` in einem Block verändern, wirkt sich das auch auf alle anderen Blöcke dieser Seite aus. Wenn etwas durcheinander geraten ist, laden Sie die Seite einfach neu.
+- Jedes Kapitel hat eine eigene Seite, auf der R neu startet. Die Beispieldaten sind auf jeder Seite bereits eingelesen, Sie können also mit jedem Kapitel direkt loslegen.
+- Ihre Änderungen werden nicht gespeichert. Für Ihre eigenen Analysen arbeiten Sie bitte wie unten beschrieben in RStudio.
+- Einige Abschnitte laufen nicht im Browser, weil die nötigen Pakete dort nicht verfügbar sind. Das betrifft die Auswertungen und Grafiken mit `tidycomm` sowie die Wortwolken. Diese Blöcke sind normal dargestellt, die Ergebnisse sehen Sie direkt darunter. Bitte führen Sie sie in RStudio aus.
+:::
+
+
+## Auffrischung und Grundlagen R
+
+**25. November 2026**
+
+In dieser Sitzung werden in aller Kürze zunächst nochmal die Grundlagen von R erläutert. Das umfasst drei zentrale Elemente:
+
+1\) Sie haben R und RStudio heruntergeladen und installiert\
+2) Sie haben zentrale Elemente der Benutzeroberfläche kennengelernt\
+3) Sie haben den Beispieldatensatz eingelesen und können einfache Befehle ausführen
+
+### R und RStudio installieren
+
+R bezeichnet eine Programmiersprache, die im Hintergrund auf Ihrem Computer eingebunden wird. RStudio ist die Benutzeroberfläche, mit der Sie R bedienen, also Daten einlesen und bearbeiten, statistische Analysen durchführen, Grafiken erstellen und vieles mehr. Sowohl R als auch RStudio sind kostenlos. Für eine erfolgreiche Installation sind vier Schritte in der genannten Reihenfolge notwendig.
+
+a\) Download von R
+
+- [Download R für Windows](https://cran.r-project.org/bin/windows/base/)
+- [Download R für Mac mit Silicon Prozessor (M1-M4)](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.5.2-arm64.pkg)
+- [Download R für Mac mit Intel Prozessor](https://cran.r-project.org/bin/macosx/big-sur-x86_64/base/R-4.5.2-x86_64.pkg)
+
+::: {style="font-size: 14px;"}
+[Welchen Prozessor hat mein Mac?]{title="Klicken Sie auf das Apfel-Symbol in der linken oberen Ecke Ihres Bildschirms und wählen Sie Über diesen Mac."}
+:::
+
+b\) Installation von R auf Ihrem Gerät.
+
+c\) Download von RStudio
+
+- [Download RStudio für Windows](https://download1.rstudio.org/electron/windows/RStudio-2025.09.2-418.exe)
+- [Download RStudio für Mac](https://download1.rstudio.org/electron/macos/RStudio-2025.09.2-418.dmg)
+
+d\) Installation von RStudio
+
+Sie werden in der Folge nur mit RStudio arbeiten. Die Installation von R war wichtig, da RStudio - welches als Benutzeroberfläche dient - im Hintergrund auf R zugreift.
+
+### Zentrale Elemente der Benutzeroberfläche von RStudio kennenlernen
+
+Die wichtigsten Elemente habe ich kurz in der Sitzung vorgestellt; Sie kennen diese natürlich auch aus Statistik und Datenanalyse aus dem 2. Semester. Zur Wiederholung ist dieses [Video-Tutorial](#0) hilfreich.
+
+### Beispieldatensatz einlesen {#beispieldaten}
+
+Um Ihre Analysen gemäss Ihrer Forschungsfrage durchführen zu können, müssen Sie die bereitgestellten Daten auswerten (in dem Fall Texte aus Online-Nachrichtenseiten). Hierfür existieren Statistikprogramme wie R. Um das zu machen, müssen wir die Daten als erstes jedoch erst einmal in RStudio einlesen.
+
+Für das Tutorial habe ich einen Beispieldatensatz erstellt, anhand dessen Sie die relevanten Schritte üben können. Sie können aber auch direkt Ihre eigenen Daten einlesen.
+
+Den Beispieldatensatz können Sie [hier herunterladen](./data_example.xlsx).
+
+Als nächstes öffnen Sie RStudio und erstellen ein neues Script in RStudio (File -\> New File -\> R Script). Als erstes sollten Sie in dem neu geöffneten Script nun eine Überschrift einfügen, damit Sie wissen, um was es sich handelt. Es gibt zwei Arten, Eingaben in R zu machen. Normale Eingaben interpretiert R immer als Rechenoperationen oder Befehle, die Sie über Strg+Enter / Ctrl+Enter ausführen können (oder rechts oben im Editor-Fenster bei "Run"). Beispielsweise versteht R hier direkt, dass es sich um eine Rechnung handelt, und wenn Sie die Teile markieren und Strg+Enter oder "Run" drücken, gibt RStudio in der Console unten links das entsprechende Ergebnis aus:
+
+```{webr}
+1+3
+```
+
+Probieren Sie es direkt hier aus: Ändern Sie die Rechnung im Block oben und klicken Sie auf **Run Code**.
+
+Wenn wir normalen Text eingeben (z.B. wie in Word), kommt es zu Fehlern, da dies keine eindeutigen Rechenoperationen oder Befehle für R sind und das Programm nicht erkennt, was es tun soll:
+
+```{webr}
+#| error: true
+Hallo R, wie geht es dir?
+```
+
+Um daher "normalen" Text in R einzugeben, müssen Sie dem Programm mitteilen, dass der Text nicht als Befehl gedacht ist. Das funktioniert, indem Sie vor den entsprechenden Text ein Hashtag setzen (`#`).
+
+```{webr}
+# Dies ist nur ein Text, kein Rechenbefehl für R
+```
+
+Diese Funktion ist sehr wichtig, um Notizen an sich selbst oder andere Leserinnen im R-Code zu hinterlassen. Sie sollten Kommentare fleissig nutzen, damit Sie oder andere in der Gruppe später noch nachvollziehen können, was Sie gemacht haben. Sie werden in der Folge sehen, wie man so etwas einsetzt. Zunächst aber zur Überschrift zurück:
+
+```{r}
+#| eval: false
+# Einlesen von Beispieldatensatz
+```
+
+Speichern Sie diese Datei nun am besten direkt und wählen Sie dafür einen Speicherort und Namen für diese Datei aus (File -\> Save as...) - das ist ganz ähnlich wie bei Word oder Excel. Für einen guten Überblick macht es ausserdem Sinn, sich eine gute Dateistruktur/-organisation zu überlegen. RStudio speichert seine Scripte mit der Dateiendung ".R". Hieran erkennen Sie im Explorer/Finder, dass es sich um ein Script für R-Code handelt, das entsprechend mit RStudio ausgeführt werden kann (äquivalent zu einem .docx-File bei Word).
+
+Nun lesen Sie den Beispieldatensatz in R ein. Das kann R aber nicht einfach so, sondern es benötigt ein Paket mit besonderen Befehlen, damit R weiss, wie es Excel-Dateien korrekt in R einzulesen hat. Das benötigte Paket installieren und aktivieren Sie mit folgendem Code, den Sie einfach ein, zwei Zeilen unter Ihrer Überschrift in das R-Script einfügen. Beachten Sie auch, wie in diesem Beispiel Kommentare genutzt werden. Sie können Kommentare in eine neue Zeile, aber auch direkt hinter einen Befehl schreiben. Sobald ein `#` kommt, ignoriert R den dahinterstehenden Text.
+
+```{r}
+#| eval: false
+install.packages("readxl") # Paket zum Einlesen von Excel Dateien installieren
+library(readxl) # Paket aktivieren
+```
+
+Ein Befehl funktioniert immer gleich. Der Befehl wird über den Namen aufgerufen. Oben sind es zwei Befehle. Einmal `install.packages` und einmal `library`. Danach folgt eine offene Klammer und in der Klammer wird geschrieben, auf was sich der Befehl beziehen soll. In beiden Fällen soll der Befehl auf das Paket `readxl` angewandt werden. Der erste Befehl sagt, dass das Paket installiert werden soll, der zweite Befehl, dass es aktiviert werden soll (bzw. der aktiven Bibliothek hinzugefügt wird). Eine geschlossene Klammer beendet den Befehl.
+
+Die Installation sollte in dem Fall nur wenige Sekunden dauern und ein paar Warnungen in der Console ausgeben (das Fenster links unten). Sofern es keine Errors sind, können die Warnungen an dieser Stelle ignoriert werden.
+
+Nun können Sie die Beispieldaten einlesen. Dafür müssen Sie die Exceldatei geschlossen haben und den Dateipfad zu der Exceldatei (also wo Sie `data_example.xlsx` gespeichert haben) kopieren. Ersetzen Sie dann den untenstehenden fiktiven Dateipfad mit dem korrekten Dateipfad auf Ihrem Gerät. Bitte beachten Sie, dass Sie zum Einlesen Slashes ( / ) benötigen. (Sollte es unter Windows nicht funktionieren, ersetzen Sie den Slash mit zwei Backslashes ( \\\\ )).
+
+```{r}
+#| eval: false
+data <- read_excel("C:/Users/Name/Documents/Studium/WS26/HypeHorror/data/data_example.xlsx")
+```
+
+
+Sie haben die Daten nun eingelesen und der Datentabelle den Namen `data` zugeordnet. Unter diesem Namen kann die Datentabelle wieder aufgerufen werden. Rechts oben in RStudio unter "Environment" sehen Sie nun auch `data` aufgelistet. Per Doppelklick auf `data` im Environment können Sie die Tabelle ansehen - ähnlich wie bei Excel. Sie können allerdings auf diese Art keine Änderungen an den Einträgen vornehmen.
+
+(Hier im Browser ist der Datensatz bereits für Sie eingelesen, Sie können also direkt mit den folgenden Blöcken arbeiten.)
+
+**Zwischenstand**
+
+Insgesamt sollten Sie nun folgenden Code in Ihrem R-Script haben. Dazu rechts im Environment der eingelesene Datensatz.
+
+```{r}
+#| eval: false
+# Einlesen von Beispieldatensatz
+
+install.packages("readxl") # Paket zum Einlesen von Excel Dateien installieren
+library(readxl) # Paket aktivieren
+
+data <- read_excel("C:/Users/Name/Documents/Studium/WS26/HypeHorror/data/data_example.xlsx") # Einlesen der Daten
+```
+
+*Tipp:* Wenn man das erste Mal `install.packages("")` ausgeführt hat, kann man diesen Befehl auskommentieren (ein \# an den Zeilenanfang), da dieses Paket nun auf dem Gerät installiert ist und man dies in Zukunft nicht mehr neu installieren muss und somit etwas Zeit spart. Es reicht dann, das benötigte Paket über den Befehl `library()` aufzurufen. (Es gibt noch eine elegantere Möglichkeit mit `require()`. Wen das interessiert, kann ja mal recherchieren).
+
+Sie können nun auch bereits mit den Daten spielen. Zum Beispiel können Sie per `names(data)` die Namen der Spalten des Datensatzes ausgeben lassen. Oder per `count(data, outlet)` zählen, wie viele Artikel von welchem Outlet stammen (`count()` stammt aus dem Paket `dplyr`, das Sie aus dem 2. Semester kennen und mit `library(dplyr)` aktivieren).
+
+```{webr}
+names(data)
+count(data, outlet)
+```
+
+Es macht immer Sinn, sich eingelesene Daten erst einmal im Überblick anzuschauen, da man hierdurch Fehler entdecken und die Struktur der Daten verstehen kann. Einen solchen ersten Überblick bekommt man z.B. mit `head(data)`. Beantworten Sie an der Stelle vier Fragen. Hierzu müssen Sie auch auf bestehendes Wissen zurück greifen und Sie können oben das Codefeld nehmen um Code auszuführen oder (empfohlen und einfacher) Sie versuchen es lokal in R auf Ihrem Computer:
+
+1.  Wie viele Spalten und Zeilen umfasst der Datensatz
+
+2.  Wie heissen die Spalten im Datensatz
+
+3.  Welche Art von Daten sind in den jeweiligen Spalten enthalten
+
+4.  Welche Spalten sind vermutlich "Rohdaten" und welche "erzeugte" Daten
+
+Sich einen Überblick zu verschaffen steht immer an erster Stelle, wenn man Daten eingelesen hat.
+

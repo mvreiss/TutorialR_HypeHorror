@@ -1,0 +1,44 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - data_example.xlsx
+    - data_example.rds
+    - .nojekyll
+
+lang: de
+
+website:
+  title: "Begleitung in R"
+  page-navigation: true
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - href: index.qmd
+        text: "Start & Grundlagen R"
+      - daten-filtern.qmd
+      - texte-filtern.qmd
+      - deskriptive-statistik.qmd
+      - grafiken.qmd
+
+format:
+  live-html:
+    toc: true
+    toc-depth: 3
+    css: styles.css
+
+title-block-banner: "#00008B"
+title-block-banner-color: "white"
+
+engine: knitr
+editor: visual
+
+webr:
+  packages:
+    - dplyr
+    - stringr
+  cell-options:
+    autorun: true
+  resources:
+    - data_example.rds

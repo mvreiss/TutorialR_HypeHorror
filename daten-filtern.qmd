@@ -1,0 +1,161 @@
+---
+title: "Daten filtern"
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include _setup.qmd >}}
+
+**25. November 2026**
+
+Wie im Seminar besprochen, ist der Datensatz, den Sie bekommen, noch nicht perfekt vorbereitet, um Ihre Analysen durchführen zu können. Er umfasst über 60.000 Texte zu allerlei Themen und Aspekten, die mit künstlicher Intelligenz zusammenhängen. Das ist noch sehr unspezifisch. Sie müssen diese rohen Daten daher erst filtern, um die für Sie interessanten Daten von den uninteressanten zu trennen. Irrelevante Daten verfälschen Ihre Ergebnisse, wodurch Ihre Analyse wertlos wäre. Einfaches Beispiel: Wenn Sie wissen wollen, wie viel die Äpfel wiegen, die Sie auf einer Streuobstwiese geerntet haben, dann müssen Sie zunächst auch erst die Äpfel von anderem Erntegut wie Pflaumen oder Birnen trennen, bevor Sie wiegen. Eine ähnlich simple Logik gilt hier.
+
+Dieser Schritt ist sehr relevant und Sie müssen sorgfältig vorgehen. Sie wollen alle Daten behalten, die für Sie relevant sind, aber alles ausschliessen, was keine Relevanz hat. Dazwischen gibt es oft einen Graubereich, der schwer zu entscheiden ist.
+
+In diesem Kapitel filtern wir zunächst nach formalen Merkmalen, also nach Spalten wie Medium, Datum oder Anzahl der Bilder. Im nächsten Kapitel ([Texte filtern](texte-filtern.qmd)) suchen wir dann in den Texten selbst.
+
+Für das Filtern verwenden wir zwei Pakete aus dem sogenannten *tidyverse*. Das ist eine Sammlung von R-Paketen, die alle einer ähnlichen, gut lesbaren Logik folgen. Auch das kennen Sie bereits aus dem 2. Semester und diese Logik verwenden wir auch für die weiteren Kapitel: `dplyr` für die Arbeit mit Tabellen (z.B. Filtern) und `stringr` für die Arbeit mit Text. Installieren und aktivieren Sie beide Pakete wie gewohnt:
+
+```{r}
+#| eval: false
+install.packages(c("dplyr", "stringr")) # nur beim ersten Mal nötig
+library(dplyr)
+library(stringr)
+```
+
+Hier im Browser sind beide Pakete bereits geladen.
+
+## Einzelne Spalten ansprechen
+
+Wie in den meisten Tabellen sind die einzelnen Beobachtungen (bei uns: Artikel) in Zeilen und die Spalten bilden die verschiedenen Variablen. Wenn Sie sich den Datensatz `data` anschauen, sehen Sie, dass es hier z.B. die Variablen "nr", "link", "outlet", "date", usw. gibt. Wir wollen uns nun als erstes den Inhalt der Spalte "pics" anschauen. Versuchen wir es mit der zunächst intuitiven Lösung, nämlich dem Spaltennamen:
+
+```{webr}
+#| error: true
+pics
+```
+
+Das erzeugt einen Fehler, weil R das Objekt nicht kennt (beachten Sie, es ist rechts oben im Environment selbst nicht aufgeführt). Da die Spalte "pics" Teil des grösseren Objekts `data` ist, müssen wir R auch mitteilen, dass "pics" in der Tabelle `data` zu finden ist. Das funktioniert mittels `$`, genauer mittels `data$pics`. Auf die Art wird R mitgeteilt, dass es im Objekt `data` schauen soll und dort die Spalte "pics" findet. Wir können das direkt testen:
+
+```{webr}
+data$pics
+```
+
+Sie sehen als Output den Inhalt der Spalte "pics" (ab und zu zu prüfen, ob die Werte mit der Tabelle `data` übereinstimmen, ist immer sinnvoll. Damit wird vermieden, dass sich hier und da Fehler einschleichen, die man bei grösseren Datensätzen schnell übersehen kann). Auf die Art können wir den Inhalt aller Spalten aufrufen:
+
+```{webr}
+data$outlet
+data$article_type
+```
+
+## Spalten auswählen
+
+Wenn Sie nicht nur eine, sondern mehrere Spalten auswählen wollen, verwenden Sie den Befehl `select()`. In die Klammer schreiben Sie zuerst den Datensatz und danach die Spalten, die Sie behalten wollen:
+
+```{webr}
+select(data, nr, outlet, pics)
+```
+
+Mit einem Minus vor dem Spaltennamen geht es auch umgekehrt: Dann werden alle Spalten behalten *ausser* den genannten. Das nutzen wir direkt für einen praktischen Zwischenschritt. Die Spalten "link", "lead" und "text" enthalten sehr lange Einträge, die jede Ausgabe unübersichtlich machen. Für die folgenden Schritte, in denen wir die Texte selbst nicht brauchen, legen wir daher eine schlanke Version des Datensatzes ohne diese drei Spalten an und nennen sie `data_kurz`. Der ursprüngliche Datensatz `data` bleibt dabei unverändert erhalten, auf ihn greifen wir zurück, sobald wir im nächsten Kapitel mit den Texten arbeiten.
+
+```{webr}
+data_kurz <- select(data, -link, -lead, -text)
+data_kurz
+```
+
+Sie sehen, dass R die Tabelle übersichtlich darstellt. Oben steht, wie viele Zeilen und Spalten die Tabelle hat (hier 15 × 10), und unter jedem Spaltennamen steht, welche Art von Daten die Spalte enthält: `<dbl>` für Zahlen, `<chr>` für Text und `<dttm>` für Datum und Uhrzeit. Spalten, die nicht mehr in die Breite passen, werden darunter aufgelistet.
+
+## Zeilen filtern
+
+Der zentrale Befehl zum Filtern von Zeilen heisst `filter()`. In die Klammer schreiben Sie zuerst den Datensatz und nach einem Komma die Bedingung, die eine Zeile erfüllen muss, damit sie behalten wird. Innerhalb von `filter()` (und auch von `select()`) reicht der Spaltenname, Sie müssen also nicht `data_kurz$outlet` schreiben, da R durch das erste Argument bereits weiss, in welchem Datensatz es suchen soll.
+
+Das Ergebnis weisen wir wie gewohnt einem neuen Objekt zu. Mit `nrow()` (= number of rows) prüfen wir, wie viele Zeilen, also Artikel, übrig bleiben:
+
+```{webr}
+spon_data <- filter(data_kurz, outlet == "spon")
+nrow(spon_data)
+spon_data
+```
+
+Von den 15 Artikeln im Beispieldatensatz stammen 5 von Spiegel Online. Beachten Sie das doppelte Gleichheitszeichen `==`. Das hängt damit zusammen, dass ein einfaches `=` in R bereits vergeben ist und wie `<-` eine Zuweisung von Werten bedeutet. Unser herkömmliches Verständnis von "ist gleich" wird in R durch `==` umgesetzt. Weitere wichtige Vergleiche sind:
+
+| Code | Bedeutung | Beispiel |
+|------------------------|------------------------|------------------------|
+| `==` | ist gleich | `outlet == "spon"` |
+| `!=` | ist ungleich | `outlet != "spon"` |
+| `>` und `<` | grösser als / kleiner als | `pics > 1` |
+| `>=` und `<=` | grösser gleich / kleiner gleich | `pics >= 2` |
+| `%in%` | ist einer von mehreren Werten | `outlet %in% c("spon", "zon")` |
+
+Mehrere Bedingungen können Sie verknüpfen: `&` bedeutet UND (beide Bedingungen müssen erfüllt sein), `|` bedeutet ODER (mindestens eine Bedingung muss erfüllt sein). Das `|` finden Sie auf der Windows-Tastatur mit AltGr + \<, auf dem Mac mit Alt + 7.
+
+```{webr}
+viele_bilder <- filter(data_kurz, outlet == "spon" & pics >= 2) # Spiegel Online UND mindestens 2 Bilder
+viele_bilder
+
+spon_zon <- filter(data_kurz, outlet == "spon" | outlet == "zon") # Spiegel Online ODER Zeit Online
+spon_zon
+```
+
+**Übung:** Filtern Sie alle Artikel vom Handelsblatt (`"handel"`) oder von Zeit Online (`"zon"`), die *genau* ein Bild enthalten. Ersetzen Sie dafür die Unterstriche durch den passenden Code und klicken Sie auf **Submit Answer**.
+
+```{webr}
+#| exercise: ex_filter_1
+#| autorun: false
+treffer <- filter(data_kurz, ______)
+treffer
+```
+
+::: {.hint exercise="ex_filter_1"}
+Sie brauchen zwei Bedingungen, die beide erfüllt sein müssen: eine für das Medium und eine für die Anzahl der Bilder. Für "Handelsblatt oder Zeit Online" ist `%in%` aus der Tabelle oben praktisch. Und denken Sie daran: "genau" heisst `==`.
+:::
+
+::: {.solution exercise="ex_filter_1"}
+``` r
+treffer <- filter(data_kurz, outlet %in% c("handel", "zon") & pics == 1)
+treffer
+```
+
+Alternativ mit ODER und Klammern:
+
+``` r
+treffer <- filter(data_kurz, (outlet == "handel" | outlet == "zon") & pics == 1)
+treffer
+```
+:::
+
+```{webr}
+#| exercise: ex_filter_1
+#| check: true
+loesung <- filter(data_kurz, outlet %in% c("handel", "zon") & pics == 1)
+if (is.data.frame(.result) && identical(sort(.result$nr), sort(loesung$nr))) {
+  list(correct = TRUE, message = "Richtig! Vier Artikel erfüllen beide Bedingungen.")
+} else {
+  list(correct = FALSE, message = "Noch nicht ganz. Es sollten vier Artikel herauskommen. Prüfen Sie, ob Sie beide Medien berücksichtigt haben und ob Sie 'genau ein Bild' mit == umgesetzt haben.")
+}
+```
+
+Diese Filter-Operationen sind für Sie wichtig, da Sie - je nach Forschungsfrage - teils nur bestimmte Nachrichtenmedien oder nur bestimmte Jahre für Ihre Forschungsfrage brauchen.
+
+::: {.callout-note collapse="true"}
+## Für Fortgeschrittene: Teilmengen mit eckigen Klammern (Base R)
+
+In vielen Tutorials und in Code, den Sie online finden, werden Zeilen und Spalten nicht mit `filter()` und `select()` ausgewählt, sondern mit eckigen Klammern (`[]`). Das ist der Weg, den R von Haus aus mitbringt (sogenanntes Base R). Es lohnt sich, ihn lesen zu können.
+
+In den eckigen Klammern wird auf Zeilen und Spalten verwiesen, von einem Komma getrennt: `daten[zeilen, spalten]`. Bleibt eine Seite leer, werden alle Zeilen bzw. alle Spalten genommen. Statt Spaltennamen können Sie auch Spaltennummern verwenden.
+
+```{webr}
+data_kurz[1:5, ] # Zeilen 1 bis 5 und alle Spalten
+data_kurz[c(3,4,9), c("nr", "pics")] # Zeilen 3, 4 und 9 und nur die Spalten "nr" und "pics"
+data_kurz[c(3,4,9), c(1,6)] # dasselbe mit Spaltennummern
+```
+
+Bei mehreren einzelnen Zeilen oder Spalten müssen diese Werte mit dem `c()`-Befehl kombiniert werden. Damit wird eine Aufzählung markiert und R erkennt die Kommas richtig. Ohne `c()`, also z.B. `data_kurz[3,4,9, "pics"]`, versteht R nicht, dass sich die ersten drei Werte alle noch auf die Zeilen beziehen, da alle Kommas für R gleich sind. Je nach Datenformat gibt R dann einen Fehler aus oder, noch tückischer, ein falsches Ergebnis ohne jede Warnung.
+
+Zum Vergleich die tidyverse-Befehle, die dasselbe erledigen: `slice()` wählt Zeilen nach ihrer Nummer aus, `select()` Spalten.
+
+```{webr}
+zeilen <- slice(data_kurz, c(3,4,9))
+select(zeilen, nr, pics)
+```
+:::
+

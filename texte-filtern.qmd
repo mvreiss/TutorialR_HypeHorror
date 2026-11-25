@@ -1,0 +1,229 @@
+---
+title: "Texte filtern"
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include _setup.qmd >}}
+
+**25. November 2026**
+
+## In Texten suchen
+
+Spannender und nach der initialen formalen Filterung für Sie relevanter wird es, wenn wir nicht nach fertigen Kategorien filtern (wie bisher), sondern im Text selbst suchen. Dafür arbeiten wir wieder mit dem vollständigen Datensatz `data`, der die Spalte "text" noch enthält.
+
+Für die Suche gibt es den Befehl `str_detect()` aus dem Paket `stringr` (str steht für string, so heissen Zeichenketten bzw. Text in der Programmierung). Er prüft für jeden Text, ob ein Suchbegriff darin vorkommt, und gibt `TRUE` (kommt vor) oder `FALSE` (kommt nicht vor) zurück. In die Klammer schreiben Sie zuerst, *wo* gesucht werden soll, und dann, *wonach* gesucht werden soll:
+
+```{webr}
+str_detect(data$text, "Gaza")
+```
+
+Sie sehen 15 Werte, einen für jeden Artikel. Genau mit solchen `TRUE`/`FALSE`-Werten arbeitet `filter()`: Es behält alle Zeilen, bei denen `TRUE` herauskommt. Wir können `str_detect()` also einfach als Bedingung in `filter()` einsetzen. Um zu sehen, welche Artikel gefunden wurden, lassen wir uns anschliessend mit `$` die Überschriften der Treffer anzeigen:
+
+```{webr}
+gaza <- filter(data, str_detect(text, "Gaza"))
+gaza$headline
+```
+
+Fünf Artikel erwähnen Gaza (einer davon übrigens nur als Teil des Wortes "Gazastreifen", dazu gleich mehr). Es lohnt sich, nach jedem Filterschritt kurz auf die Treffer zu schauen, z.B. auf die Überschriften. Das ist ein schneller erster Plausibilitätscheck.
+
+Wenn Sie nur wissen wollen, *wie viele* Texte einen Begriff enthalten, geht das auch ohne `filter()`, nämlich mit `count()`, das Sie schon kennen. `count()` zählt, wie oft `TRUE` und wie oft `FALSE` herauskommt. Mit `treffer =` geben wir der Ergebnisspalte einen kurzen Namen:
+
+```{webr}
+count(data, treffer = str_detect(text, "Gaza"))
+```
+
+In der Zeile `TRUE` steht die Anzahl der Texte, die den Begriff enthalten. Diese Schreibweise verwenden wir in den folgenden Beispielen, um Suchbegriffe schnell zu vergleichen.
+
+**Achtung: Zeichenfolgen statt Wörter.** `str_detect()` sucht nach Zeichenfolgen, nicht nach ganzen Wörtern. Das kann zu unerwarteten Treffern führen. Vergleichen Sie:
+
+```{webr}
+count(data, treffer = str_detect(text, "Kandidat"))
+count(data, treffer = str_detect(text, "\\bKandidat\\b"))
+```
+
+Die erste Suche findet 11 Texte, weil sie auch "Kandidat**en**", "Kandidat**in**" und "Kandidat**ur**" findet. Die zweite Suche findet nur 5 Texte, in denen das Wort "Kandidat" für sich steht. `\\b` markiert eine Wortgrenze (b für *boundary*). Für Ihre Daten ist das besonders wichtig: Eine Suche nach `"KI"` würde auch "**Ki**el", "**Ki**no" oder "**Ki**nder" finden, `"\\bKI\\b"` dagegen nur das Wort KI. Ein Bindestrich zählt dabei als Wortgrenze, "KI-Avatare" wird also gefunden. Der Baustein `\\b` funktioniert damit gewissermassen umgekehrt zum Platzhalter `*`, den Sie vielleicht aus Suchmasken kennen: Dort wird standardmässig nach ganzen Wörtern gesucht und `*` hebt die Wortgrenze auf. `str_detect()` sucht dagegen standardmässig nach Zeichenfolgen und `\\b` setzt eine Wortgrenze. Das `*` selbst hat in R übrigens eine andere Bedeutung und sollte daher nicht als Platzhalter verwendet werden.
+
+**Achtung: Gross- und Kleinschreibung.** `str_detect()` unterscheidet zwischen Gross- und Kleinschreibung:
+
+```{webr}
+count(data, treffer = str_detect(text, "Wahl"))
+count(data, treffer = str_detect(text, "(?i)wahl"))
+```
+
+Die erste Suche findet z.B. "Vorwahl" nicht, weil "wahl" dort klein geschrieben ist. Mit `(?i)` am Anfang des Suchbegriffs wird die Gross- und Kleinschreibung ignoriert (i für *ignore case*).
+
+## Die Suchsyntax: Platzhalter, Phrasen, UND, ODER, NICHT
+
+Die Suchbegriffe, die Sie `str_detect()` übergeben, sind sogenannte *reguläre Ausdrücke* (engl. *regular expressions*, kurz *Regex*). Das ist eine Art Mini-Sprache für Suchmuster. Sie müssen davon nur wenige Bausteine kennen, um sehr präzise suchen zu können. Wenn Sie schon einmal mit einer Suchmaske gearbeitet haben, die UND, ODER oder Platzhalter (\*) erlaubt, finden Sie hier die Entsprechungen in R.
+
+Kurz vorab zu den Backslashes: Bausteine wie `\b` (Wortgrenze), `\w` (Buchstabe) oder `\d` (Ziffer) bestehen aus einem Backslash und einem Buchstaben. Sie schreiben in R also `"\\b"`, gemeint ist `\b`. Merken Sie sich einfach: In Suchbegriffen in R immer zwei Backslashes.
+
+**Platzhalter am Wortende** (z.B. `Gericht*` für Gericht, Gerichtshof, Gerichtsverfahren ...): Da `str_detect()` nach Zeichenfolgen sucht, ist dieser Platzhalter automatisch eingebaut. Sie setzen einfach nur vorne eine Wortgrenze und lassen sie hinten weg:
+
+```{webr}
+count(data, treffer = str_detect(text, "\\bGericht"))
+```
+
+**Platzhalter am Wortanfang** (z.B. `*kandidatur` für Präsidentschaftskandidatur, Kampfkandidatur ...): Hier setzen Sie die Wortgrenze nur hinten. Beachten Sie, dass das alleinstehende Wort "Kandidatur" mit grossem K hier nicht gefunden wird. Mit `(?i)` vorne würde es mitgezählt, dann sind es 8 statt 5 Texte.
+
+```{webr}
+count(data, treffer = str_detect(text, "kandidatur\\b"))
+```
+
+**Phrasen** (z.B. `"South Carolina"`): Eine feste Wortfolge schreiben Sie einfach mit Leerzeichen in den Suchbegriff.
+
+```{webr}
+count(data, treffer = str_detect(text, "South Carolina"))
+```
+
+::: {.callout-note collapse="true"}
+## Für Fortgeschrittene: Gefundene Wörter anzeigen und Muster suchen
+
+Welche Wörter genau gefunden wurden, können Sie sich mit `str_extract_all()` anzeigen lassen. Das ist sehr hilfreich, um zu prüfen, ob Ihr Platzhalter nicht auch ungewollte Wörter erfasst. `\\w*` steht dabei für "beliebig viele weitere Buchstaben" und `unlist()` macht aus dem Ergebnis eine einfache Liste.
+
+```{webr}
+gefunden <- str_extract_all(data$text, "\\bGericht\\w*")
+unique(unlist(gefunden))
+```
+
+Reguläre Ausdrücke können ausserdem Muster beschreiben (in Suchmasken oft zwischen Schrägstrichen geschrieben, z.B. `/GPT-\d+/`). `\\d+` steht für "eine oder mehrere Ziffern". `"GPT-\\d+"` findet also GPT-3, GPT-4, GPT-5 usw. In unseren Beispieldaten finden wir so alle Prozentangaben:
+
+```{webr}
+prozent <- str_extract_all(data$text, "\\d+ Prozent")
+unique(unlist(prozent))
+```
+:::
+
+**UND, ODER, NICHT und Klammern:** Oft wollen Sie nicht nur nach einem Begriff suchen, sondern mehrere kombinieren. Dafür schreiben Sie mehrere `str_detect()`-Befehle in `filter()` und verbinden sie mit `&` (UND), `|` (ODER) und `!` (NICHT), genau wie im vorherigen Kapitel bei den formalen Merkmalen. Das lässt sich direkt wie eine Suchanfrage lesen:
+
+```{webr}
+treffer <- filter(data, str_detect(text, "Israel") & str_detect(text, "Gaza")) # UND: beide Begriffe kommen vor
+treffer$headline
+
+treffer <- filter(data, str_detect(text, "Israel") | str_detect(text, "Gaza")) # ODER: mindestens einer der Begriffe kommt vor
+treffer$headline
+
+treffer <- filter(data, str_detect(text, "Gaza") & !str_detect(text, "Israel")) # NICHT: Gaza, aber nicht Israel
+treffer$headline
+
+treffer <- filter(data, (str_detect(text, "Israel") | str_detect(text, "Gaza")) & !str_detect(text, "Demokratie")) # Klammern zum Gruppieren
+treffer$headline
+```
+
+Die Klammern funktionieren wie in der Mathematik: Was in Klammern steht, wird zuerst ausgewertet. Die letzte Suche bedeutet also: „Israel ODER Gaza, und zusätzlich NICHT Demokratie“. Achten Sie darauf, dass jede geöffnete Klammer auch wieder geschlossen wird. Sie werden sich aus letztem Semester erinnern, dass solche kleinen Fehler sehr hartnäckig und nervig sein können.
+
+Für einfache ODER-Suchen gibt es noch eine Abkürzung: Innerhalb eines Suchbegriffs bedeutet `|` ebenfalls ODER. `str_detect(text, "Israel|Gaza")` ergibt also dasselbe wie die ODER-Suche oben.
+
+Sie können Textsuche und formale Merkmale aus dem vorherigen Kapitel übrigens auch beliebig kombinieren, z.B. `filter(data, outlet == "spon" & str_detect(text, "Gaza"))`.
+
+**Übung:** Finden Sie alle Artikel, in denen "Abtreibung" ODER ein Wort, das mit "Einwander" beginnt (Einwanderer, Einwanderung, ...), vorkommt.
+
+```{webr}
+#| exercise: ex_filter_2
+#| autorun: false
+treffer <- filter(data, ______)
+treffer$headline
+```
+
+::: {.hint exercise="ex_filter_2"}
+Sie können zwei `str_detect()`-Befehle mit `|` verknüpfen. Für den Platzhalter am Wortende brauchen Sie nur eine Wortgrenze am Anfang: `"\\bEinwander"`.
+:::
+
+::: {.solution exercise="ex_filter_2"}
+``` r
+treffer <- filter(data, str_detect(text, "Abtreibung") | str_detect(text, "\\bEinwander"))
+treffer$headline
+```
+
+Kürzer geht es mit `|` innerhalb des Suchbegriffs:
+
+``` r
+treffer <- filter(data, str_detect(text, "Abtreibung|\\bEinwander"))
+treffer$headline
+```
+:::
+
+```{webr}
+#| exercise: ex_filter_2
+#| check: true
+loesung <- filter(data, str_detect(text, "Abtreibung") | str_detect(text, "\\bEinwander"))
+if (is.character(.result) && identical(sort(.result), sort(loesung$headline))) {
+  list(correct = TRUE, message = "Richtig! Drei Artikel erwähnen Abtreibung oder Einwanderung.")
+} else {
+  list(correct = FALSE, message = "Noch nicht ganz. Es sollten drei Artikel herauskommen. Haben Sie ODER (|) statt UND (&) verwendet?")
+}
+```
+
+**Übung:** Finden Sie alle Artikel, die "Kalifornien" ODER "Texas" erwähnen UND zusätzlich ein Wort, das mit "Gericht" beginnt. Denken Sie an die Klammern.
+
+```{webr}
+#| exercise: ex_filter_3
+#| autorun: false
+treffer <- filter(data, ______)
+treffer$headline
+```
+
+::: {.solution exercise="ex_filter_3"}
+``` r
+treffer <- filter(data, (str_detect(text, "Kalifornien") | str_detect(text, "Texas")) & str_detect(text, "\\bGericht"))
+treffer$headline
+```
+:::
+
+```{webr}
+#| exercise: ex_filter_3
+#| check: true
+loesung <- filter(data, (str_detect(text, "Kalifornien") | str_detect(text, "Texas")) & str_detect(text, "\\bGericht"))
+if (is.character(.result) && identical(sort(.result), sort(loesung$headline))) {
+  list(correct = TRUE, message = "Richtig! Die Artikel 3 und 5 erfüllen beide Bedingungen.")
+} else {
+  list(correct = FALSE, message = "Noch nicht ganz. Es sollten zwei Artikel herauskommen. Prüfen Sie die Klammern.")
+}
+```
+
+::: {.callout-note collapse="true"}
+## Für Fortgeschrittene: Abstandssuche (NEAR)
+
+Manchmal möchte man nicht nur wissen, ob zwei Begriffe im selben Text vorkommen, sondern ob sie nah beieinander stehen, z.B. höchstens 10 Wörter voneinander entfernt. Auch das geht mit regulären Ausdrücken, der Suchbegriff wird allerdings deutlich unübersichtlicher:
+
+```{webr}
+#| autorun: false
+abstand <- "\\bTrump\\W+(\\w+\\W+){0,10}Gericht|\\bGericht\\w*\\W+(\\w+\\W+){0,10}Trump"
+count(data, treffer = str_detect(text, abstand))
+str_extract_all(data$text, abstand)
+```
+
+Lesen lässt sich das so: "Trump, danach bis zu 10 beliebige Wörter (`(\\w+\\W+){0,10}`), danach ein Wort, das mit Gericht beginnt", und mit `|` dasselbe in umgekehrter Reihenfolge. Sie müssen das nicht auswendig können. Wenn Sie so etwas brauchen, ist es völlig in Ordnung, sich den Ausdruck mit Hilfe von Google oder einer KI zu bauen. Wichtig ist nur, dass Sie das Ergebnis anschliessend prüfen, z.B. wie im Kasten oben mit `str_extract_all()`.
+:::
+
+## Spickzettel: Von der Suchmaske zu R
+
+Die folgende Tabelle fasst zusammen, wie Sie typische Suchanfragen in R umsetzen. Die Beispiele beziehen sich auf Ihre eigenen Daten zu KI. In der Spalte "R" steht jeweils, was Sie in `str_detect(text, ...)` schreiben. Bei den Verknüpfungen steht `...` jeweils für einen vollständigen `str_detect()`-Befehl, z.B. `str_detect(text, "KI")`.
+
+| Suchmaske | R | Bedeutung |
+|------------------------|------------------------|------------------------|
+| `KI` | `"\\bKI\\b"` | ganzes Wort |
+| `regulier*` | `"\\bregulier"` | Platzhalter am Ende: reguliert, Regulierung ... (mit `(?i)` auch Regulierung mit grossem R) |
+| `*intelligenz` | `"intelligenz\\b"` | Platzhalter am Anfang: Superintelligenz ... |
+| `"künstliche Intelligenz"` | `"künstliche Intelligenz"` | genaue Wortfolge |
+| Gross-/Kleinschreibung egal | `"(?i)chatgpt"` | findet ChatGPT, chatGPT, CHATGPT ... |
+| `KI UND Arbeit` | `... & ...` | beide Begriffe |
+| `ChatGPT ODER Gemini` | `... | ...` oder `"ChatGPT|Gemini"` | mindestens einer |
+| `KI NICHT Trump` | `... & !...` | ausschliessen |
+| `(KI ODER AI) UND Job*` | `(... | ...) & ...` | Klammern zum Gruppieren |
+| `/GPT-\d+/` | `"GPT-\\d+"` | regulärer Ausdruck |
+
+## Filter prüfen und Ergebnis speichern
+
+Kein Suchbegriff ist perfekt. Es gibt immer zwei Arten von Fehlern: Ihr Filter findet Texte, die eigentlich nicht relevant sind (z.B. findet "Gemini" auch Texte über das Sternzeichen), oder er übersieht Texte, die eigentlich relevant wären (z.B. weil dort "künstliche Intelligenz" oder "K.I." statt "KI" steht). Gehen Sie daher am besten so vor:
+
+1.  Lassen Sie sich die Anzahl der Treffer anzeigen (`nrow()`) und prüfen Sie, ob die Grössenordnung plausibel ist.
+2.  Lesen Sie stichprobenartig einige Treffer, z.B. die Überschriften mit `$headline`. Sind sie wirklich relevant?
+3.  Schauen Sie sich auch einige Texte an, die *nicht* gefunden wurden (z.B. mit `!` in `filter()`). Ist dort etwas Relevantes dabei?
+4.  Passen Sie Ihre Suchbegriffe an und wiederholen Sie die Schritte.
+
+Halten Sie Ihre Entscheidungen im Script mit Kommentaren fest. So können Sie und andere später nachvollziehen, warum Sie welche Texte behalten haben.
+
+Wenn Sie mit Ihrem Filter zufrieden sind, weisen Sie das Ergebnis einem neuen Objekt zu und arbeiten in den folgenden Schritten mit diesem gefilterten Datensatz weiter.
+

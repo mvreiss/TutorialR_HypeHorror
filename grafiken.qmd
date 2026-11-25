@@ -1,0 +1,163 @@
+---
+title: "Einfache grafische Darstellungen"
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include _setup.qmd >}}
+
+**25. November 2026**
+
+Neben schlichten Kennzahlen bieten sich für bestimmte Daten aber auch grafische Darstellungen an. Wir lernen hier nur die absoluten Basics. R ist sehr vielseitig und mächtig und lässt auch abenteuerlichste und massgeschneiderte Darstellungen zu. Schauen Sie zum Beispiel [hier](https://r-graph-gallery.com/best-r-chart-examples) für einige wunderschöne Beispiele. In vielen Fällen erfordert das allerdings fortgeschrittene Kenntnisse und geht damit über die Kurztutorials dieses Kurses hinaus.
+
+Wir bleiben hier bei den Basics, die bereits recht hilfreich sein können, und verwenden dafür den Befehl `visualize()` aus `tidycomm`. Er funktioniert ganz einfach: Sie hängen ihn per Pipe an eine Auswertung an, und tidycomm wählt automatisch eine passende Darstellung. Wie im vorherigen Kapitel laufen die Blöcke nicht im Browser, bitte probieren Sie sie in RStudio aus.
+
+```{r}
+#| message: false
+library(tidycomm)
+```
+
+## Häufigkeiten und Verteilungen darstellen
+
+Aus der Häufigkeitstabelle der Artikeltypen wird so ein Balkendiagramm:
+
+```{r}
+#| fig-height: 3.5
+tab_frequencies(data_kurz, article_type) %>% visualize()
+```
+
+Und aus `describe()` wird ein sogenannter Boxplot, der die Verteilung einer metrischen Variable zeigt:
+
+```{r}
+#| fig-height: 2.5
+describe(data_kurz, pics) %>% visualize()
+```
+
+Die senkrechte Linie markiert den Median, die waagrechte Linie reicht vom Minimum bis zum Maximum. Die "Box" (der Bereich zwischen dem 1. und 3. Quartil, in dem die mittleren 50 % der Werte liegen) ist hier zu einem Strich zusammengefallen. Das liegt daran, dass die meisten Artikel genau ein Bild enthalten.
+
+Nicht jede Darstellung ist sinnvoll. Häufig ist eine der zentralen Aufgaben der visuellen Darstellung, sich zu überlegen, ob die Daten schon im richtigen Format für eine *sinnvolle* Darstellung sind. Das kann mühsam sein, insbesondere da R in solchen Fällen keinen Fehler ausgibt. Was halten Sie z.B. von dieser Grafik?
+
+```{r}
+#| fig-height: 3.5
+tab_frequencies(data_kurz, headline) %>% visualize()
+```
+
+Formal ist der Befehl nicht falsch (z.B. seitens der Syntax), inhaltlich ist die Darstellung aber nicht sinnvoll bzw. hat schlicht keinen Mehrwert: Jede Überschrift kommt genau einmal vor, und die Beschriftungen sind nicht lesbar.
+
+## Gruppen vergleichen
+
+Auch Kreuztabellen lassen sich direkt darstellen. So sehen wir auf einen Blick, welche Artikeltypen in welchem Medienhaus vorkommen:
+
+```{r}
+#| fig-height: 3.5
+crosstab(data_kurz, outlet, article_type) %>% visualize()
+```
+
+Für eine bessere Verständlichkeit können auch die Namen der Medienhäuser noch ausgeschrieben werden. Dann werden sie in der Darstellung auch entsprechend angezeigt. Dafür verwenden wir `mutate()` zusammen mit `case_when()`, das für jede Zeile prüft, welche Bedingung zutrifft, und den Wert hinter der Tilde (`~`) einsetzt. Damit der Datensatz `data_kurz` unverändert bleibt, speichern wir das Ergebnis unter einem neuen Namen:
+
+```{r}
+#| fig-height: 3.5
+data_grafik <- mutate(data_kurz, outlet = case_when(
+  outlet == "handel" ~ "Handelsblatt",
+  outlet == "spon" ~ "Spiegel Online",
+  outlet == "tages" ~ "Tagesschau",
+  outlet == "zon" ~ "Zeit Online"
+))
+
+crosstab(data_grafik, outlet, article_type) %>% visualize()
+```
+
+**Übung (in RStudio):** Erstellen Sie dieselbe Grafik, aber mit Prozentangaben statt absoluten Zahlen, sodass sich die Medienhäuser trotz unterschiedlich vieler Artikel besser vergleichen lassen. Schauen Sie dafür mit `?crosstab` in die Hilfe.
+
+::: {.callout-tip collapse="true"}
+## Lösung
+
+Das gesuchte Argument heisst `percentages`:
+
+```{r}
+#| fig-height: 3.5
+crosstab(data_grafik, outlet, article_type, percentages = TRUE) %>% visualize()
+```
+
+Jetzt sieht man z.B. sofort, dass die Tagesschau in unserem kleinen Beispiel nur normale Nachrichtenbeiträge enthält, während beim Handelsblatt und bei Spiegel Online die Agenturmeldungen überwiegen.
+:::
+
+::: {.callout-note collapse="true"}
+## Für Fortgeschrittene: Grafiken mit ggplot2 anpassen
+
+Im Hintergrund erzeugt `visualize()` Grafiken mit dem Paket `ggplot2`, das in der Wissenschaft heute der Standard für Grafiken in R ist. Deshalb können Sie die Grafiken mit ggplot2-Befehlen weiter anpassen, die mit einem `+` angehängt werden, z.B. einen Titel und eine Achsenbeschriftung mit `labs()`:
+
+```{r}
+#| fig-height: 3.5
+library(ggplot2)
+tab_frequencies(data_grafik, outlet) %>% visualize() +
+  labs(title = "Artikel pro Medienhaus", x = "Medienhaus")
+```
+
+Mit ggplot2 können Sie Grafiken auch komplett selbst bauen. Das ist am Anfang etwas aufwändiger, dafür haben Sie die volle Kontrolle über jedes Detail. Wer tiefer einsteigen möchte, findet [hier](https://r-graph-gallery.com/ggplot2-package.html) viele Beispiele.
+:::
+
+## Darstellungsformen für Textdaten: Wortwolken
+
+Die Masszahlen und Darstellungsformen soweit waren sehr allgemein und auf alle Arten von Daten anwendbar. Zuletzt wollen wir noch eine Darstellungsform kennenlernen, die spezifisch für Textdaten anwendbar ist: Wortwolken.
+
+::: callout-important
+Die Pakete für diesen Abschnitt laufen nicht zuverlässig im Browser. Die folgenden Codeblöcke sind deshalb nicht interaktiv. Bitte führen Sie sie in RStudio aus.
+:::
+
+Hierfür ist es hilfreich, zwei Pakete zu installieren, die spezifisch für die Arbeit mit Textdaten geschaffen wurden:
+
+```{r}
+#| eval: false
+install.packages(c("quanteda", "quanteda.textplots"))
+```
+
+```{r}
+#| warning: false
+#| message: false
+library(quanteda)
+library(quanteda.textplots)
+```
+
+Die Autoren dieser Pakete haben uns viel Arbeit erspart und machen es uns einfach: Um nun eine Wortwolke zu erzeugen, sind nur drei einfache Schritte notwendig. Da wir dafür die Texte brauchen, arbeiten wir hier mit dem vollständigen Datensatz `data`. Die Bedeutung der Schritte habe ich in den Kommentaren im Code erläutert:
+
+```{r}
+text_tokens <- tokens(data$text) # die Texte der Artikel werden in einzelne Wörter aufgetrennt
+text_matrix <- dfm(text_tokens) # die aufgetrennten Wörter werden nun in einer speziellen Matrixform gespeichert (Document-Feature-Matrix, DFM)
+textplot_wordcloud(text_matrix) # aus dieser DFM wird eine Wortwolke kreiert
+```
+
+Das ist schon ganz cool, aber auch ein wenig unübersichtlich. Wir wollen die Wolke nun auf die 50 häufigsten Wörter (hier: Tokens) limitieren. Das ist durch quanteda einfach möglich, da es im Befehl für die Wordcloud ein Argument gibt, die Grösse zu beschränken (siehe `?textplot_wordcloud`):
+
+```{r}
+textplot_wordcloud(text_matrix, max_words = 50)
+```
+
+Nun ist diese Darstellung zwar übersichtlich, aber noch nicht sehr hilfreich, da wir lauter inhaltslose Füllwörter wie "der", "die", "und", etc. haben. Solche inhaltslosen Füllwörter werden als "Stopwords" bezeichnet. Für verschiedene Sprachen sind in dem Paket `quanteda` bereits Listen hinterlegt, die festlegen, welche Wörter als solche Stopwords zählen (wir können solche Listen auch selbst definieren). Diese existierende Liste können wir uns auch anzeigen lassen:
+
+```{r}
+stopwords("german")
+```
+
+Diese Wörter wollen wir nun aus unseren Texten entfernen. Das geht wie folgt. Wir fangen dabei wieder bei unseren Ausgangsdaten an und der Code ist fast identisch zu davor, mit einem kleinen Zusatz. Schauen Sie gerne, ob Sie ihn entdecken und erraten können, was dort passiert, und auch, was ich sonst noch geändert habe und warum:
+
+```{r}
+text_tokens <- tokens(data$text, remove_punct = TRUE)
+text_tokens <- tokens_remove(text_tokens, pattern = stopwords("german"))
+text_matrix <- dfm(text_tokens)
+textplot_wordcloud(text_matrix, max_words = 50)
+```
+
+Spannend wäre auch, als nächstes zu schauen, ob sich die häufigsten Wörter in den Texten je nach Medienhaus unterscheiden. Haben Sie eine Idee, wie man das mit den Methoden, die wir bisher kennengelernt haben, grafisch analysieren könnte?
+
+Ich kann Ihnen sehr empfehlen, sich mal die [Beispielseite](http://quanteda.io/articles/pkgdown/examples/plotting.html) von `quanteda` anzuschauen. Abseits der Wortwolke sind hier noch weitere wirklich hilfreiche Darstellungsformen gut verständlich aufbereitet. Insbesondere die Frequency Plots, [siehe hier](http://quanteda.io/articles/pkgdown/examples/plotting.html#frequency-plots), könnten für die ein oder andere Auswertung möglicherweise interessant sein (dort wird dann auch auf das oben bereits erwähnte Paket für grafische Darstellungen `ggplot2` zurückgegriffen).
+
+**Nice to know:**
+
+Die Art und Weise, wie in der Textverarbeitung Texte oft gespeichert werden - auch bei uns oben - ist ziemlich raffiniert. Schauen Sie sich dazu die Document-Feature-Matrix einmal an. Fällt Ihnen etwas auf?
+
+```{r}
+text_matrix
+```
+
+*Tipp:* Es ist gängige Praxis, alle Pakete, die im Verlauf eines Scriptes benötigt werden, ganz oben im Script aufzurufen. Das heisst, anstatt dass Sie die bisherigen Pakete (readxl, dplyr, stringr, tidycomm, quanteda, etc.) jeweils an den Stellen installieren und aktivieren, an denen der relevante Code folgt, können Sie alle Pakete oben zu Anfang Ihres Scripts aufrufen. Sollte ein weiteres Paket im Verlauf nötig sein, können Sie es oben einfügen und ausführen. In der Zukunft haben Sie dann direkt zu Anfang einen Überblick über die benötigten Pakete und sie stören den Ablauf im weiteren Script nicht mehr.

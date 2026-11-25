@@ -1,0 +1,21 @@
+```{webr}
+#| include: false
+# Unsichtbarer Setup-Block für die Browser-Version: Pakete laden und Beispieldaten einlesen.
+# Jede Seite startet R im Browser neu, deshalb wird dieser Block auf jeder Seite eingebunden.
+library(dplyr)
+library(stringr)
+data <- readRDS("data_example.rds")
+data_kurz <- select(data, -link, -lead, -text)
+```
+
+```{r}
+#| include: false
+# Unsichtbarer Setup-Block für die statischen Blöcke (werden beim Rendern in Ihrem lokalen R ausgeführt)
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+library(readxl)
+library(dplyr)
+library(stringr)
+library(irr)
+data <- read_excel("data_example.xlsx")
+data_kurz <- select(data, -link, -lead, -text)
+```

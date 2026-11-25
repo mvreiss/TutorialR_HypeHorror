@@ -1,0 +1,160 @@
+---
+title: "Einfache deskriptive Statistik"
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include _setup.qmd >}}
+
+**25. November 2026**
+
+Nachdem wir im ersten Teil ein paar Grundlagen aufgefrischt und die Daten gefiltert haben, können wir nun bereits ein wenig in die Anwendung eintauchen.
+
+Das Lernziel für diesen Teil der Sitzung ist, grundlegende Methoden der deskriptiven (=beschreibenden) Statistik in R und RStudio anzuwenden. Ausserdem schauen wir uns an, wie man einfache Kennzahlen für Texte berechnet, z.B. ihre Länge.
+
+Wichtig hierbei: Wir arbeiten dafür weiter mit den bereits eingelesenen [Beispieldaten](index.qmd#beispieldaten) bzw. der schlanken Version `data_kurz`, Sie können aber natürlich auch gerne andere eigene Daten einlesen und schauen, ob es auch damit klappt, das Prinzip ist dasselbe.
+
+In einem ersten Schritt wollen wir grundlegende statistische Kennzahlen für unsere Daten ermitteln. Das ist in einem empirischen wissenschaftlichen Projekt fast immer der erste Schritt einer Analyse und dient dazu, ein grundlegendes Verständnis von den Daten zu bekommen: Was ist das Durchschnittsalter meiner Teilnehmenden, wie ist das Geschlechterverhältnis, wie sind die Bildungsabschlüsse verteilt, sind typische Fragen, die bei einer Umfrage in einem ersten Schritt angeschaut werden. In Ihrem Kontext betreffen die grundlegenden, deskriptiven Fragen allerdings keine Teilnehmerinnen aus einer Umfrage, sondern eher Ihre Texte. Von Interesse sind hier z.B. Fragen wie: Wie lang sind meine Texte durchschnittlich, wie verteilen sich die Texte auf die verschiedenen Quellen, wie viele Texte enthalten ein bestimmtes Merkmal, etc.
+
+Dafür verwenden wir das Paket `tidycomm`, das Sie bereits kennen. Installieren und aktivieren Sie es wie gewohnt:
+
+```{r}
+#| eval: false
+install.packages("tidycomm") # nur beim ersten Mal nötig
+library(tidycomm)
+```
+
+```{r}
+#| echo: false
+#| message: false
+library(tidycomm)
+```
+
+::: callout-important
+`tidycomm` läuft leider nicht im Browser. Die Codeblöcke in diesem Kapitel und im Kapitel zu [Grafiken](grafiken.qmd) sind deshalb nicht interaktiv, die Ergebnisse sehen Sie aber jeweils direkt darunter. Bitte führen Sie den Code in RStudio aus. Interaktiv ist nur der Abschnitt "Arbeit mit Textdaten" weiter unten.
+:::
+
+## Kennzahlen für metrische Variablen
+
+Mittelwert, Median, Standardabweichung und weitere Kennzahlen einer metrischen Variable gibt der Befehl `describe()` auf einen Schlag aus. In die Klammer schreiben Sie zuerst den Datensatz und dann die Variable, z.B. die Anzahl der Bilder ("pics"):
+
+```{r}
+describe(data_kurz, pics)
+```
+
+Sie sehen u.a. die Fallzahl (N), fehlende Werte (Missing), den Mittelwert (M), die Standardabweichung (SD), den Median (Mdn), Minimum und Maximum. Wir wissen nun, dass im Schnitt 1,53 Fotos pro Artikel enthalten sind. Nice. Sie können auch mehrere Variablen auf einmal beschreiben lassen, indem Sie sie mit Komma aufzählen:
+
+```{r}
+describe(data_kurz, pics, other_elements)
+```
+
+Für die Spalte "article_type", in welcher der Typ des Artikels codiert ist, ergibt das aber wenig Sinn. Das liegt daran, dass es sich um eine nominale Variable handelt, für die eine Angabe des Mittelwerts nicht sinnvoll ist (was ist der Mittelwert von "essay", "agentur" und "normal"?). `describe()` passt hier für Sie auf und gibt eine Fehlermeldung aus:
+
+```{r}
+#| error: true
+describe(data_kurz, article_type)
+```
+
+## Häufigkeiten
+
+Für nominale Variablen sind stattdessen Häufigkeiten das Mittel der Wahl. Dafür gibt es den Befehl `tab_frequencies()`:
+
+```{r}
+tab_frequencies(data_kurz, article_type)
+```
+
+Die Spalte `n` enthält die absoluten Häufigkeiten, `percent` die relativen Häufigkeiten (als Anteil, 0.467 entspricht also 46,7 %). Die Spalten mit `cum_` davor sind die kumulierten, also aufaddierten Werte.
+
+## Kennzahlen für Gruppen
+
+Oft ist es aber so, dass Sie nicht am Gesamtmittelwert interessiert sind, sondern zwischen Texttypen oder Quellen unterscheiden wollen. Wenn wir z.B. den Mittelwert an Bildern pro Artikel (oder ein sonstiges Merkmal, das Sie identifiziert haben, z.B. Häufigkeit bestimmter Frames) getrennt nach Medienhaus bekommen wollen, gruppieren wir die Daten zuerst mit `group_by()` und reichen sie dann per Pipe (`%>%`) an `describe()` weiter:
+
+```{r}
+data_kurz %>% group_by(outlet) %>% describe(pics)
+```
+
+`describe()` wird nun nicht einmal für den ganzen Datensatz, sondern einmal pro Gruppe, also für jedes der vier Outlets, ausgeführt. Diese Ergebnisse erlauben nun schon erste interpretative Erkenntnisse. Zum Beispiel benutzt das Handelsblatt in unserem kleinen Beispiel offenbar am häufigsten Bilder und Zeit Online am wenigsten.
+
+Für zwei nominale Variablen, z.B. die Frage, welche Artikeltypen in welchem Medienhaus vorkommen, gibt es die Kreuztabelle mit `crosstab()`:
+
+```{r}
+crosstab(data_kurz, outlet, article_type)
+```
+
+**Übung (in RStudio):** Berechnen Sie, wie viele Bilder die Artikel durchschnittlich enthalten, getrennt nach Artikeltyp. Was fällt Ihnen auf?
+
+::: {.callout-tip collapse="true"}
+## Lösung
+
+```{r}
+#| warning: false
+data_kurz %>% group_by(article_type) %>% describe(pics)
+```
+
+Agenturmeldungen enthalten im Schnitt weniger Bilder (0,86) als normale Nachrichtenbeiträge (2,29). Beim Essay gibt es nur einen einzigen Artikel, daher kann keine Standardabweichung berechnet werden (`NA`). Ein Mittelwert aus nur einem Fall ist ohnehin mit Vorsicht zu geniessen.
+:::
+
+## Arbeit mit Textdaten
+
+Die bisherigen Ausführungen werden für alle von Ihnen relevant sein, haben aber an sich nur indirekt etwas mit Texten zu tun, nämlich insoweit, dass die Daten Texte beschreiben; selbst aber keine wirklichen Textdaten sind. Man kann in R aber auch mit Texten selbst arbeiten und diese analysieren. Einen ersten Eindruck davon haben Sie im Kapitel zum Filtern von Texten schon bekommen. Beispielsweise kann man vergleichen, welche Länge verschiedene Überschriften haben, und den Mittelwert davon berechnen. Die Anzahl der Zeichen eines Textes zählt der Befehl `str_length()` aus dem Paket `stringr`. Mit `mutate()` speichern wir das Ergebnis in einer neuen Spalte.
+
+Da `tidycomm` im Browser nicht läuft, berechnen wir den Mittelwert hier mit `summarise()` aus `dplyr`. In RStudio können Sie stattdessen genauso gut `describe(data_kurz, headline_zeichen)` verwenden.
+
+```{webr}
+data_kurz <- mutate(data_kurz, headline_zeichen = str_length(headline)) # Anzahl Zeichen der jeweiligen Headlines
+select(data_kurz, nr, headline, headline_zeichen)
+summarise(data_kurz, mittelwert = mean(headline_zeichen)) # Mittelwert davon
+```
+
+Auf ähnliche Weise können wir die Anzahl der Wörter in einem Text erfassen. Dafür brauchen wir die Spalte "text" und arbeiten deshalb wieder mit dem vollständigen Datensatz `data`. `str_count()` zählt, wie oft ein Muster in einem Text vorkommt. Das Muster `"\\S+"` steht für "eine zusammenhängende Folge von Zeichen ohne Leerzeichen", also vereinfacht gesagt für ein Wort:
+
+```{webr}
+data <- mutate(data, word_count = str_count(text, "\\S+"))
+# Zählt die Anzahl der Wörter in der Spalte "text" und
+# speichert das Ergebnis in einer neuen Spalte "word_count" ab.
+select(data, nr, outlet, word_count)
+```
+
+Das waren jetzt nur sehr einfache Textoperationen. Mit dem Paket "stringr" können Sie allerlei nützliche und auch komplexere Operationen durchführen.
+
+**Wichtig:** Es ist sehr wichtig, nach jedem Befehl die korrekte Ausführung zu überprüfen, indem man sich das Resultat anschaut und auf Plausibilität prüft. Andernfalls können sich Fehler einschleichen und die Analyse am Ende falsch sein. Den Fehler dann zu finden (sofern man ihn überhaupt bemerkt), ist deutlich mühsamer, als während der Ausführung aufmerksam zu sein.
+
+In diesem Fall erscheint das Ergebnis plausibel. Per Augenmass ist erkennbar, dass Text 9 länger ist als die anderen Texte und die Texte 8 und 12 am kürzesten sind. Manchmal reicht Augenmass allerdings nicht aus, um ein Ergebnis zu prüfen. In dem Fall sollte geschaut werden, ob Sie mit anderen Methoden auf das identische Ergebnis kommen. Hier wollen wir die Wörter natürlich nicht manuell nachzählen, aber wir können beispielsweise einen der Texte in Word kopieren und schauen, ob Word die gleiche Anzahl für einen Text ausgibt. Damit testen wir in gewisser Weise die Validität des Befehls in R, eine Thematik, die uns in einer späteren Sitzung noch begegnet.
+
+**Übung:** Berechnen Sie die durchschnittliche Wortanzahl (`word_count`) getrennt für jedes Medienhaus. Verwenden Sie dafür `group_by()` und `summarise()`.
+
+```{webr}
+#| exercise: ex_wordcount
+#| autorun: false
+data %>% group_by(______) %>% summarise(______)
+```
+
+::: {.hint exercise="ex_wordcount"}
+Gruppieren Sie nach `outlet`. In `summarise()` schreiben Sie links vom `=` einen frei gewählten Namen und rechts davon `mean(word_count)`.
+:::
+
+::: {.solution exercise="ex_wordcount"}
+``` r
+data %>% group_by(outlet) %>% summarise(mean_words = mean(word_count))
+```
+
+In RStudio ginge das mit tidycomm auch so: `data %>% group_by(outlet) %>% describe(word_count)`
+:::
+
+```{webr}
+#| exercise: ex_wordcount
+#| check: true
+loesung <- data %>% group_by(outlet) %>% summarise(m = mean(word_count))
+passt <- FALSE
+if (is.data.frame(.result) && nrow(.result) == 4) {
+  for (spalte in .result) {
+    if (is.numeric(spalte) && isTRUE(all.equal(sort(spalte), sort(loesung$m)))) passt <- TRUE
+  }
+}
+if (passt) {
+  list(correct = TRUE, message = "Richtig! Die Texte von Zeit Online sind im Schnitt am längsten.")
+} else {
+  list(correct = FALSE, message = "Noch nicht ganz. Gruppieren Sie nach outlet und berechnen Sie in summarise() den Mittelwert von word_count.")
+}
+```
+
